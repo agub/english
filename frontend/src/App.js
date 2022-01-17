@@ -1,21 +1,16 @@
+import Container from './components/Container'
+import Footer from './components/Footer'
+import Nav from './components/Nav'
+
 function App() {
 	return (
-		<div className='App'>
-			<header className='App-header'>
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className='App-link'
-					href='https://reactjs.org'
-					target='_blank'
-					rel='noopener noreferrer'
-				>
-					afasfa
-				</a>
-				<p className='text-3xl font-bold underline'>whats up world</p>
-			</header>
-		</div>
+		<>
+			<Nav />
+			<main className=''>
+				<Container>Welcome to the platform</Container>
+			</main>
+			<Footer />
+		</>
 	)
 }
 
