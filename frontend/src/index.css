@@ -15,17 +15,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.swiper-container {
+  width: 480px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
+@media screen and (min-width: 640px) {
+  .swiper-container {
+    width: 640px;
+  }
+}
 
+@media screen and (min-width: 768px) {
+  .swiper-container {
+    width: 768px;
+  }
+}
