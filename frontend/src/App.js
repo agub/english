@@ -4,6 +4,7 @@ import Nav from './components/Nav'
 import GameListsScreen from './screens/GameListsScreen'
 import HomeScreen from './screens/HomeScreen'
 import PostScreen from './screens/PostScreen'
+import TeachersScreen from './screens/TeacherListsScreen'
 
 function App() {
 	return (
@@ -13,7 +14,8 @@ function App() {
 				<Route path='/' element={<HomeScreen />} exact />
 				{/* <main> */}
 				<Route path='/post' element={<PostScreen />} />
-				<Route path='/gamelists' element={<GameListsScreen />} />
+				<Route path='/lists' element={<GameListsScreen />} />
+				<Route path='/teachers' element={<TeachersScreen />} />
 				{/* <HomeScreen /> */}po
 				{/* <PostScreen /> */}
 				{/* <GameListsScreen /> */}

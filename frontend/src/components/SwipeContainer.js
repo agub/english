@@ -1,5 +1,6 @@
 import React from 'react'
-import ItemContainer from '../components/ItemContainer'
+import { Link } from 'react-router-dom'
+import ItemContainer from './common/ItemContainer'
 import GameCard from './GameCard'
 import PostCard from './PostCard'
 
@@ -8,8 +9,8 @@ import { Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-import posts from '../posts'
-import games from '../games'
+import posts from '../data/posts'
+import games from '../data/games'
 
 const SwipeContainer = ({ showPosts, showGames }) => {
 	const prevRef = React.useRef(null)
@@ -40,12 +41,14 @@ const SwipeContainer = ({ showPosts, showGames }) => {
 			{showGames &&
 				games.map((game) => (
 					<SwiperSlide key={game._id}>
-						<ItemContainer>
-							<GameCard
-								title={game.title}
-								numTeachers={game.numTeachers}
-							/>
-						</ItemContainer>
+						<Link to='/teachers'>
+							<ItemContainer>
+								<GameCard
+									title={game.title}
+									numTeachers={game.numTeachers}
+								/>
+							</ItemContainer>
+						</Link>
 					</SwiperSlide>
 				))}
 			{showGames && (
@@ -58,12 +61,14 @@ const SwipeContainer = ({ showPosts, showGames }) => {
 			{showPosts &&
 				posts.map((post) => (
 					<SwiperSlide key={post._id}>
-						<ItemContainer showPosts>
-							<PostCard
-								title={post.title}
-								gameName={post.author}
-							/>
-						</ItemContainer>
+						<Link to='/post'>
+							<ItemContainer showPosts>
+								<PostCard
+									title={post.title}
+									gameName={post.author}
+								/>
+							</ItemContainer>
+						</Link>
 					</SwiperSlide>
 				))}
 			{showPosts && (

@@ -3,6 +3,7 @@ import { Transition } from '@headlessui/react'
 
 function Nav() {
 	const [isOpen, setIsOpen] = useState(false)
+	const nextRef = React.useRef(null)
 	return (
 		<div>
 			<nav className='bg-gray-800'>
@@ -22,14 +23,14 @@ function Nav() {
 										href='/'
 										className=' hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium'
 									>
-										Dashboard
+										Home
 									</a>
 
 									<a
-										href='/'
+										href='/lists'
 										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 									>
-										Team
+										Game-lists
 									</a>
 
 									<a
@@ -114,21 +115,21 @@ function Nav() {
 					{(ref) => (
 						<div className='md:hidden' id='mobile-menu'>
 							<div
-								ref={ref}
+								ref={nextRef}
 								className='px-2 pt-2 pb-3 space-y-1 sm:px-3'
 							>
 								<a
 									href='/'
 									className='hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
-									Dashboard
+									Home
 								</a>
 
 								<a
-									href='/'
+									href='/lists'
 									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
-									Team
+									Game-lists
 								</a>
 
 								<a

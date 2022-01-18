@@ -1,5 +1,5 @@
 import React from 'react'
-import Container from '../components/Container'
+import Container from '../components/common/Container'
 import HomeTop from '../components/HomeTop'
 import SwipeContainer from '../components/SwipeContainer'
 

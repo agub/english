@@ -1,8 +1,8 @@
 import React from 'react'
-import Container from '../components/Container'
-import ItemContainer from '../components/ItemContainer'
+import Container from '../components/common/Container'
+import ItemContainer from '../components/common/ItemContainer'
 import Lists from '../components/Lists'
-import posts from '../posts'
+import posts from '../data/posts'
 
 const GameListsScreen = () => {
 	return (
