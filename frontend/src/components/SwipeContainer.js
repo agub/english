@@ -1,13 +1,17 @@
 import React from 'react'
-import posts from '../posts'
 import ItemContainer from '../components/ItemContainer'
+import GameCard from './GameCard'
+import PostCard from './PostCard'
+
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
-
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-const SwipeContainer = ({ post }) => {
+import posts from '../posts'
+import games from '../games'
+
+const SwipeContainer = ({ showPosts, showGames }) => {
 	const prevRef = React.useRef(null)
 	const nextRef = React.useRef(null)
 	return (
@@ -33,19 +37,41 @@ const SwipeContainer = ({ post }) => {
 				},
 			}}
 		>
-			{post &&
-				posts.map((post) => (
-					<SwiperSlide key={post._id}>
-						<ItemContainer
-							item={post.title}
-							gameName={post.gameName}
-						/>
+			{showGames &&
+				games.map((game) => (
+					<SwiperSlide key={game._id}>
+						<ItemContainer>
+							<GameCard
+								title={game.title}
+								numTeachers={game.numTeachers}
+							/>
+						</ItemContainer>
 					</SwiperSlide>
 				))}
-			<div className='flex justify-between'>
-				<button ref={prevRef}>next</button>
-				<button ref={nextRef}>prev</button>
-			</div>
+			{showGames && (
+				<div className='flex justify-between'>
+					<button ref={prevRef}>next</button>
+					<button ref={nextRef}>prev</button>
+				</div>
+			)}
+
+			{showPosts &&
+				posts.map((post) => (
+					<SwiperSlide key={post._id}>
+						<ItemContainer showPosts>
+							<PostCard
+								title={post.title}
+								gameName={post.author}
+							/>
+						</ItemContainer>
+					</SwiperSlide>
+				))}
+			{showPosts && (
+				<div className='flex justify-between'>
+					<button ref={prevRef}>next</button>
+					<button ref={nextRef}>prev</button>
+				</div>
+			)}
 		</Swiper>
 	)
 }

@@ -1,4 +1,4 @@
-import Container from './components/Container'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Footer from './components/Footer'
 import Nav from './components/Nav'
 import GameListsScreen from './screens/GameListsScreen'
@@ -9,12 +9,18 @@ function App() {
 	return (
 		<>
 			<Nav />
-			<main>
-				{/* <HomeScreen /> */}
+			<Routes>
+				<Route path='/' element={<HomeScreen />} exact />
+				{/* <main> */}
+				<Route path='/post' element={<PostScreen />} />
+				<Route path='/gamelists' element={<GameListsScreen />} />
+				{/* <HomeScreen /> */}po
 				{/* <PostScreen /> */}
-				<GameListsScreen />
-			</main>
-			<Footer />
+				{/* <GameListsScreen /> */}
+				{/* <Route path='/gamelists' component={GameListsScreen} /> */}
+				{/* </main> */}
+				{/* <Footer /> */}
+			</Routes>
 		</>
 	)
 }

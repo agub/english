@@ -5,7 +5,7 @@ import Lists from '../components/Lists'
 import posts from '../posts'
 
 const PostScreen = () => {
-	return <></>
+	return <>postscreen</>
 }
 
 export default PostScreen
