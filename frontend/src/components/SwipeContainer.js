@@ -41,7 +41,7 @@ const SwipeContainer = ({ showPosts, showGames }) => {
 			{showGames &&
 				games.map((game) => (
 					<SwiperSlide key={game._id}>
-						<Link to='/teachers'>
+						<Link to='/game'>
 							<ItemContainer>
 								<GameCard
 									title={game.title}

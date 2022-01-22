@@ -15,7 +15,13 @@ const PostScreen = () => {
 					<div>title</div>
 					<PostSwiper URL={URL} />
 					<div className='col-span-5  md:hidden'>
-						<PricePlans />
+						{/* <PricePlans /> */}
+
+						<div className='bg-teal-400 w-64 h-16 flex justify-center items-center rounded'>
+							<h1 className='text-center text-white'>
+								See available
+							</h1>
+						</div>
 					</div>
 					<div>
 						description with quill editor
@@ -31,12 +37,18 @@ const PostScreen = () => {
 						<div key={person._id}>
 							<p>name: {person.name}</p>
 							<p>nationality: {person.nationality}</p>
-							<p>reviews: {person.numReviews}</p>
+							{/* <p>reviews: {person.numReviews}</p> */}
 						</div>
 					))}
 				</div>
 				<div className='col-span-5  hidden md:block'>
-					<PricePlans />
+					{/* <PricePlans /> */}
+
+					<div className='bg-teal-400 w-64 h-16 flex justify-center items-center rounded'>
+						<h1 className='text-center text-white'>
+							See available
+						</h1>
+					</div>
 				</div>
 			</div>
 		</Container>
