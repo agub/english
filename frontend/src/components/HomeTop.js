@@ -6,9 +6,11 @@ const HomeTop = () => {
 			<div className='flex justify-center items-center h-full'>
 				{/* <div className='bg-white w-64 h-8'>search bar</div> */}
 
-				<div className='bg-teal-400 w-64 h-16 flex justify-center items-center rounded'>
-					<h1 className='text-center text-white'>SUBSCRIBE</h1>
-				</div>
+				<button className='bg-teal-400 w-64 h-16 flex justify-center items-center rounded'>
+					<h1 className='text-center text-white'>
+						無料カウンセリング
+					</h1>
+				</button>
 			</div>
 		</div>
 	)

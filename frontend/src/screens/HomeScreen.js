@@ -10,8 +10,6 @@ const HomeScreen = () => {
 			<Container>
 				<h1>人気のゲーム</h1>
 				<SwipeContainer showGames />
-				<h1>先生一覧</h1>
-				<SwipeContainer showPosts />
 			</Container>
 		</>
 	)
