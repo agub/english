@@ -4,9 +4,10 @@ import Nav from './components/Nav'
 import GameListsScreen from './screens/GameListsScreen'
 import GameScreen from './screens/GameScreen'
 import HomeScreen from './screens/HomeScreen'
-import Login from './screens/Login'
+import LoginScreen from './screens/LoginScreen'
 import PostScreen from './screens/PostScreen'
-import Register from './screens/Register'
+import RegisterScreen from './screens/RegisterScreen'
+import TrialScreen from './screens/TrialScreen'
 
 function App() {
 	return (
@@ -17,8 +18,9 @@ function App() {
 				<Route path='/post' element={<PostScreen />} />
 				<Route path='/lists' element={<GameListsScreen />} />
 				<Route path='/game' element={<GameScreen />} />
-				<Route path='/register' element={<Register />} />
-				<Route path='/login' element={<Login />} />
+				<Route path='/register' element={<RegisterScreen />} />
+				<Route path='/login' element={<LoginScreen />} />
+				<Route path='/trial' element={<TrialScreen />} />
 			</Routes>
 			<Footer />
 		</>

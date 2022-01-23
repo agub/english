@@ -4,13 +4,13 @@ const Tabs = ({ color }) => {
 	const [openTab, setOpenTab] = React.useState(1)
 	return (
 		<>
-			<div className='flex flex-wrap border-solid border-2 rounded'>
+			<div className='flex flex-wrap border-solid border rounded'>
 				<div className='w-full'>
 					<ul
 						className='flex mb-0 list-none flex-wrap  flex-row'
 						role='tablist'
 					>
-						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center border-r-2 border-solid'>
+						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center border-r border-solid'>
 							<a
 								className={
 									'text-xs font-bold uppercase  py-3  rounded block leading-normal ' +
@@ -26,7 +26,7 @@ const Tabs = ({ color }) => {
 								href='#link1'
 								role='tablist'
 							>
-								Plan A
+								トライアル
 							</a>
 						</li>
 						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center'>
@@ -48,7 +48,7 @@ const Tabs = ({ color }) => {
 								Plan B
 							</a>
 						</li>
-						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center border-l-2 border-solid'>
+						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center border-l border-solid'>
 							<a
 								className={
 									'text-xs font-bold uppercase py-3  rounded block leading-normal ' +
@@ -68,7 +68,7 @@ const Tabs = ({ color }) => {
 							</a>
 						</li>
 					</ul>
-					<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border-t-2'>
+					<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border-t'>
 						<div className='px-4 py-5 flex-auto'>
 							<div className='tab-content tab-space'>
 								<div

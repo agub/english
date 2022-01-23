@@ -8,7 +8,13 @@ const HomeTop = () => {
 			<div className='flex justify-center items-center h-full'>
 				{/* <div className='bg-white w-64 h-8'>search bar</div> */}
 				<Link to='/register'>
-					<Button bgColor='bg-cyan-500' textColor='text-white'>
+					<Button
+						bgColor='bg-cyan-500'
+						textColor='text-white'
+						hoverColor='bg-blue-700'
+						type='button'
+						size='md'
+					>
 						無料カウンセリング
 					</Button>
 				</Link>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Container from '../components/common/Container'
 
-const Register = () => {
+const RegisterScreen = () => {
 	return (
 		<Container>
 			<div>Signup</div>
@@ -9,4 +9,4 @@ const Register = () => {
 	)
 }
 
-export default Register
+export default RegisterScreen

@@ -3,7 +3,6 @@ import Container from '../components/common/Container'
 import Contact from '../components/Contact'
 import HomeTop from '../components/HomeTop'
 import SwipeContainer from '../components/SwipeContainer'
-import PricePlans from '../components/PricePlans'
 import PriceHomeComponent from '../components/PriceHomeComponent'
 
 const HomeScreen = () => {
