@@ -10,7 +10,7 @@ const Tabs = ({ color }) => {
 						className='flex mb-0 list-none flex-wrap  flex-row'
 						role='tablist'
 					>
-						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center'>
+						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center border-r-2 border-solid'>
 							<a
 								className={
 									'text-xs font-bold uppercase  py-3  rounded block leading-normal ' +
@@ -26,7 +26,7 @@ const Tabs = ({ color }) => {
 								href='#link1'
 								role='tablist'
 							>
-								Trial
+								Plan A
 							</a>
 						</li>
 						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center'>
@@ -45,10 +45,10 @@ const Tabs = ({ color }) => {
 								href='#link2'
 								role='tablist'
 							>
-								Standard
+								Plan B
 							</a>
 						</li>
-						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center'>
+						<li className='-mb-px w-1/3 last:mr-0 flex-auto text-center border-l-2 border-solid'>
 							<a
 								className={
 									'text-xs font-bold uppercase py-3  rounded block leading-normal ' +
@@ -64,11 +64,11 @@ const Tabs = ({ color }) => {
 								href='#link3'
 								role='tablist'
 							>
-								Premium
+								Plan C
 							</a>
 						</li>
 					</ul>
-					<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border-t-2 rounded'>
+					<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border-t-2'>
 						<div className='px-4 py-5 flex-auto'>
 							<div className='tab-content tab-space'>
 								<div
