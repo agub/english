@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Transition } from '@headlessui/react'
+import { Link } from 'react-router-dom'
 
 function Nav() {
 	const [isOpen, setIsOpen] = useState(false)
@@ -19,40 +20,40 @@ function Nav() {
 							</div>
 							<div className='hidden md:block'>
 								<div className='ml-10 flex items-baseline space-x-4'>
-									<a
-										href='/'
+									<Link
+										to='/'
 										className=' hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium'
 									>
 										Home
-									</a>
+									</Link>
 
-									<a
-										href='/lists'
+									<Link
+										to='/lists'
 										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 									>
 										Game-lists
-									</a>
+									</Link>
 
-									<a
-										href='/'
+									<Link
+										to='/login'
 										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 									>
-										Projects
-									</a>
+										Login
+									</Link>
 
-									<a
-										href='/'
+									<Link
+										to='/'
 										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 									>
 										Calendar
-									</a>
+									</Link>
 
-									<a
-										href='/'
+									<Link
+										to='/'
 										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 									>
 										Reports
-									</a>
+									</Link>
 								</div>
 							</div>
 						</div>
@@ -118,40 +119,40 @@ function Nav() {
 								ref={nextRef}
 								className='px-2 pt-2 pb-3 space-y-1 sm:px-3'
 							>
-								<a
-									href='/'
+								<Link
+									to='/'
 									className='hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
 									Home
-								</a>
+								</Link>
 
-								<a
-									href='/lists'
+								<Link
+									to='/lists'
 									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
 									Game-lists
-								</a>
+								</Link>
 
-								<a
-									href='/'
+								<Link
+									to='/login'
 									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
-									Projects
-								</a>
+									Login
+								</Link>
 
-								<a
-									href='/'
+								<Link
+									to='/'
 									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
 									Calendar
-								</a>
+								</Link>
 
-								<a
-									href='/'
+								<Link
+									to='/'
 									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
 									Reports
-								</a>
+								</Link>
 							</div>
 						</div>
 					)}
