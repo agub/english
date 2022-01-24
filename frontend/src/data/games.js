@@ -2,12 +2,18 @@ const games = [
 	{
 		_id: '1',
 		title: 'Minecraft (マインクラフト)',
-		numTeachers: 10,
 	},
 	{
 		_id: '2',
-		title: 'Apex Legends (エーペックスレジェンズ)',
-		numTeachers: 4,
+		title: 'あつまれ どうぶつの森',
+	},
+	{
+		_id: '3',
+		title: 'Among Us (アモングアス)',
+	},
+	{
+		_id: '4',
+		title: 'Fortnite (フォートナイト)',
 	},
 ]
 

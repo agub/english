@@ -7,7 +7,7 @@ import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import PostScreen from './screens/PostScreen'
 import RegisterScreen from './screens/RegisterScreen'
-import TrialScreen from './screens/TrialScreen'
+import TrialRegisterScreen from './screens/TrialRegisterScreen'
 
 function App() {
 	return (
@@ -20,7 +20,7 @@ function App() {
 				<Route path='/game' element={<GameScreen />} />
 				<Route path='/register' element={<RegisterScreen />} />
 				<Route path='/login' element={<LoginScreen />} />
-				<Route path='/trial' element={<TrialScreen />} />
+				<Route path='/trial' element={<TrialRegisterScreen />} />
 			</Routes>
 			<Footer />
 		</>

@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import games from '../data/games'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
 
-const data = [
-	{ title: 'Apex' },
-	{ title: 'あつ森' },
-	{ title: 'Minecraft (マインクラフト）' },
-	{ title: 'Call of duty (コールオブデゥーティー)' },
-	{ title: 'Monster Hunter (モンスターハンター)' },
-	{ title: 'Fortnite (フォートナイト)' },
-]
+// const data = [
+// 	{ title: 'Apex' },
+// 	{ title: 'あつ森' },
+// 	{ title: 'Minecraft (マインクラフト）' },
+// 	{ title: 'Call of duty (コールオブデゥーティー)' },
+// 	{ title: 'Monster Hunter (モンスターハンター)' },
+// 	{ title: 'Fortnite (フォートナイト)' },
+// ]
 const weeks = [
 	{ title: '月曜日', data: 'monday' },
 	{ title: '火曜日', data: 'tuesday' },
@@ -37,7 +38,7 @@ const experienceData = [
 	{ value: 4, title: 'それ以上' },
 ]
 
-const TrialScreen = () => {
+const TrialRegisterScreen = () => {
 	const [inputValue, setInputValue] = useState({
 		email: '',
 		fullName: '',
@@ -49,9 +50,17 @@ const TrialScreen = () => {
 		experience: '',
 		preferWeek: '',
 		preferTime: '',
+		rentMixer: '',
 	})
-	const { email, fullName, phoneNumber, age, gameTitle, preferTime } =
-		inputValue
+	const {
+		email,
+		fullName,
+		phoneNumber,
+		age,
+		consoleType,
+		gameTitle,
+		preferTime,
+	} = inputValue
 
 	console.log(inputValue)
 	const handleChange = (e) => {
@@ -105,6 +114,7 @@ const TrialScreen = () => {
 						type='number'
 						placeholder='参加する方のご年齢'
 						label='参加する方のご年齢'
+						max='99'
 						onChange={handleChange}
 					/>
 				</div>
@@ -113,20 +123,28 @@ const TrialScreen = () => {
 					<label className='block text-gray-700 text-sm font-bold mb-2'>
 						使用ゲーム
 					</label>
-					<input
+					{/* <input
 						required
-						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+						className='shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 						type='text'
 						list='data'
 						name='gameTitle'
 						value={gameTitle}
 						onChange={handleChange}
-					/>
-					<datalist id='data'>
-						{data.map((item, key) => (
-							<option key={key} value={item.title} />
+					/> */}
+					<select
+						id='data'
+						name='gameTitle'
+						value={gameTitle}
+						onChange={handleChange}
+						className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+					>
+						{games.map((item, key) => (
+							<option key={key} value={item.title}>
+								{item.title}
+							</option>
 						))}
-					</datalist>
+					</select>
 				</div>
 				{/* ______________________________________________________________________________________________________ */}
 				<div className='mb-6 flex items-start flex-col'>
@@ -214,7 +232,7 @@ const TrialScreen = () => {
 							value={preferTime}
 							name='preferTime'
 							type='number'
-							maxLength={2}
+							max='24'
 							onChange={handleChange}
 							placeholder='XX'
 							className='shadow appearance-none border rounded w-24 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
@@ -224,6 +242,49 @@ const TrialScreen = () => {
 					</div>
 					*24時間表記でお願いします。
 				</div>
+				{/* ______________________________________________________________________________________________________ */}
+				{(consoleType === 'ps4' || consoleType === 'switch') && (
+					<div className='mb-6 flex items-start flex-col'>
+						<label className='block text-gray-700 text-sm font-bold mb-2'>
+							パソコン以外での受講者はヘットフォンで先生との会話とゲームの音声の同時再生する端末が必要になります。
+							<br />
+							ゲームの端末以外に、パソコンまたは携帯電話でDiscord(専用通話アプリ)を使いながら受講するために
+							の機械はお持ちですか？ &nbsp;
+							*ボイスミキサー、スプリッターなど
+						</label>
+						<div>
+							<input
+								required
+								name='rentMixer'
+								value={false}
+								type='radio'
+								onChange={handleChange}
+							/>
+							<label>持っている or 自分で購入する</label>
+						</div>
+						<div>
+							<input
+								required
+								name='rentMixer'
+								value={true}
+								type='radio'
+								onChange={handleChange}
+							/>
+							<label>レンタルする ¥500</label>
+						</div>
+						<div>
+							<input
+								required
+								name='rentMixer'
+								value=''
+								type='radio'
+								onChange={handleChange}
+							/>
+							<label>わからない</label>
+						</div>
+					</div>
+				)}
+
 				<div className='flex items-center justify-center'>
 					<Button
 						type='submit'
@@ -240,4 +301,4 @@ const TrialScreen = () => {
 	)
 }
 
-export default TrialScreen
+export default TrialRegisterScreen

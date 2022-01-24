@@ -1,6 +1,14 @@
 import React from 'react'
 
-const InputField = ({ value, label, name, placeholder, type, onChange }) => (
+const InputField = ({
+	value,
+	label,
+	name,
+	placeholder,
+	type,
+	onChange,
+	max,
+}) => (
 	<>
 		{label && (
 			<label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -8,6 +16,7 @@ const InputField = ({ value, label, name, placeholder, type, onChange }) => (
 			</label>
 		)}
 		<input
+			max={max}
 			required
 			type={type}
 			value={value}
