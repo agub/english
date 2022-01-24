@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const gameSchema = mongoose.schema({
+const gameSchema = mongoose.Schema({
 	title: {
 		type: String,
 		required: true,
@@ -10,3 +10,7 @@ const gameSchema = mongoose.schema({
 		required: true,
 	},
 })
+
+const Game = mongoose.model('Game', gameSchema)
+
+export default Game
