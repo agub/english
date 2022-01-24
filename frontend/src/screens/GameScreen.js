@@ -1,11 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Container from '../components/common/Container'
 
 const GameScreen = () => {
+	const { id } = useParams()
+	const [game, setGame] = useState({})
+
+	useEffect(() => {
+		const fetchGame = async () => {
+			const { data } = await axios.get(`/api/games/${id}`)
+			setGame(data)
+		}
+		fetchGame()
+	}, [])
+
 	return (
 		<Container>
-			<h1>Game info</h1>
+			<h1>
+				Game info: {game.title}, id:{game._id}
+			</h1>
 			<h1>title</h1>
 			<h1>game description</h1>
 			<h1>Difficulty to learn </h1>

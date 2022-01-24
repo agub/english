@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import ItemContainer from './common/ItemContainer'
 import GameCard from './GameCard'
 import PostCard from './PostCard'
@@ -10,9 +11,20 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 
 import posts from '../data/posts'
-import games from '../data/games'
+// import games from '../data/games'
 
 const SwipeContainer = ({ showPosts, showGames }) => {
+	const [games, setGames] = useState([])
+
+	useEffect(() => {
+		const fetchGames = async () => {
+			const { data } = await axios.get('/api/games')
+			console.log(data)
+			setGames(data)
+		}
+		fetchGames()
+	}, [])
+
 	const prevRef = React.useRef(null)
 	const nextRef = React.useRef(null)
 	return (
@@ -41,7 +53,7 @@ const SwipeContainer = ({ showPosts, showGames }) => {
 			{showGames &&
 				games.map((game) => (
 					<SwiperSlide key={game._id}>
-						<Link to='/game'>
+						<Link to={`/games/${game._id}`}>
 							<ItemContainer>
 								<GameCard
 									title={game.title}

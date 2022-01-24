@@ -1,0 +1,30 @@
+{
+  "name": "english",
+  "version": "1.0.0",
+  "description": "english platform",
+  "main": "server.js",
+  "scripts": {
+    "test": " ",
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agub/english.git"
+  },
+  "author": "Shinichiro Suzuki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agub/english/issues"
+  },
+  "homepage": "https://github.com/agub/english#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
+  }
+}

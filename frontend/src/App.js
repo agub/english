@@ -17,7 +17,7 @@ function App() {
 				<Route path='/' element={<HomeScreen />} exact />
 				<Route path='/post' element={<PostScreen />} />
 				<Route path='/lists' element={<GameListsScreen />} />
-				<Route path='/game' element={<GameScreen />} />
+				<Route path='/games/:id' element={<GameScreen />} />
 				<Route path='/register' element={<RegisterScreen />} />
 				<Route path='/login' element={<LoginScreen />} />
 				<Route path='/trial' element={<TrialRegisterScreen />} />
