@@ -1,5 +1,13 @@
-const express = require('express')
-const games = require('./data/games')
+import express from 'express'
+import dotenv from 'dotenv'
+import connectDB from '../backend/config/db.js'
+import colors from 'colors'
+
+import games from './data/games.js'
+
+dotenv.config()
+
+connectDB()
 
 const app = express()
 
@@ -14,4 +22,11 @@ app.get('/api/games/:id', (req, res) => {
 	res.json(game)
 })
 
-app.listen(5000, console.log('PORT 5000 running'))
+const PORT = process.env.PORT || 5000
+app.listen(
+	PORT,
+	console.log(
+		`server is running  ${process.env.NODE_ENV} mode on PORT ${PORT} running`
+			.yellow.bold
+	)
+)

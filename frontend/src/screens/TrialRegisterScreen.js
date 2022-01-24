@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import games from '../data/games'
+// import games from '../data/games'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
 
-// const data = [
-// 	{ title: 'Apex' },
-// 	{ title: 'あつ森' },
-// 	{ title: 'Minecraft (マインクラフト）' },
-// 	{ title: 'Call of duty (コールオブデゥーティー)' },
-// 	{ title: 'Monster Hunter (モンスターハンター)' },
-// 	{ title: 'Fortnite (フォートナイト)' },
-// ]
+const games = [
+	{ title: 'Apex' },
+	{ title: 'あつ森' },
+	{ title: 'Minecraft (マインクラフト）' },
+	{ title: 'Call of duty (コールオブデゥーティー)' },
+	{ title: 'Monster Hunter (モンスターハンター)' },
+	{ title: 'Fortnite (フォートナイト)' },
+]
 const weeks = [
 	{ title: '月曜日', data: 'monday' },
 	{ title: '火曜日', data: 'tuesday' },
@@ -68,6 +68,8 @@ const TrialRegisterScreen = () => {
 		setInputValue((prev) => ({
 			...prev,
 			[name]: value,
+			// age: Number(value),
+			// gameTitle: value,
 		}))
 	}
 	const submitHandler = () => {
@@ -126,7 +128,7 @@ const TrialRegisterScreen = () => {
 					{/* <input
 						required
 						className='shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-						type='text'
+						// type='text'
 						list='data'
 						name='gameTitle'
 						value={gameTitle}
@@ -276,7 +278,7 @@ const TrialRegisterScreen = () => {
 							<input
 								required
 								name='rentMixer'
-								value=''
+								value={undefined}
 								type='radio'
 								onChange={handleChange}
 							/>
