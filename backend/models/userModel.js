@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema(
 			required: true,
 		},
 		phoneNumber: {
-			type: Number,
+			type: String,
 			required: true,
 		},
 		age: {
@@ -35,14 +35,13 @@ const userSchema = mongoose.Schema(
 			type: Number,
 			required: true,
 		},
-		preferWeek: {
-			type: String,
-			required: true,
-		},
-		preferTime: {
-			type: String,
-			required: true,
-		},
+		preferTime: [
+			{
+				week: { type: String, required: true },
+				time: { type: Number, required: true },
+				rank: { type: Number, required: true },
+			},
+		],
 		rentMixer: {
 			type: Boolean,
 		},

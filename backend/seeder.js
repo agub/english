@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import users from './data/users.js'
 import games from './data/games.js'
+import orders from './data/orders.js'
 import User from './models/userModel.js'
 import Game from './models/gameModel.js'
 import Order from './models/orderModel.js'
@@ -18,17 +19,25 @@ const importData = async () => {
 		await Game.deleteMany()
 		await User.deleteMany()
 
-		// const createdUsers = await User.insertMany(users)
+		const createdUsers = await User.insertMany(users)
 
-		// const adminUser = createdUsers[0]._id
+		const sampleUser = createdUsers[0]._id
 
-		// const sampleGames = games.map((game) => {
-		// 	return { ...game, user: adminUser }
-		// })
+		const createGames = await Game.insertMany(games)
+		const sampleGame = createGames[0]._id
 
+		const sampleOrder = orders.map((order) => {
+			const newOrderItem = order.orderItem.map((item) => {
+				return { ...item, game: sampleGame }
+			})
+			return { ...order, orderItem: newOrderItem, user: sampleUser }
+		})
+
+		await Order.insertMany(sampleOrder)
+
+		// await User.insertMany(users)
 		// await Game.insertMany(sampleGames)
-		await Game.insertMany(games)
-		await User.insertMany(users)
+		// await Game.insertMany(games)
 
 		console.log('Data imported!'.green.inverse)
 		process.exit()
