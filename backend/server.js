@@ -2,8 +2,9 @@ import express from 'express'
 import dotenv from 'dotenv'
 import connectDB from '../backend/config/db.js'
 import colors from 'colors'
-
-import games from './data/games.js'
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'
+import gameRoutes from './routes/gameRoutes.js'
+// import games from './data/games.js'
 
 dotenv.config()
 
@@ -14,13 +15,12 @@ const app = express()
 app.get('/', (req, res) => {
 	res.send('API IS RUNNING')
 })
-app.get('/api/games', (req, res) => {
-	res.json(games)
-})
-app.get('/api/games/:id', (req, res) => {
-	const game = games.find((game) => game._id === req.params.id)
-	res.json(game)
-})
+
+app.use('/api/games', gameRoutes)
+
+app.use(notFound)
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 app.listen(

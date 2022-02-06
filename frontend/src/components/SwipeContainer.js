@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { listGames } from '../actions/gameActions'
+
 import axios from 'axios'
 import ItemContainer from './common/ItemContainer'
 import GameCard from './GameCard'
@@ -14,16 +17,16 @@ import posts from '../data/posts'
 // import games from '../data/games'
 
 const SwipeContainer = ({ showPosts, showGames }) => {
-	const [games, setGames] = useState([])
+	const dispatch = useDispatch()
+
+	const gamesList = useSelector((state) => state.gameList)
+	const { loading, error, games } = gamesList
+
+	// const [games, setGames] = useState([])
 
 	useEffect(() => {
-		const fetchGames = async () => {
-			const { data } = await axios.get('/api/games')
-			console.log(data)
-			setGames(data)
-		}
-		fetchGames()
-	}, [])
+		dispatch(listGames())
+	}, [dispatch])
 
 	const prevRef = React.useRef(null)
 	const nextRef = React.useRef(null)
@@ -50,7 +53,12 @@ const SwipeContainer = ({ showPosts, showGames }) => {
 				},
 			}}
 		>
-			{showGames &&
+			{loading ? (
+				<h2>loading...</h2>
+			) : error ? (
+				<h3>{error}</h3>
+			) : (
+				showGames &&
 				games.map((game) => (
 					<SwiperSlide key={game._id}>
 						<Link to={`/games/${game._id}`}>
@@ -62,7 +70,9 @@ const SwipeContainer = ({ showPosts, showGames }) => {
 							</ItemContainer>
 						</Link>
 					</SwiperSlide>
-				))}
+				))
+			)}
+
 			{showGames && (
 				<div className='flex justify-between'>
 					<button ref={prevRef}>next</button>
