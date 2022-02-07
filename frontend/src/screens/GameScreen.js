@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { listGameDetails } from '../actions/gameActions'
+import { listGameDetails } from '../redux/actions/gameActions'
 
 import { Link } from 'react-router-dom'
 import Container from '../components/common/Container'

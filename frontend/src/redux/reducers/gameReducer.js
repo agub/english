@@ -5,7 +5,7 @@ import {
 	GAME_DETAILS_REQUEST,
 	GAME_DETAILS_SUCCESS,
 	GAME_DETAILS_FAIL,
-} from '../constants/gameConstants'
+} from '../constants/gameConstants.js'
 
 export const gameListReducer = (state = { games: [] }, action) => {
 	switch (action.type) {
