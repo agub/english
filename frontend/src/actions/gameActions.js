@@ -23,7 +23,7 @@ export const listGames = () => async (dispatch) => {
 		})
 	}
 }
-export const listGamesDetails = (id) => async (dispatch) => {
+export const listGameDetails = (id) => async (dispatch) => {
 	try {
 		dispatch({ type: GAME_DETAILS_REQUEST })
 		const { data } = await axios.get(`/api/games/${id}`)

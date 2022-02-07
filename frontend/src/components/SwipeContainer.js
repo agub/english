@@ -11,9 +11,6 @@ import { Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-import posts from '../data/posts'
-// import games from '../data/games'
-
 const SwipeContainer = ({ showGames }) => {
 	const dispatch = useDispatch()
 

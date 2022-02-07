@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { listGameDetails } from '../actions/gameActions'
 
-import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Container from '../components/common/Container'
 
 const GameScreen = () => {
 	const { id } = useParams()
-	const [game, setGame] = useState({})
+	const dispatch = useDispatch()
 
 	useEffect(() => {
-		const fetchGame = async () => {
-			const { data } = await axios.get(`/api/games/${id}`)
-			setGame(data)
-		}
-		fetchGame()
-	}, [])
+		dispatch(listGameDetails(id))
+	}, [id, dispatch])
+
+	const gameDetails = useSelector((state) => state.gameDetails)
+
+	const { game } = gameDetails
 
 	return (
 		<Container>

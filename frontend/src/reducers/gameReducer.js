@@ -20,12 +20,12 @@ export const gameListReducer = (state = { games: [] }, action) => {
 	}
 }
 
-export const gameDetailsReducer = (state = { games: {} }, action) => {
+export const gameDetailsReducer = (state = { game: {} }, action) => {
 	switch (action.type) {
 		case GAME_DETAILS_REQUEST:
 			return { loading: true, ...state }
 		case GAME_DETAILS_SUCCESS:
-			return { loading: false, games: action.payload }
+			return { loading: false, game: action.payload }
 		case GAME_DETAILS_FAIL:
 			return { loading: false, error: action.payload }
 		default:
