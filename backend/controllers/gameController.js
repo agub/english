@@ -1,6 +1,5 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
-const router = express.Router()
 
 import Games from '../models/gameModel.js'
 

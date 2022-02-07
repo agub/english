@@ -5,6 +5,7 @@ const users = [
 		email: 'shintrfc@gmail.com',
 		fullName: '鈴木 慎一郎',
 		age: 27,
+		password: bcrypt.hashSync('123456', 10),
 		consoleType: 'ps4',
 		contactBy: 'phone',
 		experience: 2,
