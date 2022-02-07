@@ -5,7 +5,6 @@ import GameListsScreen from './screens/GameListsScreen'
 import GameScreen from './screens/GameScreen'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
-import PostScreen from './screens/PostScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import TrialRegisterScreen from './screens/TrialRegisterScreen'
 
@@ -15,7 +14,6 @@ function App() {
 			<Nav />
 			<Routes>
 				<Route path='/' element={<HomeScreen />} exact />
-				<Route path='/post' element={<PostScreen />} />
 				<Route path='/lists' element={<GameListsScreen />} />
 				<Route path='/games/:id' element={<GameScreen />} />
 				<Route path='/register' element={<RegisterScreen />} />

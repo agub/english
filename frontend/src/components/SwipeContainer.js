@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { listGames } from '../actions/gameActions'
 
-import axios from 'axios'
 import ItemContainer from './common/ItemContainer'
 import GameCard from './GameCard'
-import PostCard from './PostCard'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
@@ -16,20 +14,19 @@ import 'swiper/css/navigation'
 import posts from '../data/posts'
 // import games from '../data/games'
 
-const SwipeContainer = ({ showPosts, showGames }) => {
+const SwipeContainer = ({ showGames }) => {
 	const dispatch = useDispatch()
-
-	const gamesList = useSelector((state) => state.gameList)
-	const { loading, error, games } = gamesList
-
-	// const [games, setGames] = useState([])
 
 	useEffect(() => {
 		dispatch(listGames())
 	}, [dispatch])
 
+	const gamesList = useSelector((state) => state.gameList)
+	const { loading, error, games } = gamesList
+
 	const prevRef = React.useRef(null)
 	const nextRef = React.useRef(null)
+
 	return (
 		<Swiper
 			className='my-3'
@@ -74,26 +71,6 @@ const SwipeContainer = ({ showPosts, showGames }) => {
 			)}
 
 			{showGames && (
-				<div className='flex justify-between'>
-					<button ref={prevRef}>next</button>
-					<button ref={nextRef}>prev</button>
-				</div>
-			)}
-
-			{showPosts &&
-				posts.map((post) => (
-					<SwiperSlide key={post._id}>
-						<Link to='/post'>
-							<ItemContainer showPosts>
-								<PostCard
-									title={post.title}
-									gameName={post.author}
-								/>
-							</ItemContainer>
-						</Link>
-					</SwiperSlide>
-				))}
-			{showPosts && (
 				<div className='flex justify-between'>
 					<button ref={prevRef}>next</button>
 					<button ref={nextRef}>prev</button>
