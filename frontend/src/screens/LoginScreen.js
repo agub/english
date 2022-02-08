@@ -1,14 +1,39 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
+import Message from '../components/common/Message'
+import { login } from '../redux/actions/userActions'
 
-const LoginScreen = () => {
+const LoginScreen = ({ history }) => {
+	const dispatch = useDispatch()
+	const [searchParams] = useSearchParams()
+	const redirect =
+		[...searchParams].length > 0 ? [...searchParams][0][1] : '/'
+	const navigate = useNavigate()
+
 	const [inputValue, setInputValue] = useState({ email: '', password: '' })
 	const { email, password } = inputValue
-	console.log(inputValue)
+
+	console.log(email)
+	const userLogin = useSelector((state) => state.userLogin)
+	const { loading, error, userInfo } = userLogin
+
+	useEffect(() => {
+		if (userInfo) {
+			navigate(redirect)
+		}
+	}, [navigate, redirect, userInfo])
+
+	const submitHandler = (e) => {
+		console.log('submit')
+		e.preventDefault()
+		dispatch(login(email, password))
+	}
+
 	const handleChange = (e) => {
 		const { name, value } = e.target
 		setInputValue((prev) => ({
@@ -16,13 +41,11 @@ const LoginScreen = () => {
 			[name]: value,
 		}))
 	}
-	const submitHandler = () => {
-		console.log('submit')
-	}
 
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
+				{error && <Message variant='danger'>safasdfasdfa</Message>}
 				<div className='mb-4'>
 					<InputField
 						type='email'
@@ -35,7 +58,7 @@ const LoginScreen = () => {
 				</div>
 				<div className='mb-6'>
 					<InputField
-						type='text'
+						type='password'
 						value={password}
 						placeholder='Password'
 						label='Password'
