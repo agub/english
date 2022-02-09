@@ -13,41 +13,48 @@ const userSchema = mongoose.Schema(
 		},
 		fullName: {
 			type: String,
-			required: true,
+		},
+		firstName: {
+			type: String,
+		},
+		lastName: {
+			type: String,
 		},
 		phoneNumber: {
 			type: String,
-			required: true,
 		},
 		age: {
 			type: Number,
-			required: true,
 		},
 		consoleType: {
 			type: String,
-			required: true,
 		},
 		gameTitle: {
 			type: String,
-			required: true,
 		},
 		contactBy: {
 			type: String,
-			required: true,
 		},
 		experience: {
 			type: Number,
-			required: true,
 		},
 		preferTime: [
 			{
-				week: { type: String, required: true },
-				time: { type: Number, required: true },
-				rank: { type: Number, required: true },
+				week: { type: String },
+				time: { type: Number },
+				rank: { type: Number },
 			},
 		],
 		rentMixer: {
 			type: Boolean,
+		},
+		isTeacher: {
+			type: Boolean,
+			default: false,
+		},
+		isAdmin: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	{ timestamps: true }
