@@ -35,14 +35,9 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 		email,
 		// password,
 		// addthisone
-		fullName,
-		age,
-		consoleType,
-		contactBy,
-		experience,
-		gameTitle,
-		phoneNumber,
-		preferTime,
+		name,
+		info,
+
 		rentMixer,
 	} = req.body
 
@@ -53,17 +48,9 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 		throw new Error('User already exist')
 	}
 	const user = await User.create({
-		fullName,
 		email,
-		// password,
-		// addthisone
-		age,
-		consoleType,
-		contactBy,
-		experience,
-		gameTitle,
-		phoneNumber,
-		preferTime,
+		name,
+		info,
 		rentMixer,
 	})
 	if (user) {
@@ -84,7 +71,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 // @access  Public
 
 const registerUser = asyncHandler(async (req, res) => {
-	const { email, password } = req.body
+	const { email, password, discordId } = req.body
 
 	const user = await User.findOne({ email })
 
@@ -93,7 +80,7 @@ const registerUser = asyncHandler(async (req, res) => {
 		if (password) {
 			user.password = password
 		}
-
+		user.discordId = discordId
 		const updatedUser = await user.save()
 
 		res.status(201).json({

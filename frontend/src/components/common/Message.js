@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 const Message = ({ variant, children }) => {
@@ -37,6 +38,9 @@ const Message = ({ variant, children }) => {
 			)}
 		</div>
 	)
+}
+Message.propTypes = {
+	variant: PropTypes.string.isRequired,
 }
 
 export default Message

@@ -1,10 +1,21 @@
 import React, { useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../redux/actions/userActions'
 
 function Nav() {
+	const dispatch = useDispatch()
+
 	const [isOpen, setIsOpen] = useState(false)
 	const nextRef = React.useRef(null)
+
+	const userLogin = useSelector((state) => state.userLogin)
+	const { loading, error, userInfo } = userLogin
+
+	const logoutHandler = () => {
+		dispatch(logout())
+	}
 	return (
 		<div>
 			<nav className='bg-gray-800'>
@@ -33,27 +44,44 @@ function Nav() {
 									>
 										Game-lists
 									</Link>
+									{!userInfo ? (
+										<>
+											<Link
+												to='/login'
+												className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+											>
+												Login
+											</Link>
+											<Link
+												to='/trial'
+												className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+											>
+												Trial
+											</Link>
 
-									<Link
-										to='/login'
-										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-									>
-										Login
-									</Link>
-
-									<Link
-										to='/trial'
-										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-									>
-										Trial
-									</Link>
-
-									<Link
-										to='/register'
-										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-									>
-										Register
-									</Link>
+											<Link
+												to='/register'
+												className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+											>
+												Register
+											</Link>
+										</>
+									) : (
+										<>
+											<Link
+												to='/profile'
+												className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+											>
+												Profile
+											</Link>
+											<div
+												onClick={logoutHandler}
+												className='cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+											>
+												Logout
+											</div>
+										</>
+									)}
 								</div>
 							</div>
 						</div>
@@ -132,27 +160,44 @@ function Nav() {
 								>
 									Game-lists
 								</Link>
+								{!userInfo ? (
+									<>
+										<Link
+											to='/login'
+											className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										>
+											Login
+										</Link>
 
-								<Link
-									to='/login'
-									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
-								>
-									Login
-								</Link>
-
-								<Link
-									to='/trial'
-									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
-								>
-									Trial
-								</Link>
-
-								<Link
-									to='/'
-									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
-								>
-									Reports
-								</Link>
+										<Link
+											to='/trial'
+											className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										>
+											Trial
+										</Link>
+										<Link
+											to='/register'
+											className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										>
+											Register
+										</Link>
+									</>
+								) : (
+									<>
+										<Link
+											to='/profile'
+											className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										>
+											Profile
+										</Link>
+										<div
+											onClick={logoutHandler}
+											className='cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										>
+											Logout
+										</div>
+									</>
+								)}
 							</div>
 						</div>
 					)}

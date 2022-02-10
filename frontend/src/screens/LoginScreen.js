@@ -45,7 +45,7 @@ const LoginScreen = ({ history }) => {
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
-				{error && <Message variant='danger'>safasdfasdfa</Message>}
+				{error && <Message variant='danger'>{error}</Message>}
 				<div className='mb-4'>
 					<InputField
 						type='email'

@@ -1,58 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
+import Message from '../components/common/Message'
+import { useDispatch, useSelector } from 'react-redux'
+import { register } from '../redux/actions/userActions'
 
 const RegisterScreen = () => {
 	const [inputValue, setInputValue] = useState({
 		email: '',
-		// ________________
-		fullName: '',
-		phoneNumber: '',
-		age: '',
-		consoleType: '',
-		gameTitle: '',
-		contactBy: '',
-		experience: '',
-		preferWeek: '',
-		preferTime: '',
-		rentMixer: '',
-		// ________________
 		password: '',
+		discordId: '',
 		confirmPassword: '',
-		discordName: '',
 	})
-	const {
-		email,
-		fullName,
-		phoneNumber,
-		age,
-		consoleType,
-		gameTitle,
-		preferTime,
-		password,
-		confirmPassword,
-		discordName,
-	} = inputValue
+	const [errorText, setErrorText] = useState(null)
 
-	console.log(inputValue)
+	const { email, password, confirmPassword, discordId } = inputValue
 
-	const handleChange = (e) => {
-		const { name, value } = e.target
-		setInputValue((prev) => ({
-			...prev,
-			[name]: value,
-		}))
-	}
+	const userRegister = useSelector((state) => state.userRegister)
+	const { loading, success, error } = userRegister
 
-	const submitHandler = () => {
-		console.log('submit')
+	const dispatch = useDispatch()
+
+	const submitHandler = (e) => {
+		e.preventDefault()
+		setErrorText(null)
+		if (password === confirmPassword) {
+			dispatch(register(inputValue))
+		} else {
+			setErrorText('パスワードと確認パスワードが一致しません')
+		}
 	}
 
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
+				{errorText !== null && (
+					<Message variant='danger'>{errorText}</Message>
+				)}
+				{error && <Message variant='danger'>{error}</Message>}
 				<div className='mb-4'>
 					<InputField
 						type='email'
@@ -60,17 +47,27 @@ const RegisterScreen = () => {
 						name='email'
 						placeholder='メールアドレス'
 						label='メールアドレス'
-						onChange={handleChange}
+						onChange={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								email: e.target.value,
+							}))
+						}
 					/>
 				</div>
 				<div className='mb-4'>
 					<InputField
 						type='text'
-						value={discordName}
+						value={discordId}
 						name='discordName'
 						placeholder='Discord アカウント名'
 						label='Discord アカウント名'
-						onChange={handleChange}
+						onChange={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								discordId: e.target.value,
+							}))
+						}
 					/>
 				</div>
 				<div className='mb-4'>
@@ -80,7 +77,12 @@ const RegisterScreen = () => {
 						name='password'
 						placeholder='パスワード'
 						label='パスワード'
-						onChange={handleChange}
+						onChange={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								password: e.target.value,
+							}))
+						}
 					/>
 				</div>
 				<div className='mb-4'>
@@ -90,7 +92,12 @@ const RegisterScreen = () => {
 						name='confirmPassword'
 						placeholder='パスワード確認'
 						label='パスワード確認'
-						onChange={handleChange}
+						onChange={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								confirmPassword: e.target.value,
+							}))
+						}
 					/>
 				</div>
 				<div className='flex items-center justify-center'>

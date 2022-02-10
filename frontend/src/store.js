@@ -5,12 +5,18 @@ import {
 	gameDetailsReducer,
 	gameListReducer,
 } from './redux/reducers/gameReducers'
-import { userLoginReducer } from './redux/reducers/userReducers'
+import {
+	userLoginReducer,
+	userRegisterReducer,
+	userTrialReducer,
+} from './redux/reducers/userReducers'
 
 const reducer = combineReducers({
 	gameList: gameListReducer,
 	gameDetails: gameDetailsReducer,
 	userLogin: userLoginReducer,
+	userRegister: userRegisterReducer,
+	userTrial: userTrialReducer,
 })
 const userInfoFromStorage = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))

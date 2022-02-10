@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-// import games from '../data/games'
+// import { Link } from 'react-router-dom'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
@@ -8,15 +7,8 @@ import InputField from '../components/common/InputField'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { listGames } from '../redux/actions/gameActions'
-
-const games = [
-	{ title: 'Apex' },
-	{ title: 'あつ森' },
-	{ title: 'Minecraft (マインクラフト)' },
-	{ title: 'Call of duty (コールオブデゥーティー)' },
-	{ title: 'Monster Hunter (モンスターハンター)' },
-	{ title: 'Fortnite (フォートナイト)' },
-]
+import { trial } from '../redux/actions/userActions'
+import Message from '../components/common/Message'
 
 const weeks = [
 	{ title: '月曜日', data: 'monday' },
@@ -31,7 +23,7 @@ const weeks = [
 const consoleData = [
 	{ title: 'Nintendo Switch', data: 'switch' },
 	{ title: 'コンピューター', data: 'pc' },
-	{ title: 'PS4', data: 'ps4' },
+	{ title: 'Playstation, Xbox', data: 'tv' },
 ]
 
 const experienceData = [
@@ -50,7 +42,10 @@ const TrialRegisterScreen = () => {
 	}, [dispatch])
 
 	const gamesList = useSelector((state) => state.gameList)
-	const { loading, error, games } = gamesList
+	const { loading, games } = gamesList
+
+	const userTrial = useSelector((state) => state.userTrial)
+	const { loading: trialLoading, success, trialError } = userTrial
 
 	const [inputValue, setInputValue] = useState({
 		email: '',
@@ -61,30 +56,22 @@ const TrialRegisterScreen = () => {
 			kanaLastName: '',
 			kanaFirstName: '',
 		},
-		phoneNumber: '',
-		age: '',
-		consoleType: '',
-		gameTitle: '',
-		contactBy: '',
-		experience: '',
-		preferTime: [
-			{ week: '', time: '', rank: 1 },
-			{ week: '', time: '', rank: 2 },
-		],
+		info: {
+			phoneNumber: '',
+			age: '',
+			gameTitle: '',
+			consoleType: '',
+			contactBy: '',
+			experience: '',
+			preferTime: [
+				{ week: '', time: '', rank: 1 },
+				{ week: '', time: '', rank: 2 },
+			],
+		},
 		rentMixer: null,
 	})
 	const [prefer, setPrefer] = useState({ week: '', time: '', rank: 1 })
 	const [secPrefer, setSecPrefer] = useState({ week: '', time: '', rank: 2 })
-
-	const {
-		email,
-		// fullName,
-		phoneNumber,
-		age,
-		consoleType,
-		gameTitle,
-		preferTime,
-	} = inputValue
 
 	// console.log(prefer)
 	// console.log(secPrefer)
@@ -122,23 +109,19 @@ const TrialRegisterScreen = () => {
 		}
 	}
 
-	const handleChange = (e) => {
-		const { name, value } = e.target
-		setInputValue((prev) => ({
-			...prev,
-			[name]: value,
-		}))
-	}
-
 	useEffect(() => {
 		setInputValue((prev) => ({
 			...prev,
-			preferTime: [prefer, secPrefer],
+			info: {
+				...prev.info,
+				preferTime: [prefer, secPrefer],
+			},
 		}))
 	}, [prefer, secPrefer])
 
-	const submitHandler = () => {
-		console.log('submit')
+	const submitHandler = (e) => {
+		e.preventDefault()
+		dispatch(trial(inputValue))
 	}
 
 	console.log(inputValue)
@@ -146,14 +129,21 @@ const TrialRegisterScreen = () => {
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
+				{trialError && <Message variant='danger'>{trialError}</Message>}
+				{success && <Message variant='info'>無料体験応募完了</Message>}
 				<div className='mb-4'>
 					<InputField
 						type='email'
-						value={email}
+						value={inputValue.email}
 						name='email'
 						placeholder='メールアドレス'
 						label='メールアドレス'
-						onChange={handleChange}
+						onChange={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								email: e.target.value,
+							}))
+						}
 					/>
 				</div>
 				<div className='mb-6'>
@@ -234,27 +224,36 @@ const TrialRegisterScreen = () => {
 				</div>
 				<div className='mb-6'>
 					<InputField
-						value={phoneNumber}
-						name='phoneNumber'
+						value={inputValue.info.phoneNumber}
 						type='number'
 						placeholder='電話番号'
 						label='電話番号'
-						onChange={handleChange}
+						onChange={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								info: {
+									...prev.info,
+									phoneNumber: e.target.value,
+								},
+							}))
+						}
 					/>
 				</div>
 				<div className='mb-6'>
 					<InputField
-						value={age || ''}
+						value={inputValue.info.age || ''}
 						name='age'
 						type='number'
 						placeholder='参加する方のご年齢'
 						label='参加する方のご年齢'
 						max='99'
-						// onChange={handleChange}
 						onChange={(e) => {
 							setInputValue((prev) => ({
 								...prev,
-								age: parseInt(e.target.value),
+								info: {
+									...prev.info,
+									age: parseInt(e.target.value),
+								},
 							}))
 						}}
 					/>
@@ -267,8 +266,16 @@ const TrialRegisterScreen = () => {
 					<select
 						id='data'
 						name='gameTitle'
-						value={gameTitle}
-						onChange={handleChange}
+						value={inputValue.info.gameTitle}
+						onChange={(e) => {
+							setInputValue((prev) => ({
+								...prev,
+								info: {
+									...prev.info,
+									gameTitle: e.target.value,
+								},
+							}))
+						}}
 						className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 					>
 						<option hidden>選択してください</option>
@@ -292,7 +299,15 @@ const TrialRegisterScreen = () => {
 								name='consoleType'
 								value={console.data}
 								type='radio'
-								onChange={handleChange}
+								onChange={(e) => {
+									setInputValue((prev) => ({
+										...prev,
+										info: {
+											...prev.info,
+											consoleType: e.target.value,
+										},
+									}))
+								}}
 							/>
 							<label>{console.title}</label>
 						</div>
@@ -310,7 +325,15 @@ const TrialRegisterScreen = () => {
 							name='contactBy'
 							value='email'
 							type='radio'
-							onChange={handleChange}
+							onChange={(e) => {
+								setInputValue((prev) => ({
+									...prev,
+									info: {
+										...prev.info,
+										contactBy: e.target.value,
+									},
+								}))
+							}}
 						/>
 						<label>Emailで連絡</label>
 					</div>
@@ -320,7 +343,15 @@ const TrialRegisterScreen = () => {
 							name='contactBy'
 							value='phone'
 							type='radio'
-							onChange={handleChange}
+							onChange={(e) => {
+								setInputValue((prev) => ({
+									...prev,
+									info: {
+										...prev.info,
+										contactBy: e.target.value,
+									},
+								}))
+							}}
 						/>
 						<label>電話で連絡</label>
 					</div>
@@ -340,7 +371,12 @@ const TrialRegisterScreen = () => {
 								onChange={(e) =>
 									setInputValue((prev) => ({
 										...prev,
-										experience: parseInt(e.target.value),
+										info: {
+											...prev.info,
+											experience: parseInt(
+												e.target.value
+											),
+										},
 									}))
 								}
 							/>
@@ -382,7 +418,9 @@ const TrialRegisterScreen = () => {
 								placeholder='XX'
 								className='shadow appearance-none border rounded w-24 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 							/>
-							{preferTime[0].time < 12 ? 'am' : 'pm'}
+							{inputValue.info.preferTime[0].time < 12
+								? 'am'
+								: 'pm'}
 							&nbsp; ~
 						</div>
 					</div>
@@ -416,7 +454,9 @@ const TrialRegisterScreen = () => {
 								placeholder='XX'
 								className='shadow appearance-none border rounded w-24 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 							/>
-							{preferTime[1].time < 12 ? 'am' : 'pm'}
+							{inputValue.info.preferTime[1].time < 12
+								? 'am'
+								: 'pm'}
 							&nbsp; ~
 						</div>
 					</div>
@@ -424,13 +464,14 @@ const TrialRegisterScreen = () => {
 				</div>
 
 				{/* ______________________________________________________________________________________________________ */}
-				{(consoleType === 'ps4' || consoleType === 'switch') && (
+				{(inputValue.info.consoleType === 'ps4' ||
+					inputValue.info.consoleType === 'switch') && (
 					<div className='mb-6 flex items-start flex-col'>
 						<label className='block text-gray-700 text-sm font-bold mb-2'>
 							パソコン以外での受講者はヘットフォンで先生との会話とゲームの音声の同時再生する端末が必要になります。
 							<br />
 							ゲームの端末以外に、パソコンまたは携帯電話でDiscord(専用通話アプリ)を使いながら受講するために
-							の機械はお持ちですか？ &nbsp;
+							の機械はお持ちですか? &nbsp;
 							例:ボイスミキサー、スプリッターなど
 						</label>
 						<div>
@@ -439,7 +480,12 @@ const TrialRegisterScreen = () => {
 								name='rentMixer'
 								value={false}
 								type='radio'
-								onChange={handleChange}
+								onChange={(e) => {
+									setInputValue((prev) => ({
+										...prev,
+										rentMixer: e.target.value,
+									}))
+								}}
 							/>
 							<label>持っている or 自分で購入する</label>
 						</div>
@@ -449,7 +495,12 @@ const TrialRegisterScreen = () => {
 								name='rentMixer'
 								value={true}
 								type='radio'
-								onChange={handleChange}
+								onChange={(e) => {
+									setInputValue((prev) => ({
+										...prev,
+										rentMixer: e.target.value,
+									}))
+								}}
 							/>
 							<label>レンタルする ¥500</label>
 						</div>
@@ -459,7 +510,12 @@ const TrialRegisterScreen = () => {
 								name='rentMixer'
 								value={undefined}
 								type='radio'
-								onChange={handleChange}
+								onChange={(e) => {
+									setInputValue((prev) => ({
+										...prev,
+										rentMixer: e.target.value,
+									}))
+								}}
 							/>
 							<label>わからない</label>
 						</div>
