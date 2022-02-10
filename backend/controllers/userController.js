@@ -24,67 +24,6 @@ const authUser = asyncHandler(async (req, res) => {
 		res.status
 		throw new Error('invalid email or password')
 	}
-
-	//sign up!!!!
-	// if (user) {
-	// 	res.json({ email })
-	// } else {
-	// 	res.status
-	// 	throw new Error('invalid email or password')
-	// }
-})
-
-// @desc    Register a new user
-// @route   POST /api/users/login
-// @access  Public
-
-const registerUser = asyncHandler(async (req, res) => {
-	const {
-		email,
-		password,
-		// addthisone
-		fullName,
-		age,
-		consoleType,
-		contactBy,
-		experience,
-		gameTitle,
-		phoneNumber,
-		preferTime,
-		rentMixer,
-	} = req.body
-
-	const userExists = await User.findOne({ email })
-
-	if (userExists) {
-		res.status(400)
-		throw new Error('User already exist')
-	}
-	const user = await User.create({
-		fullName,
-		email,
-		password,
-		// addthisone
-		age,
-		consoleType,
-		contactBy,
-		experience,
-		gameTitle,
-		phoneNumber,
-		preferTime,
-		rentMixer,
-	})
-	if (user) {
-		res.status(201).json({
-			_id: user._id,
-			fullName: user.fullName,
-			email: user.email,
-			token: generateToken(user._id),
-		})
-	} else {
-		res.status(400)
-		throw new Error('Invalid user data')
-	}
 })
 
 // @desc    Register a trial new user
@@ -94,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const trialRegisterUser = asyncHandler(async (req, res) => {
 	const {
 		email,
-		password,
+		// password,
 		// addthisone
 		fullName,
 		age,
@@ -116,7 +55,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 	const user = await User.create({
 		fullName,
 		email,
-		password,
+		// password,
 		// addthisone
 		age,
 		consoleType,
@@ -137,6 +76,40 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 	} else {
 		res.status(400)
 		throw new Error('Invalid user data')
+	}
+})
+
+// @desc    Register a user from trial
+// @route   POST /api/users
+// @access  Public
+
+const registerUser = asyncHandler(async (req, res) => {
+	const { email, password } = req.body
+
+	const user = await User.findOne({ email })
+
+	if (user && !user.password) {
+		user.email = email || user.email
+		if (password) {
+			user.password = password
+		}
+
+		const updatedUser = await user.save()
+
+		res.status(201).json({
+			_id: updatedUser._id,
+			fullName: updatedUser.fullName,
+			email: updatedUser.email,
+			token: generateToken(updatedUser._id),
+		})
+	} else if (user) {
+		res.status(400)
+		throw new Error('このメールアドレスは登録済みです')
+	} else {
+		res.status(400)
+		throw new Error(
+			'トライヤルを申し込んだ時のメールアドレスをお使いください。'
+		)
 	}
 })
 
@@ -159,4 +132,4 @@ const getUserProfile = asyncHandler(async (req, res) => {
 	}
 })
 
-export { authUser, getUserProfile, registerUser }
+export { authUser, getUserProfile, registerUser, trialRegisterUser }
