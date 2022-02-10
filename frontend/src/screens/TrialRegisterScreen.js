@@ -6,14 +6,18 @@ import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { listGames } from '../redux/actions/gameActions'
+
 const games = [
 	{ title: 'Apex' },
 	{ title: 'あつ森' },
-	{ title: 'Minecraft (マインクラフト）' },
+	{ title: 'Minecraft (マインクラフト)' },
 	{ title: 'Call of duty (コールオブデゥーティー)' },
 	{ title: 'Monster Hunter (モンスターハンター)' },
 	{ title: 'Fortnite (フォートナイト)' },
 ]
+
 const weeks = [
 	{ title: '月曜日', data: 'monday' },
 	{ title: '火曜日', data: 'tuesday' },
@@ -39,9 +43,24 @@ const experienceData = [
 ]
 
 const TrialRegisterScreen = () => {
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(listGames())
+	}, [dispatch])
+
+	const gamesList = useSelector((state) => state.gameList)
+	const { loading, error, games } = gamesList
+
 	const [inputValue, setInputValue] = useState({
 		email: '',
-		fullName: '',
+		// fullName: '',
+		name: {
+			lastName: '',
+			firstName: '',
+			kanaLastName: '',
+			kanaFirstName: '',
+		},
 		phoneNumber: '',
 		age: '',
 		consoleType: '',
@@ -59,7 +78,7 @@ const TrialRegisterScreen = () => {
 
 	const {
 		email,
-		fullName,
+		// fullName,
 		phoneNumber,
 		age,
 		consoleType,
@@ -138,14 +157,80 @@ const TrialRegisterScreen = () => {
 					/>
 				</div>
 				<div className='mb-6'>
-					<InputField
-						value={fullName}
-						name='fullName'
-						type='text'
-						placeholder='参加する方のお名前'
-						label='参加する方のお名前'
-						onChange={handleChange}
-					/>
+					<div className='flex justify-between'>
+						<div>
+							<InputField
+								value={inputValue.name.lastName}
+								type='text'
+								placeholder='鈴木'
+								label='名字'
+								onChange={(e) =>
+									setInputValue((prev) => ({
+										...prev,
+										name: {
+											...prev.name,
+											lastName: e.target.value,
+										},
+									}))
+								}
+							/>
+						</div>
+						<div>
+							<InputField
+								value={inputValue.name.firstName}
+								type='text'
+								placeholder='太朗'
+								label='お名前'
+								onChange={(e) =>
+									setInputValue((prev) => ({
+										...prev,
+										name: {
+											...prev.name,
+											firstName: e.target.value,
+										},
+									}))
+								}
+							/>
+						</div>
+					</div>
+				</div>
+				<div className='mb-6'>
+					<div className='flex justify-between'>
+						<div>
+							<InputField
+								value={inputValue.name.kanaLastName}
+								type='text'
+								placeholder='スズキ'
+								label='フリガナ'
+								onChange={(e) =>
+									setInputValue((prev) => ({
+										...prev,
+										name: {
+											...prev.name,
+											kanaLastName: e.target.value,
+										},
+									}))
+								}
+							/>
+						</div>
+						<div>
+							<InputField
+								value={inputValue.name.kanaFirstName}
+								type='text'
+								placeholder='タロウ'
+								label='&nbsp;'
+								onChange={(e) =>
+									setInputValue((prev) => ({
+										...prev,
+										name: {
+											...prev.name,
+											kanaFirstName: e.target.value,
+										},
+									}))
+								}
+							/>
+						</div>
+					</div>
 				</div>
 				<div className='mb-6'>
 					<InputField
@@ -187,11 +272,12 @@ const TrialRegisterScreen = () => {
 						className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 					>
 						<option hidden>選択してください</option>
-						{games.map((item, key) => (
-							<option key={key} value={item.title}>
-								{item.title}
-							</option>
-						))}
+						{!loading &&
+							games.map((item, key) => (
+								<option key={key} value={item.title}>
+									{item.title}
+								</option>
+							))}
 					</select>
 				</div>
 				{/* ______________________________________________________________________________________________________ */}

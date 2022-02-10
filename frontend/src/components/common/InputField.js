@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 
 const InputField = ({
 	value,
@@ -8,6 +9,7 @@ const InputField = ({
 	type,
 	onChange,
 	max,
+	size,
 }) => (
 	<>
 		{label && (
@@ -21,7 +23,12 @@ const InputField = ({
 			type={type}
 			value={value}
 			name={name}
-			className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+			// className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+			className={classnames(
+				`shadow appearance-none border rounded ${
+					!size ? 'w-full' : 'w-1/3'
+				} py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`
+			)}
 			placeholder={placeholder}
 			onChange={onChange}
 		/>

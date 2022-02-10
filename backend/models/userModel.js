@@ -11,42 +11,55 @@ const userSchema = mongoose.Schema(
 		password: {
 			type: String,
 		},
-		fullName: {
-			type: String,
-		},
-		firstName: {
-			type: String,
-		},
-		lastName: {
-			type: String,
-		},
-		phoneNumber: {
-			type: String,
-		},
-		age: {
-			type: Number,
-		},
-		consoleType: {
-			type: String,
-		},
-		gameTitle: {
-			type: String,
-		},
-		contactBy: {
-			type: String,
-		},
-		experience: {
-			type: Number,
-		},
-		preferTime: [
-			{
-				week: { type: String },
-				time: { type: Number },
-				rank: { type: Number },
+		name: {
+			firstName: {
+				type: String,
 			},
-		],
-		rentMixer: {
-			type: Boolean,
+			lastName: {
+				type: String,
+			},
+			kanaFirstName: {
+				type: String,
+			},
+			kanaLastName: {
+				type: String,
+			},
+		},
+		info: {
+			phoneNumber: {
+				type: String,
+			},
+			age: {
+				type: Number,
+			},
+			consoleType: {
+				type: String,
+			},
+			gameTitle: {
+				type: String,
+			},
+			contactBy: {
+				type: String,
+			},
+			experience: {
+				type: Number,
+			},
+			preferTime: [
+				{
+					week: { type: String },
+					time: { type: Number },
+					rank: { type: Number },
+				},
+			],
+			rentMixer: {
+				type: Boolean,
+			},
+			discordId: {
+				type: String,
+			},
+			gender: {
+				type: String,
+			},
 		},
 		isTeacher: {
 			type: Boolean,
