@@ -9,30 +9,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listGames } from '../redux/actions/gameActions'
 import { trial } from '../redux/actions/userActions'
 import Message from '../components/common/Message'
-
-const weeks = [
-	{ title: '月曜日', data: 'monday' },
-	{ title: '火曜日', data: 'tuesday' },
-	{ title: '水曜日', data: 'wednesday' },
-	{ title: '木曜日', data: 'thursday' },
-	{ title: '金曜日', data: 'friday' },
-	{ title: '土曜日', data: 'saturday' },
-	{ title: '日曜日', data: 'sunday' },
-]
-
-const consoleData = [
-	{ title: 'Nintendo Switch', data: 'switch' },
-	{ title: 'コンピューター', data: 'pc' },
-	{ title: 'Playstation, Xbox', data: 'tv' },
-]
-
-const experienceData = [
-	{ value: 0, title: '全く話せない' },
-	{ value: 1, title: '簡単な単語を知っている' },
-	{ value: 2, title: '簡単な会話ができる' },
-	{ value: 3, title: '会話ができる' },
-	{ value: 4, title: 'それ以上' },
-]
+import weeks from '../data/weeks'
+import consoleData from '../data/consoleData'
+import experienceData from '../data/experienceData'
 
 const TrialRegisterScreen = () => {
 	const dispatch = useDispatch()
