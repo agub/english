@@ -7,11 +7,15 @@ import {
 	getUserProfile,
 	registerUser,
 	trialRegisterUser,
+	updateUserProfile,
 } from '../controllers/userController.js'
 
 router.route('/trial').post(trialRegisterUser)
 router.route('/').post(registerUser)
 router.post('/login', authUser)
-router.route('/profile').get(protect, getUserProfile)
+router
+	.route('/profile')
+	.get(protect, getUserProfile)
+	.put(protect, updateUserProfile)
 
 export default router

@@ -26,13 +26,13 @@ const users = [
 	},
 	{
 		// user who finished register
-		email: 'shintrfc@gmail.com',
+		email: 'kokyakuc@gmail.com',
 		password: bcrypt.hashSync('123456', 10),
 		name: {
-			lastName: '鈴木',
-			firstName: '慎一郎',
-			kanaLastName: 'スズキ',
-			kanaFirstName: 'シンイチロウ',
+			lastName: '個客',
+			firstName: '太郎',
+			kanaLastName: 'コキャク',
+			kanaFirstName: 'タロウ',
 		},
 		info: {
 			age: 27,
@@ -54,10 +54,10 @@ const users = [
 		email: 'example@gmail.com',
 		password: bcrypt.hashSync('123456', 10),
 		name: {
-			lastName: '後藤',
-			firstName: 'ひかり',
-			kanaLastName: 'ゴトウ',
-			kanaFirstName: 'ヒカリ',
+			lastName: '良い',
+			firstName: '先生子',
+			kanaLastName: 'ヨイ',
+			kanaFirstName: 'センセイコ',
 		},
 		info: {
 			age: 10,
@@ -73,6 +73,32 @@ const users = [
 			rentMixer: 'false',
 		},
 		isTeacher: true,
+	},
+	{
+		// user who finished register as a teacher
+		email: 'shintrfc@gmail.com',
+		password: bcrypt.hashSync('123456', 10),
+		name: {
+			lastName: '鈴木',
+			firstName: '慎一郎',
+			kanaLastName: 'スズキ',
+			kanaFirstName: 'シンイチチロウ',
+		},
+		info: {
+			age: 10,
+			gender: 'male',
+			consoleType: 'pc',
+			gameTitle: 'Minecraft (マインクラフト)',
+			discordId: 'shintrfc',
+			phoneNumber: '09022414152',
+			preferTime: [
+				{ week: 'friday', time: 15, rank: 1 },
+				{ week: 'saturday', time: 12, rank: 2 },
+			],
+			rentMixer: 'false',
+		},
+		isTeacher: false,
+		isAdmin: true,
 	},
 ]
 

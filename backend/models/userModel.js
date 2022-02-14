@@ -61,6 +61,18 @@ const userSchema = mongoose.Schema(
 				type: String,
 			},
 		},
+		hasMatched: {
+			type: Boolean,
+			default: false,
+		},
+		hadTrial: {
+			type: Boolean,
+			default: false,
+		},
+		isPaid: {
+			type: Boolean,
+			default: false,
+		},
 		isTeacher: {
 			type: Boolean,
 			default: false,
