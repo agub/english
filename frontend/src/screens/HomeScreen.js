@@ -6,6 +6,7 @@ import SwipeContainer from '../components/SwipeContainer'
 import PriceHomeComponent from '../components/PriceHomeComponent'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
+import GetUserInfo from '../components/function/GetUserInfo'
 
 const HomeScreen = () => {
 	return (
