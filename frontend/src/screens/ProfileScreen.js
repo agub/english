@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { BsX } from 'react-icons/bs'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
 import Message from '../components/common/Message'
-import { useDispatch, useSelector } from 'react-redux'
-import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
 import HorizontalButton from '../components/common/HorizontalButton'
 import Loader from '../components/common/Loader'
+import Calender from '../components/Calender'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
 import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
+import ResetPassword from '../components/ResetPassword'
 
 const ProfileScreen = () => {
 	const navigate = useNavigate()
@@ -70,6 +71,8 @@ const ProfileScreen = () => {
 		dispatch({ type: USER_PROFILE_UPDATE_RESET })
 		e.preventDefault()
 		setErrorText(null)
+
+		//Changing Password
 		if (
 			inputValue.password &&
 			inputValue.newPassword &&
@@ -91,7 +94,7 @@ const ProfileScreen = () => {
 				setErrorText('パスワードと確認パスワードが一致しません')
 			}
 		}
-
+		//Changing discordId
 		if (inputValue.discordId) {
 			dispatch(userProfileUpdate({ id: user._id, discordId }))
 			dispatch(getUserDetails('profile'))
@@ -104,77 +107,9 @@ const ProfileScreen = () => {
 		}
 	}
 
-	const Schedule = () => (
-		<>
-			<h1>Schedule</h1>
-			<table className='w-full'>
-				<thead className='bg-gray-50'>
-					<tr>
-						<th className='text-sm font-light w-/7'>MON</th>
-						<th className='text-sm font-light w-/7'>TUE</th>
-						<th className='text-sm font-light w-/7'>WED</th>
-						<th className='text-sm font-light w-/7'>THU</th>
-						<th className='text-sm font-light w-/7'>FRI</th>
-						<th className='text-sm font-light w-/7'>SAT</th>
-						<th className='text-sm font-light w-/7'>SUN</th>
-					</tr>
-				</thead>
-				<tbody className='h-5'>
-					<tr className='border'>
-						<td className='border'>
-							<div className='flex justify-center items-center'>
-								<BsX />
-							</div>
-						</td>
-						<td className='border'>
-							<div className='flex justify-center items-center'>
-								<BsX />
-							</div>
-						</td>
-						<td className='border'>
-							<div className='flex justify-center items-center'>
-								<BsX />
-							</div>
-						</td>
-						<td className='border'>
-							<div className='flex justify-center items-center'>
-								<BsX />
-							</div>
-						</td>
-						<td className='border'>
-							<div className='flex justify-center items-center'>
-								<BsX />
-							</div>
-						</td>
-
-						<td className='flex justify-center py-1'>
-							<div className='flex row-auto justify-center items-center'>
-								<div className='bg-slate-600 rounded-full h-10 w-10'></div>
-								<div>
-									<div className='text-xs text-center'>
-										19pm~20pm
-									</div>
-									<div className='text-xs text-center'>
-										Shinichiro Suzuki
-									</div>
-								</div>
-							</div>
-						</td>
-						<td className='border'>
-							<div className='flex justify-center items-center'>
-								<BsX />
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</>
-	)
-
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
-				<Schedule />
 				{errorText !== null && (
 					<Message variant='danger'>{errorText}</Message>
 				)}
@@ -187,6 +122,7 @@ const ProfileScreen = () => {
 				{loading && <Loader />}
 				{component === '' && user && user.info && user.name && (
 					<>
+						<Calender />
 						<p>ユーザー情報</p>
 						<HorizontalButton
 							text='お名前'
@@ -213,6 +149,7 @@ const ProfileScreen = () => {
 							type='box'
 							result={user.info.gameTitle}
 						/>
+						<p className='mt-4'>一般</p>
 						<HorizontalButton
 							text='お支払いプラン'
 							type='button'
@@ -244,72 +181,31 @@ const ProfileScreen = () => {
 				)}
 
 				{component === 'password' && (
-					<>
-						<button
-							onClick={() => setComponent('')}
-							className='inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800'
-						>
-							戻る
-						</button>
-						<h1 className='text-center'>パスワードを変更</h1>
-						<div className='mb-4'>
-							<InputField
-								type='password'
-								value={password}
-								placeholder='現在のパスワード'
-								label='現在のパスワード'
-								name='password'
-								onChange={(e) =>
-									setInputValue((prev) => ({
-										...prev,
-										password: e.target.value,
-									}))
-								}
-							/>
-						</div>
-						<div className='mb-4'>
-							<InputField
-								type='password'
-								value={newPassword}
-								placeholder='新しいパスワード'
-								label='新しいパスワード'
-								name='newPassword'
-								onChange={(e) =>
-									setInputValue((prev) => ({
-										...prev,
-										newPassword: e.target.value,
-									}))
-								}
-							/>
-						</div>
-						<div className='mb-4'>
-							<InputField
-								type='password'
-								value={confirmPassword}
-								placeholder='新しい確認パスワード'
-								label='新しい確認パスワード'
-								name='confirmPassword'
-								onChange={(e) =>
-									setInputValue((prev) => ({
-										...prev,
-										confirmPassword: e.target.value,
-									}))
-								}
-							/>
-						</div>
-						<div className='flex items-center justify-between'>
-							<Button
-								onClick={submitHandler}
-								type='submit'
-								bgColor='bg-blue-500'
-								textColor='text-white'
-								hoverColor='bg-blue-700'
-								size='sm'
-							>
-								変更を保存
-							</Button>
-						</div>
-					</>
+					<ResetPassword
+						component={() => setComponent('')}
+						passwordValue={password}
+						passwordSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								password: e.target.value,
+							}))
+						}
+						confirmPasswordValue={confirmPassword}
+						confirmPasswordSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								confirmPassword: e.target.value,
+							}))
+						}
+						newPasswordValue={newPassword}
+						newPasswordSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								newPassword: e.target.value,
+							}))
+						}
+						submitHandler={submitHandler}
+					/>
 				)}
 				{component === 'discord' && user && user.info.discordId && (
 					<>
