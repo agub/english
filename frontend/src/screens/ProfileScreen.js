@@ -7,9 +7,7 @@ import InputField from '../components/common/InputField'
 import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails } from '../redux/actions/userActions'
-import GetUserInfo from '../components/function/GetUserInfo'
 import HorizontalButton from '../components/common/HorizontalButton'
-import e from 'express'
 
 const ProfileScreen = () => {
 	const navigate = useNavigate()
@@ -28,16 +26,6 @@ const ProfileScreen = () => {
 
 	const userDetails = useSelector((state) => state.userDetails)
 	const { loading, user, error } = userDetails
-
-	const { userInfo } = GetUserInfo()
-
-	useEffect(() => {
-		if (!userInfo) {
-			navigate('/login')
-		} else {
-			// dispatch(getUserDetails('profile'))
-		}
-	}, [userInfo, navigate, dispatch])
 
 	const submitHandler = (e) => {
 		e.preventDefault()

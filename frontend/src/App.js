@@ -7,7 +7,7 @@ import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import TrialRegisterScreen from './screens/TrialRegisterScreen'
-import ProfileScreen from './screens/ProfileScreen'
+// import ProfileScreen from './screens/ProfileScreen'
 
 function App() {
 	return (
