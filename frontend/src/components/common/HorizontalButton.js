@@ -15,10 +15,13 @@ const HorizontalButton = ({ setState, text, type, result }) => {
 			<div className='flex justify-between items-center'>
 				<div className='whitespace-nowrap'>{text}</div>
 				<div>
-					{result ? (
+					{type === 'box' ? (
 						result.slice(0, 20) + (result.length > 20 ? '...' : '')
 					) : (
-						<FiChevronRight />
+						<div className='flex items-center'>
+							{result} &nbsp;
+							<FiChevronRight />
+						</div>
 					)}
 				</div>
 			</div>

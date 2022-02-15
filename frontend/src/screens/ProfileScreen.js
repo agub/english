@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { BsX } from 'react-icons/bs'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
@@ -103,9 +104,77 @@ const ProfileScreen = () => {
 		}
 	}
 
+	const Schedule = () => (
+		<>
+			<h1>Schedule</h1>
+			<table className='w-full'>
+				<thead className='bg-gray-50'>
+					<tr>
+						<th className='text-sm font-light w-/7'>MON</th>
+						<th className='text-sm font-light w-/7'>TUE</th>
+						<th className='text-sm font-light w-/7'>WED</th>
+						<th className='text-sm font-light w-/7'>THU</th>
+						<th className='text-sm font-light w-/7'>FRI</th>
+						<th className='text-sm font-light w-/7'>SAT</th>
+						<th className='text-sm font-light w-/7'>SUN</th>
+					</tr>
+				</thead>
+				<tbody className='h-5'>
+					<tr className='border'>
+						<td className='border'>
+							<div className='flex justify-center items-center'>
+								<BsX />
+							</div>
+						</td>
+						<td className='border'>
+							<div className='flex justify-center items-center'>
+								<BsX />
+							</div>
+						</td>
+						<td className='border'>
+							<div className='flex justify-center items-center'>
+								<BsX />
+							</div>
+						</td>
+						<td className='border'>
+							<div className='flex justify-center items-center'>
+								<BsX />
+							</div>
+						</td>
+						<td className='border'>
+							<div className='flex justify-center items-center'>
+								<BsX />
+							</div>
+						</td>
+
+						<td className='flex justify-center py-1'>
+							<div className='flex row-auto justify-center items-center'>
+								<div className='bg-slate-600 rounded-full h-10 w-10'></div>
+								<div>
+									<div className='text-xs text-center'>
+										19pm~20pm
+									</div>
+									<div className='text-xs text-center'>
+										Shinichiro Suzuki
+									</div>
+								</div>
+							</div>
+						</td>
+						<td className='border'>
+							<div className='flex justify-center items-center'>
+								<BsX />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</>
+	)
+
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
+				<Schedule />
 				{errorText !== null && (
 					<Message variant='danger'>{errorText}</Message>
 				)}
@@ -144,8 +213,23 @@ const ProfileScreen = () => {
 							type='box'
 							result={user.info.gameTitle}
 						/>
+						<HorizontalButton
+							text='お支払いプラン'
+							type='button'
+							result='定額'
+						/>
+						<HorizontalButton
+							text='先生'
+							type='button'
+							result='Mr.John doe'
+						/>
 
-						<p>設定</p>
+						<p className='mt-4'>設定</p>
+						<HorizontalButton
+							text='月額支払い設定'
+							type='button'
+							setState={() => setComponent('other')}
+						/>
 						<HorizontalButton
 							text='パスワードの変更'
 							type='button'
@@ -155,11 +239,6 @@ const ProfileScreen = () => {
 							text='Discordの名前変更'
 							type='button'
 							setState={() => setComponent('discord')}
-						/>
-						<HorizontalButton
-							text='その他の設定'
-							type='button'
-							setState={() => setComponent('other')}
 						/>
 					</>
 				)}
