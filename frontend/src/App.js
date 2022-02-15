@@ -7,7 +7,7 @@ import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import TrialRegisterScreen from './screens/TrialRegisterScreen'
-// import ProfileScreen from './screens/ProfileScreen'
+import ProfileScreen from './screens/ProfileScreen'
 
 function App() {
 	return (
@@ -20,7 +20,7 @@ function App() {
 				<Route path='/register' element={<RegisterScreen />} />
 				<Route path='/login' element={<LoginScreen />} />
 				<Route path='/trial' element={<TrialRegisterScreen />} />
-				{/* <Route path='/profile' element={<ProfileScreen />} /> */}
+				<Route path='/profile' element={<ProfileScreen />} />
 			</Routes>
 			<Footer />
 		</>

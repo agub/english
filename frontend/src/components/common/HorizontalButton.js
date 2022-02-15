@@ -13,8 +13,14 @@ const HorizontalButton = ({ setState, text, type, result }) => {
 			onClick={setState && setState}
 		>
 			<div className='flex justify-between items-center'>
-				<div>{text}</div>
-				<div>{result ? result : <FiChevronRight />}</div>
+				<div className='whitespace-nowrap'>{text}</div>
+				<div>
+					{result ? (
+						result.slice(0, 20) + (result.length > 20 ? '...' : '')
+					) : (
+						<FiChevronRight />
+					)}
+				</div>
 			</div>
 		</div>
 	)

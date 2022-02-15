@@ -113,6 +113,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			isAdmin: user.isAdmin,
+			info: user.info,
 			token: generateToken(user._id),
 		})
 	} else {
@@ -125,14 +126,29 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
+	const { newPassword, password, discordId } = req.body
 	const user = await User.findById(req.user._id)
 
-	if (user) {
-		// user.name.firstName = req.body.firstName || user.name.firstName
-		// user.email = req.body.email || user.email
-		if (req.body.password) {
-			user.password = req.body.password
+	if (user && password && newPassword) {
+		if (await user.matchPassword(password)) {
+			user.password = newPassword
+
+			const updatedUser = await user.save()
+
+			res.json({
+				_id: updatedUser._id,
+				name: updatedUser.name,
+				email: updatedUser.email,
+				isAdmin: updatedUser.isAdmin,
+				token: generateToken(updatedUser._id),
+			})
+		} else {
+			res.status(400)
+			throw new Error('パスワードが異なります。')
 		}
+	}
+	if (user && discordId) {
+		user.info.discordId = discordId
 
 		const updatedUser = await user.save()
 
@@ -141,6 +157,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			name: updatedUser.name,
 			email: updatedUser.email,
 			isAdmin: updatedUser.isAdmin,
+			info: updatedUser.info,
 			token: generateToken(updatedUser._id),
 		})
 	} else {
