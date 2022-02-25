@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
@@ -12,7 +12,6 @@ import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
 import ChangePassword from '../components/ChangePassword'
 import ChangeDiscordId from '../components/ChangeDiscordId'
 import ChangeAddress from '../components/ChangeAddress'
-
 import { usePostalJp } from 'use-postal-jp'
 
 const ProfileScreen = () => {
@@ -31,11 +30,8 @@ const ProfileScreen = () => {
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
-	console.log(inputValue)
 	const [errorText, setErrorText] = useState(null)
-
 	const [component, setComponent] = useState('')
-
 	const {
 		password,
 		confirmPassword,
@@ -46,7 +42,6 @@ const ProfileScreen = () => {
 		address,
 		building,
 	} = inputValue
-
 	const [autoAddress] = usePostalJp(postalCode, postalCode.length >= 7)
 
 	const userDetails = useSelector((state) => state.userDetails)
@@ -56,7 +51,11 @@ const ProfileScreen = () => {
 	const { userInfo } = userLogin
 
 	const userUpdate = useSelector((state) => state.userProfileUpdate)
-	const { success, error: userUpdateError } = userUpdate
+	const {
+		success,
+		error: userUpdateError,
+		loading: userUpdateLoading,
+	} = userUpdate
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -72,7 +71,10 @@ const ProfileScreen = () => {
 				console.log('user found')
 			}
 		}
-	}, [navigate, userInfo, user, dispatch])
+		if (userUpdateLoading) {
+			dispatch(getUserDetails('profile'))
+		}
+	}, [navigate, userInfo, user, dispatch, userUpdateLoading])
 
 	useEffect(() => {
 		if (autoAddress !== null && postalCode !== '') {
@@ -149,72 +151,82 @@ const ProfileScreen = () => {
 				)}
 				{success && <Message variant='info'>変更いたしました</Message>}
 				{loading && <Loader />}
-				{component === '' && user && user.info && user.name && (
-					<>
-						<h1>プロファイル</h1>
-						<Calender />
-						<p className='mt-4'>ユーザー情報</p>
-						<HorizontalButton
-							text='お名前:'
-							type='box'
-							result={user.name.lastName + user.name.firstName}
-						/>
-						<HorizontalButton
-							text='メールアドレス:'
-							type='box'
-							result={user.email}
-						/>
-						<HorizontalButton
-							text='Discordアカウント:'
-							type='box'
-							result={user.info.discordId}
-						/>
-						<HorizontalButton
-							text='受講日:'
-							type='box'
-							result='データーモデルに追加'
-						/>
-						<HorizontalButton
-							text='ご使用ゲーム:'
-							type='box'
-							result={user.info.gameTitle}
-						/>
-						<p className='mt-4'>一般</p>
-						<HorizontalButton
-							text='住所登録'
-							type='button'
-							result='fetchdata'
-							setState={() => setComponent('address')}
-						/>
-						<HorizontalButton
-							text='お支払いプラン'
-							type='button'
-							result='定額'
-						/>
-						<HorizontalButton
-							text='先生'
-							type='button'
-							result='Mr.John doe'
-						/>
+				{component === '' &&
+					user &&
+					user.info &&
+					user.name &&
+					user.homeAddress && (
+						<>
+							<h1>プロファイル</h1>
+							<Calender />
+							<p className='mt-4'>ユーザー情報</p>
+							<HorizontalButton
+								text='お名前:'
+								type='box'
+								result={
+									user.name.lastName + user.name.firstName
+								}
+							/>
+							<HorizontalButton
+								text='メールアドレス:'
+								type='box'
+								result={user.email}
+							/>
+							<HorizontalButton
+								text='Discordアカウント:'
+								type='box'
+								result={user.info.discordId}
+							/>
+							<HorizontalButton
+								text='受講日:'
+								type='box'
+								result='データーモデルに追加'
+							/>
+							<HorizontalButton
+								text='ご使用ゲーム:'
+								type='box'
+								result={user.info.gameTitle}
+							/>
+							<p className='mt-4'>一般</p>
+							<HorizontalButton
+								text='住所登録'
+								type='button'
+								result={
+									user.homeAddress.address !== ''
+										? '登録済み'
+										: '未登録'
+								}
+								setState={() => setComponent('address')}
+							/>
+							<HorizontalButton
+								text='お支払いプラン'
+								type='button'
+								result='定額'
+							/>
+							<HorizontalButton
+								text='先生'
+								type='button'
+								result='Mr.John doe'
+							/>
 
-						<p className='mt-4'>設定</p>
-						<HorizontalButton
-							text='月額支払い設定'
-							type='button'
-							setState={() => setComponent('payment')}
-						/>
-						<HorizontalButton
-							text='パスワードの変更'
-							type='button'
-							setState={() => setComponent('password')}
-						/>
-						<HorizontalButton
-							text='Discordの名前変更'
-							type='button'
-							setState={() => setComponent('discord')}
-						/>
-					</>
-				)}
+							<p className='mt-4'>設定</p>
+							<HorizontalButton
+								text='月額支払い設定'
+								type='button'
+								setState={() => setComponent('payment')}
+							/>
+							<HorizontalButton
+								text='パスワードの変更'
+								type='button'
+								setState={() => setComponent('password')}
+							/>
+							<HorizontalButton
+								text='Discordの名前変更'
+								type='button'
+								setState={() => setComponent('discord')}
+							/>
+						</>
+					)}
 
 				{component === 'password' && (
 					<ChangePassword
@@ -262,9 +274,10 @@ const ProfileScreen = () => {
 						<button onClick={() => setComponent('')}>back</button>
 					</>
 				)}
-				{component === 'address' && (
+				{component === 'address' && user && user.homeAddress && (
 					<ChangeAddress
 						component={() => setComponent('')}
+						homeAddress={user.homeAddress}
 						postalCodeValue={postalCode}
 						postalCodeSetter={(e) =>
 							setInputValue((prev) => ({
@@ -284,6 +297,13 @@ const ProfileScreen = () => {
 							setInputValue((prev) => ({
 								...prev,
 								address: e.target.value,
+							}))
+						}
+						buildingValue={building}
+						buildingSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								building: e.target.value,
 							}))
 						}
 						submitHandler={submitHandler}

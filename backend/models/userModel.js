@@ -61,7 +61,7 @@ const userSchema = mongoose.Schema(
 				type: String,
 			},
 		},
-		address: {
+		homeAddress: {
 			postalCode: { type: String || Number },
 			prefecture: { type: String },
 			address: { type: String },

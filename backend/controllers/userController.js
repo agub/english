@@ -115,6 +115,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			email: user.email,
 			isAdmin: user.isAdmin,
 			info: user.info,
+			homeAddress: user.homeAddress,
 			token: generateToken(user._id),
 		})
 	} else {
@@ -127,7 +128,15 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-	const { newPassword, password, discordId } = req.body
+	const {
+		newPassword,
+		password,
+		discordId,
+		postalCode,
+		prefecture,
+		address,
+		building,
+	} = req.body
 	const user = await User.findById(req.user._id)
 
 	if (user && password && newPassword) {
@@ -148,22 +157,48 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			throw new Error('パスワードが異なります。')
 		}
 	}
-	if (user && discordId) {
-		user.info.discordId = discordId
+	//update discord
+	if (discordId) {
+		if (user) {
+			user.info.discordId = discordId
+			const updatedUser = await user.save()
+			res.json({
+				_id: updatedUser._id,
+				name: updatedUser.name,
+				email: updatedUser.email,
+				isAdmin: updatedUser.isAdmin,
+				info: updatedUser.info,
+				token: generateToken(updatedUser._id),
+			})
+		} else {
+			res.status(404)
+			throw new Error('user not found')
+		}
+	}
 
-		const updatedUser = await user.save()
+	//update address
+	if (postalCode && address && prefecture) {
+		if (user) {
+			user.homeAddress.postalCode = postalCode
+			user.homeAddress.address = address
+			user.homeAddress.prefecture = prefecture
+			user.homeAddress.building = building
 
-		res.json({
-			_id: updatedUser._id,
-			name: updatedUser.name,
-			email: updatedUser.email,
-			isAdmin: updatedUser.isAdmin,
-			info: updatedUser.info,
-			token: generateToken(updatedUser._id),
-		})
-	} else {
-		res.status(404)
-		throw new Error('user not found')
+			const updatedUser = await user.save()
+
+			res.json({
+				_id: updatedUser._id,
+				name: updatedUser.name,
+				email: updatedUser.email,
+				isAdmin: updatedUser.isAdmin,
+				info: updatedUser.info,
+				homeAddress: updatedUser.homeAddress,
+				token: generateToken(updatedUser._id),
+			})
+		} else {
+			res.status(404)
+			throw new Error('address error')
+		}
 	}
 })
 
@@ -194,7 +229,7 @@ const getUserById = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id)
 	console.log(req.body)
-	if (user) {
+	if (user && req.body.hasMatched) {
 		user.hasMatched = req.body.hasMatched
 
 		const updatedUser = await user.save()

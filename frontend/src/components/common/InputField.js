@@ -10,6 +10,7 @@ const InputField = ({
 	onChange,
 	max,
 	size,
+	notRequired,
 }) => (
 	<>
 		{label && (
@@ -19,7 +20,7 @@ const InputField = ({
 		)}
 		<input
 			max={max}
-			required
+			required={notRequired ? false : true}
 			type={type}
 			value={value}
 			name={name}

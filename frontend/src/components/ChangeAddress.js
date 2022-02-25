@@ -6,6 +6,7 @@ import InputField from './common/InputField'
 import { PREF_OPTIONS } from '../data/Prefetures'
 
 const ChangeAddress = ({
+	homeAddress,
 	postalCodeValue,
 	postalCodeSetter,
 	prefectureValue,
@@ -28,9 +29,22 @@ const ChangeAddress = ({
 					</p>
 				</div>
 				<div>
+					{homeAddress.address !== '' ? (
+						<>
+							<p className='text-right'>
+								〒{homeAddress.postalCode}
+							</p>
+							<p className='text-right'>
+								{homeAddress.prefecture +
+									homeAddress.address +
+									homeAddress.building}
+							</p>
+						</>
+					) : (
+						<p>未登録</p>
+					)}
 					{/* <p>250-0038</p>
 					<p>神奈川県小田原380-8 fasdfasfafdsaf</p> */}
-					<p>未登録</p>
 				</div>
 			</div>
 
@@ -45,17 +59,6 @@ const ChangeAddress = ({
 				/>
 				<p className='text-sm text-right'>*自動で検索されます</p>
 			</div>
-			{/* <div className='mb-4'>
-				<InputField
-					type='text'
-					value={prefectureValue}
-					placeholder='都道府県'
-					label='都道府県'
-					// name='newPassword'
-					onChange={prefectureSetter}
-				/>
-			</div> */}
-
 			<div className='mb-4'>
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
 					都道府県
@@ -93,6 +96,7 @@ const ChangeAddress = ({
 					label='建物名・部屋番号'
 					name='confirmPassword'
 					onChange={buildingSetter}
+					notRequired
 				/>
 			</div>
 			<div className='flex items-center justify-between'>
