@@ -61,6 +61,12 @@ const userSchema = mongoose.Schema(
 				type: String,
 			},
 		},
+		address: {
+			postalCode: { type: String || Number },
+			prefecture: { type: String },
+			address: { type: String },
+			building: { type: String },
+		},
 		isSubscribe: {
 			type: Boolean,
 			default: false,

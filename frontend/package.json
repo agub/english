@@ -21,6 +21,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "swiper": "^7.4.1",
+    "use-postal-jp": "^2.0.2",
     "web-vitals": "^2.1.3"
   },
   "scripts": {

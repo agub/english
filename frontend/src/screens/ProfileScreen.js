@@ -11,22 +11,43 @@ import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
 import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
 import ChangePassword from '../components/ChangePassword'
 import ChangeDiscordId from '../components/ChangeDiscordId'
+import ChangeAddress from '../components/ChangeAddress'
+
+import { usePostalJp } from 'use-postal-jp'
 
 const ProfileScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
-	const [inputValue, setInputValue] = useState({
+	const initialValue = {
 		password: '',
 		confirmPassword: '',
 		newPassword: '',
 		discordId: '',
-	})
+		postalCode: '',
+		address: '',
+		prefecture: '',
+		building: '',
+	}
+
+	const [inputValue, setInputValue] = useState(initialValue)
+	console.log(inputValue)
 	const [errorText, setErrorText] = useState(null)
 
 	const [component, setComponent] = useState('')
 
-	const { password, confirmPassword, discordId, newPassword } = inputValue
+	const {
+		password,
+		confirmPassword,
+		discordId,
+		newPassword,
+		postalCode,
+		prefecture,
+		address,
+		building,
+	} = inputValue
+
+	const [autoAddress] = usePostalJp(postalCode, postalCode.length >= 7)
 
 	const userDetails = useSelector((state) => state.userDetails)
 	const { loading, user, error } = userDetails
@@ -54,15 +75,20 @@ const ProfileScreen = () => {
 	}, [navigate, userInfo, user, dispatch])
 
 	useEffect(() => {
+		if (autoAddress !== null && postalCode !== '') {
+			setInputValue((prev) => ({
+				...prev,
+				prefecture: autoAddress.prefecture,
+				address: autoAddress.address1 + autoAddress.address2,
+			}))
+		}
+	}, [autoAddress, postalCode])
+
+	useEffect(() => {
 		if (component === '') {
 			dispatch({ type: USER_PROFILE_UPDATE_RESET })
 			setErrorText(null)
-			setInputValue({
-				password: '',
-				confirmPassword: '',
-				newPassword: '',
-				discordId: '',
-			})
+			setInputValue(initialValue)
 		}
 	}, [component, dispatch])
 
@@ -82,12 +108,7 @@ const ProfileScreen = () => {
 					userProfileUpdate({ id: user._id, password, newPassword })
 				)
 				setErrorText(null)
-				setInputValue({
-					password: '',
-					confirmPassword: '',
-					newPassword: '',
-					discordId: '',
-				})
+				setInputValue(initialValue)
 				dispatch(getUserDetails('profile'))
 			} else {
 				setErrorText('パスワードと確認パスワードが一致しません')
@@ -97,12 +118,21 @@ const ProfileScreen = () => {
 		if (inputValue.discordId) {
 			dispatch(userProfileUpdate({ id: user._id, discordId }))
 			dispatch(getUserDetails('profile'))
-			setInputValue({
-				password: '',
-				confirmPassword: '',
-				newPassword: '',
-				discordId: '',
-			})
+			setInputValue(initialValue)
+		}
+		//Changing address
+		if (inputValue.address && component === 'address') {
+			dispatch(
+				userProfileUpdate({
+					id: user._id,
+					postalCode,
+					prefecture,
+					address,
+					building,
+				})
+			)
+			dispatch(getUserDetails('profile'))
+			setInputValue(initialValue)
 		}
 	}
 
@@ -233,10 +263,31 @@ const ProfileScreen = () => {
 					</>
 				)}
 				{component === 'address' && (
-					<>
-						<h1>address</h1>
-						<button onClick={() => setComponent('')}>back</button>
-					</>
+					<ChangeAddress
+						component={() => setComponent('')}
+						postalCodeValue={postalCode}
+						postalCodeSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								postalCode: e.target.value,
+							}))
+						}
+						prefectureValue={prefecture}
+						prefectureSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								prefecture: e.target.value,
+							}))
+						}
+						addressValue={address}
+						addressSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								address: e.target.value,
+							}))
+						}
+						submitHandler={submitHandler}
+					/>
 				)}
 			</FormContainer>
 		</Container>
