@@ -151,6 +151,12 @@ const ProfileScreen = () => {
 						/>
 						<p className='mt-4'>一般</p>
 						<HorizontalButton
+							text='住所登録'
+							type='button'
+							result='fetchdata'
+							setState={() => setComponent('address')}
+						/>
+						<HorizontalButton
 							text='お支払いプラン'
 							type='button'
 							result='定額'
@@ -223,6 +229,12 @@ const ProfileScreen = () => {
 				{component === 'payment' && (
 					<>
 						<h1>payment</h1>
+						<button onClick={() => setComponent('')}>back</button>
+					</>
+				)}
+				{component === 'address' && (
+					<>
+						<h1>address</h1>
 						<button onClick={() => setComponent('')}>back</button>
 					</>
 				)}

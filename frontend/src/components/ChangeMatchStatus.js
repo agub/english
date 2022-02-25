@@ -6,13 +6,13 @@ import InputField from './common/InputField'
 const ChangeMatchStatus = ({
 	component,
 	currentState,
-	discordIdValue,
-	discordIdSetter,
+	matchSetter,
+	unMatchSetter,
 	submitHandler,
 	user,
 }) => {
-	const match = currentState === true && true
-	const unMatch = currentState === true && false
+	const match = currentState === true ? true : false
+	const unMatch = currentState === true ? false : true
 	return (
 		<>
 			<BackButton onClick={component} />
@@ -25,6 +25,7 @@ const ChangeMatchStatus = ({
 						required
 						name='experience'
 						disabled={unMatch}
+						onChange={unMatchSetter}
 						type='radio'
 					/>
 					<label>未定</label>
@@ -34,6 +35,7 @@ const ChangeMatchStatus = ({
 						required
 						name='experience'
 						disabled={match}
+						onChange={matchSetter}
 						type='radio'
 					/>
 					<label>マッチ済み</label>
@@ -41,7 +43,7 @@ const ChangeMatchStatus = ({
 			</div>
 			<div className='flex items-center justify-between'>
 				<Button
-					// onClick={submitHandler}
+					onClick={submitHandler}
 					type='submit'
 					bgColor='bg-blue-500'
 					textColor='text-white'

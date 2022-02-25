@@ -32,42 +32,44 @@ const UserListScreen = () => {
 			) : error ? (
 				<Message variant='danger'>{error}</Message>
 			) : (
-				<table>
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>氏名</th>
-							<th>EMAIL</th>
-							<th>Type</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						{users.map((user) => (
-							<tr key={user._id}>
-								<td>{user._id}</td>
-								<td>
-									{user.name.lastName +
-										' ' +
-										user.name.firstName}
-								</td>
-								<td>{user.email}</td>
-								<td>
-									{user.isAdmin
-										? 'admin'
-										: user.isTeacher
-										? 'teacher'
-										: 'user'}
-								</td>
-								<td>
-									<Link to={`/admin/${user._id}/edit`}>
-										<button>edit</button>
-									</Link>
-								</td>
+				<div>
+					<table>
+						<thead>
+							<tr>
+								{/* <th>ID</th> */}
+								<th>氏名</th>
+								<th>EMAIL</th>
+								<th>Type</th>
+								<th>Edit</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{users.map((user) => (
+								<tr key={user._id}>
+									{/* <td>{user._id}</td> */}
+									<td>
+										{user.name.lastName +
+											' ' +
+											user.name.firstName}
+									</td>
+									<td>{user.email}</td>
+									<td>
+										{user.isAdmin
+											? 'admin'
+											: user.isTeacher
+											? 'teacher'
+											: 'user'}
+									</td>
+									<td>
+										<Link to={`/admin/${user._id}/edit`}>
+											<button>edit</button>
+										</Link>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 			)}
 		</>
 	)

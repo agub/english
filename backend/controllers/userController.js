@@ -193,7 +193,7 @@ const getUserById = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id)
-
+	console.log(req.body)
 	if (user) {
 		user.hasMatched = req.body.hasMatched
 
