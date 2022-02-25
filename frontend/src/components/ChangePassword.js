@@ -1,4 +1,5 @@
 import React from 'react'
+import BackButton from './common/BackButton'
 import Button from './common/Button'
 import InputField from './common/InputField'
 
@@ -14,12 +15,7 @@ const ChangePassword = ({
 }) => {
 	return (
 		<>
-			<button
-				onClick={component}
-				className='inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800'
-			>
-				戻る
-			</button>
+			<BackButton onClick={component} />
 			<h1 className='text-center'>パスワードを変更</h1>
 			<div className='mb-4'>
 				<InputField

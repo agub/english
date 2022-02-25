@@ -8,6 +8,7 @@ import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import HorizontalButton from '../components/common/HorizontalButton'
 import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
+import ChangeMatchStatus from '../components/ChangeMatchStatus'
 
 const UserEditScreen = () => {
 	const dispatch = useDispatch()
@@ -15,6 +16,9 @@ const UserEditScreen = () => {
 	const [inputValue, setInputValue] = useState({
 		hasMatched: false,
 	})
+
+	const [component, setComponent] = useState('')
+
 	const [errorText, setErrorText] = useState(null)
 
 	const { hasMatched } = inputValue
@@ -48,66 +52,26 @@ const UserEditScreen = () => {
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
-				<HorizontalButton
-					text='先生とのマッチ :'
-					type='box'
-					result={false ? '未定' : '確認済み'}
-				/>
-				<div className='flex justify-center'>
-					<div className='form-check form-check-inline'>
-						<input
-							className='form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer'
-							type='radio'
-							name='inlineRadioOptions'
-							id='inlineRadio1'
-							value='option1'
+				{component === '' && (
+					<>
+						{user && user.name && (
+							<p>
+								{user.name.firstName + user.name.lastName}
+								様の設定
+							</p>
+						)}
+						<HorizontalButton
+							text='マッチステイタス変更 :'
+							type='button'
+							setState={() => setComponent('match')}
+							result='fetch'
 						/>
-						<label className='form-check-label inline-block text-gray-800'>
-							未定
-						</label>
-					</div>
-					<div className='form-check form-check-inline'>
-						<input
-							className='form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2'
-							type='radio'
-							name='inlineRadioOptions'
-							id='inlineRadio3'
-							value='option3'
-							disabled
-						/>
-						<label className='form-check-label inline-block text-gray-800 opacity-50'>
-							確認済み
-						</label>
-					</div>
-				</div>
+					</>
+				)}
 
-				{/* <div className='mb-4'>
-					<InputField
-						type='email'
-						value={email}
-						name='email'
-						placeholder='メールアドレス'
-						label='メールアドレス'
-						onChange={(e) =>
-							setInputValue((prev) => ({
-								...prev,
-								email: e.target.value,
-							}))
-						}
-					/>
-				</div> */}
-
-				<div className='flex items-center justify-center'>
-					<Button
-						type='submit'
-						bgColor='bg-blue-500'
-						textColor='text-white'
-						hoverColor='bg-blue-700'
-						size='sm'
-					>
-						ステイタスを変更する
-					</Button>
-				</div>
+				{component === 'match' && (
+					<ChangeMatchStatus component={() => setComponent('')} />
+				)}
 			</FormContainer>
 		</Container>
 	)
