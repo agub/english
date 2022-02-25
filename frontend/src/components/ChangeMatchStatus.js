@@ -5,24 +5,37 @@ import InputField from './common/InputField'
 
 const ChangeMatchStatus = ({
 	component,
+	currentState,
 	discordIdValue,
 	discordIdSetter,
 	submitHandler,
 	user,
 }) => {
+	const match = currentState === true && true
+	const unMatch = currentState === true && false
 	return (
 		<>
 			<BackButton onClick={component} />
 			<div className='mb-6 flex items-start flex-col'>
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
-					現ステイタス : マッチ済み
+					現ステイタス : {currentState ? '済み' : '未定'}
 				</label>
 				<div>
-					<input required name='experience' type='radio' />
+					<input
+						required
+						name='experience'
+						disabled={unMatch}
+						type='radio'
+					/>
 					<label>未定</label>
 				</div>
 				<div>
-					<input required name='experience' disabled type='radio' />
+					<input
+						required
+						name='experience'
+						disabled={match}
+						type='radio'
+					/>
 					<label>マッチ済み</label>
 				</div>
 			</div>

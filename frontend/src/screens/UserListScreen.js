@@ -4,6 +4,7 @@ import { listUsers } from '../redux/actions/userActions'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
 import { Link, useNavigate } from 'react-router-dom'
+import { USER_DETAILS_RESET } from '../redux/constants/userConstants'
 
 const UserListScreen = () => {
 	const dispatch = useDispatch()
@@ -17,6 +18,7 @@ const UserListScreen = () => {
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
+			dispatch({ type: USER_DETAILS_RESET })
 			dispatch(listUsers())
 		} else {
 			navigate('/login')
