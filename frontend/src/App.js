@@ -8,6 +8,8 @@ import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import TrialRegisterScreen from './screens/TrialRegisterScreen'
 import ProfileScreen from './screens/ProfileScreen'
+import UserListScreen from './screens/UserListScreen'
+import UserEditScreen from './screens/UserEditScreen'
 
 function App() {
 	return (
@@ -21,6 +23,8 @@ function App() {
 				<Route path='/login' element={<LoginScreen />} />
 				<Route path='/trial' element={<TrialRegisterScreen />} />
 				<Route path='/profile' element={<ProfileScreen />} />
+				<Route path='/admin/userList' element={<UserListScreen />} />
+				<Route path='/admin/:id/edit' element={<UserEditScreen />} />
 			</Routes>
 			<Footer />
 		</>

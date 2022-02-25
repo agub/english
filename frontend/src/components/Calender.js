@@ -8,16 +8,16 @@ const Calender = () => {
 			<table className='w-full'>
 				<thead className='bg-gray-50 border'>
 					<tr>
-						<th className='text-sm font-light w-/7'>MON</th>
-						<th className='text-sm font-light w-/7'>TUE</th>
-						<th className='text-sm font-light w-/7'>WED</th>
-						<th className='text-sm font-light w-/7'>THU</th>
-						<th className='text-sm font-light w-/7'>FRI</th>
-						<th className='text-sm font-light w-/7'>SAT</th>
-						<th className='text-sm font-light w-/7'>SUN</th>
+						<th className='text-sm font-light w-1/12'>Mon</th>
+						<th className='text-sm font-light w-1/12'>Tue</th>
+						<th className='text-sm font-light w-1/12'>Wed</th>
+						<th className='text-sm font-light w-1/12'>Thu</th>
+						<th className='text-sm font-light w-1/12'>Fri</th>
+						<th className='text-sm font-light w-1/12'>Sat</th>
+						<th className='text-sm font-light w-1/12'>Sun</th>
 					</tr>
 				</thead>
-				<tbody className='h-5'>
+				<tbody className='h-5 w-full'>
 					<tr className='border'>
 						<td className='border'>
 							<div className='flex justify-center items-center'>
@@ -53,7 +53,7 @@ const Calender = () => {
 										19pm~20pm
 									</div>
 									<div className='text-xs text-center'>
-										Teacher Name
+										Mr.fasdfa
 									</div>
 								</div>
 							</div>

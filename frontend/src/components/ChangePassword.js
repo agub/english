@@ -2,7 +2,7 @@ import React from 'react'
 import Button from './common/Button'
 import InputField from './common/InputField'
 
-const ResetPassword = ({
+const ChangePassword = ({
 	passwordValue,
 	passwordSetter,
 	newPasswordValue,
@@ -67,4 +67,4 @@ const ResetPassword = ({
 	)
 }
 
-export default ResetPassword
+export default ChangePassword

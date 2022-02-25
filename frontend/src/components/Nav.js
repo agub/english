@@ -74,6 +74,14 @@ function Nav() {
 											>
 												Profile
 											</Link>
+											{userInfo && userInfo.isAdmin && (
+												<Link
+													to='/admin/userlist'
+													className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+												>
+													User-Lists
+												</Link>
+											)}
 											<div
 												onClick={logoutHandler}
 												className='cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
@@ -190,6 +198,16 @@ function Nav() {
 										>
 											Profile
 										</Link>
+										{userInfo && userInfo.isAdmin && (
+											<>
+												<Link
+													to='/admin/userlist'
+													className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-basefont-medium'
+												>
+													User-Lists
+												</Link>
+											</>
+										)}
 										<div
 											onClick={logoutHandler}
 											className='cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
-import InputField from '../components/common/InputField'
 import Message from '../components/common/Message'
 import HorizontalButton from '../components/common/HorizontalButton'
 import Loader from '../components/common/Loader'
@@ -11,7 +9,8 @@ import Calender from '../components/Calender'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
 import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
-import ResetPassword from '../components/ResetPassword'
+import ChangePassword from '../components/ChangePassword'
+import ChangeDiscordId from '../components/ChangeDiscordId'
 
 const ProfileScreen = () => {
 	const navigate = useNavigate()
@@ -122,30 +121,31 @@ const ProfileScreen = () => {
 				{loading && <Loader />}
 				{component === '' && user && user.info && user.name && (
 					<>
+						<h1>プロファイル</h1>
 						<Calender />
-						<p>ユーザー情報</p>
+						<p className='mt-4'>ユーザー情報</p>
 						<HorizontalButton
-							text='お名前'
+							text='お名前:'
 							type='box'
 							result={user.name.lastName + user.name.firstName}
 						/>
 						<HorizontalButton
-							text='メールアドレス'
+							text='メールアドレス:'
 							type='box'
 							result={user.email}
 						/>
 						<HorizontalButton
-							text='Discordアカウント'
+							text='Discordアカウント:'
 							type='box'
 							result={user.info.discordId}
 						/>
 						<HorizontalButton
-							text='受講日'
+							text='受講日:'
 							type='box'
 							result='データーモデルに追加'
 						/>
 						<HorizontalButton
-							text='ご使用ゲーム'
+							text='ご使用ゲーム:'
 							type='box'
 							result={user.info.gameTitle}
 						/>
@@ -165,7 +165,7 @@ const ProfileScreen = () => {
 						<HorizontalButton
 							text='月額支払い設定'
 							type='button'
-							setState={() => setComponent('other')}
+							setState={() => setComponent('payment')}
 						/>
 						<HorizontalButton
 							text='パスワードの変更'
@@ -181,7 +181,7 @@ const ProfileScreen = () => {
 				)}
 
 				{component === 'password' && (
-					<ResetPassword
+					<ChangePassword
 						component={() => setComponent('')}
 						passwordValue={password}
 						passwordSetter={(e) =>
@@ -208,47 +208,21 @@ const ProfileScreen = () => {
 					/>
 				)}
 				{component === 'discord' && user && user.info.discordId && (
-					<>
-						<button
-							onClick={() => setComponent('')}
-							className='inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800'
-						>
-							戻る
-						</button>
-						<h1 className='text-center'>Discordの名前変更</h1>
-
-						<div className='mb-4'>
-							<InputField
-								type='text'
-								value={discordId}
-								placeholder={user.info.discordId}
-								label='新しいDiscordのアカウント名'
-								name='discordId'
-								onChange={(e) =>
-									setInputValue((prev) => ({
-										...prev,
-										discordId: e.target.value,
-									}))
-								}
-							/>
-						</div>
-						<div className='flex items-center justify-between'>
-							<Button
-								onClick={submitHandler}
-								type='submit'
-								bgColor='bg-blue-500'
-								textColor='text-white'
-								hoverColor='bg-blue-700'
-								size='sm'
-							>
-								変更を保存
-							</Button>
-						</div>
-					</>
+					<ChangeDiscordId
+						component={() => setComponent('')}
+						discordIdValue={discordId}
+						discordIdSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								discordId: e.target.value,
+							}))
+						}
+						user={user}
+					/>
 				)}
-				{component === 'other' && (
+				{component === 'payment' && (
 					<>
-						<h1>setting</h1>
+						<h1>payment</h1>
 						<button onClick={() => setComponent('')}>back</button>
 					</>
 				)}

@@ -61,6 +61,10 @@ const userSchema = mongoose.Schema(
 				type: String,
 			},
 		},
+		isSubscribe: {
+			type: Boolean,
+			default: false,
+		},
 		hasMatched: {
 			type: Boolean,
 			default: false,

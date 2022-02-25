@@ -8,7 +8,7 @@ import InputField from '../components/common/InputField'
 import Message from '../components/common/Message'
 import { login } from '../redux/actions/userActions'
 
-const LoginScreen = ({ history }) => {
+const LoginScreen = () => {
 	const dispatch = useDispatch()
 	const [searchParams] = useSearchParams()
 	const redirect =
