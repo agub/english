@@ -102,6 +102,39 @@ const registerUser = asyncHandler(async (req, res) => {
 	}
 })
 
+// @desc    Register teacher
+// @route   POST /api/users/teacher
+// @access  Public
+
+const teacherRegisterUser = asyncHandler(async (req, res) => {
+	const { email, password, name, info } = req.body
+
+	const userExists = await User.findOne({ email })
+
+	if (userExists) {
+		res.status(400)
+		throw new Error('User already exist')
+	}
+	const user = await User.create({
+		email,
+		password,
+		name,
+		info,
+		isTeacher: true,
+	})
+	if (user) {
+		res.status(201).json({
+			_id: user._id,
+			name: user.name,
+			email: user.email,
+			token: generateToken(user._id),
+		})
+	} else {
+		res.status(400)
+		throw new Error('Invalid user data')
+	}
+})
+
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
@@ -251,6 +284,7 @@ export {
 	authUser,
 	getUserProfile,
 	registerUser,
+	teacherRegisterUser,
 	trialRegisterUser,
 	updateUserProfile,
 	getUsers,

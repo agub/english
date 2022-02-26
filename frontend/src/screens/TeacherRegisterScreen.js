@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
 import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
-import { register } from '../redux/actions/userActions'
+import { teacherRegister } from '../redux/actions/userActions'
 import { listGames } from '../redux/actions/gameActions'
 import weeks from '../data/weeks'
 
 const TeacherRegisterScreen = () => {
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		dispatch(listGames())
@@ -30,6 +32,7 @@ const TeacherRegisterScreen = () => {
 			discordId: '',
 			gender: '',
 			age: '',
+			gameTitle: '',
 			preferTime: [
 				{ week: '', time: '', rank: 1 },
 				{ week: '', time: '', rank: 2 },
@@ -42,8 +45,10 @@ const TeacherRegisterScreen = () => {
 
 	const { email, password, confirmPassword, discordId } = inputValue
 
-	const userRegister = useSelector((state) => state.userRegister)
-	const { loading, success, error } = userRegister
+	const userRegisterTeacher = useSelector(
+		(state) => state.userRegisterTeacher
+	)
+	const { loading, userInfo, error } = userRegisterTeacher
 
 	const gamesList = useSelector((state) => state.gameList)
 	const { loading: gameLoading, games } = gamesList
@@ -51,6 +56,11 @@ const TeacherRegisterScreen = () => {
 	const [prefer, setPrefer] = useState({ week: '', time: '', rank: 1 })
 	const [secPrefer, setSecPrefer] = useState({ week: '', time: '', rank: 2 })
 
+	useEffect(() => {
+		if (userInfo) {
+			navigate('/profile')
+		}
+	}, [userInfo, navigate])
 	useEffect(() => {
 		setInputValue((prev) => ({
 			...prev,
@@ -65,7 +75,7 @@ const TeacherRegisterScreen = () => {
 		e.preventDefault()
 		setErrorText(null)
 		if (password === confirmPassword) {
-			dispatch(register(inputValue))
+			dispatch(teacherRegister(inputValue))
 		} else {
 			setErrorText('パスワードと確認パスワードが一致しません')
 		}
@@ -284,7 +294,7 @@ const TeacherRegisterScreen = () => {
 					<select
 						id='data'
 						name='gameTitle'
-						value={inputValue.info.gameTitle}
+						// value={inputValue.info.gameTitle}
 						onChange={(e) => {
 							setInputValue((prev) => ({
 								...prev,

@@ -18,6 +18,9 @@ import {
 	USER_REGISTER_FAIL,
 	USER_REGISTER_REQUEST,
 	USER_REGISTER_SUCCESS,
+	USER_REGISTER_TEACHER_FAIL,
+	USER_REGISTER_TEACHER_REQUEST,
+	USER_REGISTER_TEACHER_SUCCESS,
 	USER_TRIAL_FAIL,
 	USER_TRIAL_REQUEST,
 	USER_TRIAL_SUCCESS,
@@ -141,6 +144,51 @@ export const register = (object) => async (dispatch) => {
 	} catch (error) {
 		dispatch({
 			type: USER_REGISTER_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const teacherRegister = (object) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_REGISTER_TEACHER_REQUEST,
+		})
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+
+		const { email, password, name, info } = object
+
+		const { data } = await axios.post(
+			'/api/users/teacher',
+			{
+				email,
+				password,
+				name,
+				info,
+			},
+			config
+		)
+
+		dispatch({
+			type: USER_REGISTER_TEACHER_SUCCESS,
+			payload: data,
+		})
+		dispatch({
+			type: USER_LOGIN_SUCCESS,
+			payload: data,
+		})
+
+		localStorage.setItem('userInfo', JSON.stringify(data))
+	} catch (error) {
+		dispatch({
+			type: USER_REGISTER_TEACHER_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
