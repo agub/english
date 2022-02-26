@@ -5,20 +5,23 @@ import InputField from './common/InputField'
 
 const ChangeMatchStatus = ({
 	component,
-	currentState,
+	userState,
 	matchSetter,
 	unMatchSetter,
+	teacherValue,
+	teacherSetter,
 	submitHandler,
 	user,
 }) => {
-	const match = currentState === true ? true : false
-	const unMatch = currentState === true ? false : true
+	const match = userState.hasMatched === true ? true : false
+	const unMatch = userState.hasMatched === true ? false : true
+	const notRequired = userState.hasMatched === true ? true : false
 	return (
 		<>
 			<BackButton onClick={component} />
 			<div className='mb-6 flex items-start flex-col'>
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
-					現ステイタス : {currentState ? '済み' : '未定'}
+					現ステイタス : {userState.hasMatched ? '済み' : '未定'}
 				</label>
 				<div>
 					<input
@@ -40,6 +43,17 @@ const ChangeMatchStatus = ({
 					/>
 					<label>マッチ済み</label>
 				</div>
+			</div>
+			<div className='mb-4'>
+				<InputField
+					type='text'
+					// value={teacherValue}
+					placeholder={userState.teacher ? userState.teacher : null}
+					label='マッチした先生のID'
+					name='teacherId'
+					onChange={teacherSetter}
+					notRequired={notRequired}
+				/>
 			</div>
 			<div className='flex items-center justify-between'>
 				<Button

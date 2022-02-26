@@ -20,6 +20,7 @@ const UserEditScreen = () => {
 
 	const [inputValue, setInputValue] = useState({
 		hasMatched: false,
+		teacher: '',
 	})
 
 	const [component, setComponent] = useState('')
@@ -27,9 +28,6 @@ const UserEditScreen = () => {
 	const [errorText, setErrorText] = useState(null)
 
 	const { hasMatched } = inputValue
-
-	// const userRegister = useSelector((state) => state.userRegister)
-	// const { loading, success, error } = userRegister
 
 	const userDetails = useSelector((state) => state.userDetails)
 	const { user, loading, error } = userDetails
@@ -44,8 +42,17 @@ const UserEditScreen = () => {
 	const submitHandler = (e) => {
 		e.preventDefault()
 		setErrorText(null)
-		if (user.hasMatched !== inputValue.hasMatched) {
-			dispatch(updateUser({ _id: id, hasMatched: inputValue.hasMatched }))
+		if (
+			user.hasMatched !== inputValue.hasMatched &&
+			inputValue.teacher !== ''
+		) {
+			dispatch(
+				updateUser({
+					_id: id,
+					hasMatched: inputValue.hasMatched,
+					teacher: inputValue.teacher,
+				})
+			)
 		}
 		// dispatch(register(inputValue))
 		// setErrorText('パスワードと確認パスワードが一致しません')
@@ -105,7 +112,7 @@ const UserEditScreen = () => {
 
 				{user && component === 'match' && (
 					<ChangeMatchStatus
-						currentState={user.hasMatched}
+						userState={user}
 						component={() => setComponent('')}
 						submitHandler={submitHandler}
 						matchSetter={() =>
@@ -118,6 +125,13 @@ const UserEditScreen = () => {
 							setInputValue((prev) => ({
 								...prev,
 								hasMatched: false,
+							}))
+						}
+						// teacherValue={inputValue.teacher}
+						teacherSetter={(e) =>
+							setInputValue((prev) => ({
+								...prev,
+								teacher: e.target.value,
 							}))
 						}
 					/>

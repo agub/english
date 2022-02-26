@@ -274,23 +274,48 @@ const getTeacherById = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/:id
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
+	const { hasMatched, teacher } = req.body
 	const user = await User.findById(req.params.id)
+	const existTeacher = await User.findById(teacher)
 	console.log(req.body)
-	if (user && req.body.hasMatched) {
-		user.hasMatched = req.body.hasMatched
+	if (user && teacher) {
+		if (existTeacher) {
+			user.teacher = teacher || null
+			user.hasMatched = hasMatched
 
-		const updatedUser = await user.save()
+			const updatedUser = await user.save()
 
-		res.json({
-			_id: updatedUser._id,
-			name: updatedUser.name,
-			email: updatedUser.email,
-			hasMatched: updatedUser.hasMatched,
-			info: updatedUser.info,
-		})
+			res.json({
+				_id: updatedUser._id,
+				name: updatedUser.name,
+				email: updatedUser.email,
+				hasMatched: updatedUser.hasMatched,
+				teacher: updatedUser.teacher,
+				info: updatedUser.info,
+			})
+		} else {
+			res.status(404)
+			throw new Error('teacher is not found')
+		}
+	}
+	if (user) {
+		if (!existTeacher) {
+			user.hasMatched = hasMatched
+			user.teacher = null
+			const updatedUser = await user.save()
+
+			res.json({
+				_id: updatedUser._id,
+				name: updatedUser.name,
+				email: updatedUser.email,
+				hasMatched: updatedUser.hasMatched,
+				teacher: updatedUser.teacher,
+				info: updatedUser.info,
+			})
+		}
 	} else {
 		res.status(404)
-		throw new Error('user not found')
+		throw new Error('user or teacher is not found')
 	}
 })
 
