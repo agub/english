@@ -65,6 +65,12 @@ function Nav() {
 											>
 												Register
 											</Link>
+											<Link
+												to='/teacher/register'
+												className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+											>
+												Teacher Register
+											</Link>
 										</>
 									) : (
 										<>
@@ -188,6 +194,12 @@ function Nav() {
 											className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 										>
 											Register
+										</Link>
+										<Link
+											to='/teacher/register'
+											className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										>
+											Teacher Register
 										</Link>
 									</>
 								) : (
