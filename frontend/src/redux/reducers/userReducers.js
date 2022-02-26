@@ -28,6 +28,10 @@ import {
 	USER_REGISTER_TEACHER_REQUEST,
 	USER_REGISTER_TEACHER_SUCCESS,
 	USER_REGISTER_TEACHER_FAIL,
+	USER_TEACHER_DETAILS_REQUEST,
+	USER_TEACHER_DETAILS_SUCCESS,
+	USER_TEACHER_DETAILS_FAIL,
+	USER_TEACHER_DETAILS_RESET,
 } from '../constants/userConstants.js'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -93,6 +97,20 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
 		case USER_DETAILS_FAIL:
 			return { loading: false, error: action.payload }
 		case USER_DETAILS_RESET:
+			return { user: {} }
+		default:
+			return state
+	}
+}
+export const userTeacherDetailsReducer = (state = { teacher: {} }, action) => {
+	switch (action.type) {
+		case USER_TEACHER_DETAILS_REQUEST:
+			return { ...state, loading: true }
+		case USER_TEACHER_DETAILS_SUCCESS:
+			return { loading: false, success: true, teacher: action.payload }
+		case USER_TEACHER_DETAILS_FAIL:
+			return { loading: false, error: action.payload }
+		case USER_TEACHER_DETAILS_RESET:
 			return { user: {} }
 		default:
 			return state

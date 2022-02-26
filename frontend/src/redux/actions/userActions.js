@@ -21,6 +21,9 @@ import {
 	USER_REGISTER_TEACHER_FAIL,
 	USER_REGISTER_TEACHER_REQUEST,
 	USER_REGISTER_TEACHER_SUCCESS,
+	USER_TEACHER_DETAILS_FAIL,
+	USER_TEACHER_DETAILS_REQUEST,
+	USER_TEACHER_DETAILS_SUCCESS,
 	USER_TRIAL_FAIL,
 	USER_TRIAL_REQUEST,
 	USER_TRIAL_SUCCESS,
@@ -218,6 +221,34 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: USER_DETAILS_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+export const getTeacherDetails = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_TEACHER_DETAILS_REQUEST,
+		})
+
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+		const { data } = await axios.get(`/api/users/teacher/${id}`, config)
+		dispatch({ type: USER_TEACHER_DETAILS_SUCCESS, payload: data })
+	} catch (error) {
+		dispatch({
+			type: USER_TEACHER_DETAILS_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

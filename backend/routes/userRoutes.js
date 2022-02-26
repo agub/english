@@ -12,11 +12,13 @@ import {
 	getUsers,
 	getUserById,
 	updateUser,
+	getTeacherById,
 } from '../controllers/userController.js'
 
 router.route('/trial').post(trialRegisterUser)
 
 router.route('/teacher').post(teacherRegisterUser)
+router.route('/teacher/:id').get(protect, getTeacherById)
 
 router.route('/').post(registerUser).get(protect, admin, getUsers)
 router.post('/login', authUser)

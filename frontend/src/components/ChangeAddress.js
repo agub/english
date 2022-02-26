@@ -29,7 +29,7 @@ const ChangeAddress = ({
 					</p>
 				</div>
 				<div>
-					{homeAddress.address !== '' ? (
+					{homeAddress ? (
 						<>
 							<p className='text-right'>
 								〒{homeAddress.postalCode}

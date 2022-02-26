@@ -147,6 +147,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			isAdmin: user.isAdmin,
+			isTeacher: user.isTeacher,
+			teacher: user.teacher,
 			info: user.info,
 			homeAddress: user.homeAddress,
 			token: generateToken(user._id),
@@ -255,6 +257,18 @@ const getUserById = asyncHandler(async (req, res) => {
 		throw new Error('user not found')
 	}
 })
+// @desc    Get user by ID
+// @route   GET /api/teacher/:id
+// @access  Private/Admin
+const getTeacherById = asyncHandler(async (req, res) => {
+	const teacher = await User.findById(req.params.id).select('-password')
+	if (teacher && teacher.isTeacher) {
+		res.json(teacher)
+	} else {
+		res.status(404)
+		throw new Error('teacher is not found')
+	}
+})
 
 // @desc    Update user
 // @route   PUT /api/users/:id
@@ -290,4 +304,5 @@ export {
 	getUsers,
 	getUserById,
 	updateUser,
+	getTeacherById,
 }

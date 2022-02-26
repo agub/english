@@ -75,6 +75,10 @@ const userSchema = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		teacher: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+		},
 		hadTrial: {
 			type: Boolean,
 			default: false,

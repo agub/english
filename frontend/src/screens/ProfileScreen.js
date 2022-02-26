@@ -7,12 +7,17 @@ import HorizontalButton from '../components/common/HorizontalButton'
 import Loader from '../components/common/Loader'
 import Calender from '../components/Calender'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
+import {
+	getTeacherDetails,
+	getUserDetails,
+	userProfileUpdate,
+} from '../redux/actions/userActions'
 import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
 import ChangePassword from '../components/ChangePassword'
 import ChangeDiscordId from '../components/ChangeDiscordId'
 import ChangeAddress from '../components/ChangeAddress'
 import { usePostalJp } from 'use-postal-jp'
+import IsObjectEmpty from '../components/common/IsObjectEmpty'
 
 const ProfileScreen = () => {
 	const navigate = useNavigate()
@@ -42,14 +47,15 @@ const ProfileScreen = () => {
 		address,
 		building,
 	} = inputValue
+
 	const [autoAddress] = usePostalJp(postalCode, postalCode.length >= 7)
 
 	const userDetails = useSelector((state) => state.userDetails)
 	const { loading, user, error } = userDetails
-
+	const userTeacherDetails = useSelector((state) => state.userTeacherDetails)
+	const { teacher } = userTeacherDetails
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
-
 	const userUpdate = useSelector((state) => state.userProfileUpdate)
 	const {
 		success,
@@ -61,21 +67,17 @@ const ProfileScreen = () => {
 		if (!userInfo) {
 			navigate('/login')
 		} else {
-			if (
-				user &&
-				Object.keys(user).length === 0 &&
-				Object.getPrototypeOf(user) === Object.prototype
-			) {
+			if (IsObjectEmpty(user)) {
 				dispatch(getUserDetails('profile'))
 			} else {
 				console.log('user found')
 			}
 		}
-		if (userUpdateLoading) {
-			dispatch(getUserDetails('profile'))
-		}
-	}, [navigate, userInfo, user, dispatch, userUpdateLoading])
+		if (user.teacher) dispatch(getTeacherDetails(user.teacher))
+		if (userUpdateLoading) dispatch(getUserDetails('profile'))
+	}, [navigate, userInfo, user, dispatch, userUpdateLoading, user.teacher])
 
+	//Search postal code screen ___________________________________
 	useEffect(() => {
 		if (autoAddress !== null && postalCode !== '') {
 			setInputValue((prev) => ({
@@ -85,7 +87,7 @@ const ProfileScreen = () => {
 			}))
 		}
 	}, [autoAddress, postalCode])
-
+	//Change screen ___________________________________
 	useEffect(() => {
 		if (component === '') {
 			dispatch({ type: USER_PROFILE_UPDATE_RESET })
@@ -99,7 +101,7 @@ const ProfileScreen = () => {
 		e.preventDefault()
 		setErrorText(null)
 
-		//Changing Password
+		//Changing Password___________________________________
 		if (
 			inputValue.password &&
 			inputValue.newPassword &&
@@ -116,13 +118,13 @@ const ProfileScreen = () => {
 				setErrorText('パスワードと確認パスワードが一致しません')
 			}
 		}
-		//Changing discordId
+		//Changing discordId___________________________________
 		if (inputValue.discordId) {
 			dispatch(userProfileUpdate({ id: user._id, discordId }))
 			dispatch(getUserDetails('profile'))
 			setInputValue(initialValue)
 		}
-		//Changing address
+		//Changing address___________________________________
 		if (inputValue.address && component === 'address') {
 			dispatch(
 				userProfileUpdate({
@@ -158,7 +160,7 @@ const ProfileScreen = () => {
 					user.homeAddress && (
 						<>
 							<h1>プロファイル</h1>
-							<Calender />
+							{!user.isTeacher && <Calender />}
 							<p className='mt-4'>ユーザー情報</p>
 							<HorizontalButton
 								text='お名前:'
@@ -183,6 +185,11 @@ const ProfileScreen = () => {
 								result='データーモデルに追加'
 							/>
 							<HorizontalButton
+								text='アカウント:'
+								type='box'
+								result={user.isTeacher ? 'Teacher' : 'Learner'}
+							/>
+							<HorizontalButton
 								text='ご使用ゲーム:'
 								type='box'
 								result={user.info.gameTitle}
@@ -192,9 +199,9 @@ const ProfileScreen = () => {
 								text='住所登録'
 								type='button'
 								result={
-									user.homeAddress.address !== ''
-										? '登録済み'
-										: '未登録'
+									IsObjectEmpty(user.homeAddress)
+										? '未登録'
+										: '登録済み'
 								}
 								setState={() => setComponent('address')}
 							/>
@@ -203,12 +210,18 @@ const ProfileScreen = () => {
 								type='button'
 								result='定額'
 							/>
-							<HorizontalButton
-								text='先生'
-								type='button'
-								result='Mr.John doe'
-							/>
-
+							{!user.isTeacher && (
+								<HorizontalButton
+									text='先生'
+									type='button'
+									result={
+										user.teacher
+											? teacher.name.kanaFirstName +
+											  '先生'
+											: '未定'
+									}
+								/>
+							)}
 							<p className='mt-4'>設定</p>
 							<HorizontalButton
 								text='月額支払い設定'
@@ -277,7 +290,11 @@ const ProfileScreen = () => {
 				{component === 'address' && user && user.homeAddress && (
 					<ChangeAddress
 						component={() => setComponent('')}
-						homeAddress={user.homeAddress}
+						homeAddress={
+							IsObjectEmpty(user.homeAddress)
+								? null
+								: user.homeAddress
+						}
 						postalCodeValue={postalCode}
 						postalCodeSetter={(e) =>
 							setInputValue((prev) => ({

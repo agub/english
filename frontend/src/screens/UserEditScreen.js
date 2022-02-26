@@ -11,6 +11,7 @@ import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
 import ChangeMatchStatus from '../components/ChangeMatchStatus'
 import Loader from '../components/common/Loader'
 import BackButton from '../components/common/BackButton'
+import IsObjectEmpty from '../components/common/IsObjectEmpty'
 
 const UserEditScreen = () => {
 	const dispatch = useDispatch()
@@ -55,11 +56,7 @@ const UserEditScreen = () => {
 			dispatch({ type: USER_UPDATE_RESET })
 			navigate('/admin/userlist')
 		} else {
-			if (
-				user &&
-				Object.keys(user).length === 0 &&
-				Object.getPrototypeOf(user) === Object.prototype
-			) {
+			if (IsObjectEmpty(user)) {
 				dispatch(getUserDetails(id))
 			} else {
 				setInputValue({ hasMatched: user.hasMatched })
