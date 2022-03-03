@@ -32,6 +32,9 @@ const UserEditScreen = () => {
 	const userDetails = useSelector((state) => state.userDetails)
 	const { user, loading, error } = userDetails
 
+	const userLogin = useSelector((state) => state.userLogin)
+	const { userInfo } = userLogin
+
 	const userUpdate = useSelector((state) => state.userUpdate)
 	const {
 		loading: loadingUpdate,
@@ -59,14 +62,18 @@ const UserEditScreen = () => {
 	}
 
 	useEffect(() => {
-		if (successUpdate) {
-			dispatch({ type: USER_UPDATE_RESET })
-			navigate('/admin/userlist')
+		if (!userInfo) {
+			navigate('/login')
 		} else {
-			if (IsObjectEmpty(user)) {
-				dispatch(getUserDetails(id))
+			if (successUpdate) {
+				dispatch({ type: USER_UPDATE_RESET })
+				navigate('/admin/userlist')
 			} else {
-				setInputValue({ hasMatched: user.hasMatched })
+				if (IsObjectEmpty(user)) {
+					dispatch(getUserDetails(id))
+				} else {
+					setInputValue({ hasMatched: user.hasMatched })
+				}
 			}
 		}
 	}, [user, dispatch, id, successUpdate, navigate])

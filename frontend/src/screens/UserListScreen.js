@@ -23,7 +23,7 @@ const UserListScreen = () => {
 		} else {
 			navigate('/login')
 		}
-	}, [dispatch, navigate])
+	}, [dispatch, navigate, userInfo])
 
 	return (
 		<>
