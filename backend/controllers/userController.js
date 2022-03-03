@@ -282,7 +282,8 @@ const updateUser = asyncHandler(async (req, res) => {
 		if (existTeacher) {
 			user.teacher = teacher || null
 			user.hasMatched = hasMatched
-
+			existTeacher.student = user._id
+			await existTeacher.save()
 			const updatedUser = await user.save()
 
 			res.json({
@@ -300,8 +301,13 @@ const updateUser = asyncHandler(async (req, res) => {
 	}
 	if (user) {
 		if (!existTeacher) {
+			const formerTeacher = await User.findById(user.teacher)
 			user.hasMatched = hasMatched
 			user.teacher = null
+
+			formerTeacher.student = null
+			formerTeacher.save()
+
 			const updatedUser = await user.save()
 
 			res.json({

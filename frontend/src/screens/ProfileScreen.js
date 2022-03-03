@@ -166,7 +166,9 @@ const ProfileScreen = () => {
 								text='お名前:'
 								type='box'
 								result={
-									user.name.lastName + user.name.firstName
+									user.name.lastName +
+									' ' +
+									user.name.firstName
 								}
 							/>
 							<HorizontalButton
@@ -222,6 +224,18 @@ const ProfileScreen = () => {
 									}
 								/>
 							)}
+							{/* {!user.isTeacher && (
+								<HorizontalButton
+									text='先生'
+									type='button'
+									result={
+										user.teacher
+											? teacher.name.kanaFirstName +
+											  '先生'
+											: '未定'
+									}
+								/>
+							)} */}
 							<p className='mt-4'>設定</p>
 							<HorizontalButton
 								text='月額支払い設定'

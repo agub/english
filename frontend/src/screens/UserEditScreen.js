@@ -76,7 +76,7 @@ const UserEditScreen = () => {
 				}
 			}
 		}
-	}, [user, dispatch, id, successUpdate, navigate])
+	}, [user, dispatch, id, successUpdate, navigate, userInfo])
 
 	console.log(inputValue)
 	return (
