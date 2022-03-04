@@ -8,6 +8,9 @@ import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import { teacherRegister } from '../redux/actions/userActions'
 import { listGames } from '../redux/actions/gameActions'
+import { RiDeleteBack2Fill } from 'react-icons/ri'
+import { MdOutlineAddCircleOutline } from 'react-icons/md'
+
 import weeks from '../data/weeks'
 
 const TeacherRegisterScreen = () => {
@@ -32,7 +35,7 @@ const TeacherRegisterScreen = () => {
 			discordId: '',
 			gender: '',
 			age: '',
-			gameTitle: '',
+			gameLists: [],
 			preferTime: [
 				{ week: '', time: '', rank: 1 },
 				{ week: '', time: '', rank: 2 },
@@ -41,7 +44,7 @@ const TeacherRegisterScreen = () => {
 	})
 
 	const [errorText, setErrorText] = useState(null)
-	console.log(inputValue)
+	// console.log(inputValue)
 
 	const { email, password, confirmPassword, discordId } = inputValue
 
@@ -55,12 +58,40 @@ const TeacherRegisterScreen = () => {
 
 	const [prefer, setPrefer] = useState({ week: '', time: '', rank: 1 })
 	const [secPrefer, setSecPrefer] = useState({ week: '', time: '', rank: 2 })
+	const [gameValue, setGameValue] = useState('')
+
+	const [game1, setGame1] = useState({ title: '', active: true })
+	const [game2, setGame2] = useState({ title: '', active: false })
+	const [game3, setGame3] = useState({ title: '', active: false })
+
+	function addGames(value, index) {
+		if (index === 1) {
+			setGame2({ title: '', active: true })
+		} else if (index === 2) {
+			setGame3({ title: '', active: true })
+		}
+	}
+
+	function deleteGame(index) {
+		if (index === 1) {
+			setGame1({ title: game2.title, active: true })
+			setGame2({ active: game3.active, title: game3.title })
+			setGame3({ title: '', active: false })
+		} else if (index === 2) {
+			setGame2({ active: game3.active, title: game3.title })
+			setGame3({ title: '', active: false })
+			// setGame3({ title: '', active: false })
+		} else if (index === 3) {
+			setGame3({ title: '', active: false })
+		}
+	}
 
 	useEffect(() => {
 		if (userInfo) {
 			navigate('/profile')
 		}
 	}, [userInfo, navigate])
+
 	useEffect(() => {
 		setInputValue((prev) => ({
 			...prev,
@@ -69,18 +100,32 @@ const TeacherRegisterScreen = () => {
 				preferTime: [prefer, secPrefer],
 			},
 		}))
-	}, [prefer, secPrefer])
+		const array = [game1.title, game2.title, game3.title]
+		const filteredGames = array.filter((obj) => obj !== '')
+		let uniqueGames = [...new Set(filteredGames)]
+		setInputValue((prev) => ({
+			...prev,
+			info: {
+				...prev.info,
+				gameLists: [...uniqueGames],
+			},
+		}))
+	}, [prefer, secPrefer, game1, game2, game3])
 
 	const submitHandler = (e) => {
 		e.preventDefault()
 		setErrorText(null)
-		if (password === confirmPassword) {
-			dispatch(teacherRegister(inputValue))
+		if (inputValue.info.gameLists.length === 0) {
+			setErrorText('使用ゲームを正しく選択してください')
 		} else {
-			setErrorText('パスワードと確認パスワードが一致しません')
+			if (password === confirmPassword) {
+				// dispatch(teacherRegister(inputValue))
+				console.log(inputValue)
+			} else {
+				setErrorText('パスワードと確認パスワードが一致しません')
+			}
 		}
 	}
-
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
@@ -287,34 +332,154 @@ const TeacherRegisterScreen = () => {
 						<label>女性</label>
 					</div>
 				</div>
+
 				<div className='mb-6'>
 					<label className='block text-gray-700 text-sm font-bold mb-2'>
 						使用ゲーム
 					</label>
-					<select
-						id='data'
-						name='gameTitle'
-						// value={inputValue.info.gameTitle}
-						onChange={(e) => {
-							setInputValue((prev) => ({
-								...prev,
-								info: {
-									...prev.info,
-									gameTitle: e.target.value,
-								},
-							}))
-						}}
-						className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-					>
-						<option hidden>選択してください</option>
-						{!loading &&
-							games.map((item, key) => (
-								<option key={key} value={item.title}>
-									{item.title}
-								</option>
-							))}
-					</select>
+					{game1.active && (
+						<>
+							<div className='flex flex-row'>
+								<select
+									id='data'
+									name='gameTitle'
+									required
+									value={game1.title}
+									onChange={(e) =>
+										setGame1((prev) => ({
+											...prev,
+											title: e.target.value,
+										}))
+									}
+									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+								>
+									<option hidden>選択してください</option>
+									{!loading &&
+										games.map((item, key) => (
+											<option
+												key={key}
+												value={item.title}
+											>
+												{item.title}
+											</option>
+										))}
+								</select>
+								{!game2.active ? (
+									<button
+										type='button'
+										onClick={(e) => addGames(game1, 1)}
+										className='p-2'
+									>
+										<MdOutlineAddCircleOutline />
+									</button>
+								) : (
+									<button
+										type='button'
+										onClick={(e) => deleteGame(1)}
+										className='p-2'
+									>
+										<RiDeleteBack2Fill />
+									</button>
+								)}
+							</div>
+						</>
+					)}
+
+					{game2.active && (
+						<>
+							<div className='flex flex-row'>
+								<select
+									id='data'
+									name='gameTitle'
+									value={game2.title}
+									onChange={(e) =>
+										setGame2((prev) => ({
+											...prev,
+											title: e.target.value,
+										}))
+									}
+									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+								>
+									<option hidden>選択してください</option>
+									{!loading &&
+										games.map((item, key) => (
+											<option
+												key={key}
+												value={item.title}
+											>
+												{item.title}
+											</option>
+										))}
+								</select>
+								{!game3.active ? (
+									<button
+										type='button'
+										onClick={(e) => addGames(game2, 2)}
+										className='p-2'
+									>
+										<MdOutlineAddCircleOutline />
+									</button>
+								) : (
+									<button
+										type='button'
+										onClick={(e) => deleteGame(2)}
+										className='p-2'
+									>
+										<RiDeleteBack2Fill />
+									</button>
+								)}
+							</div>
+						</>
+					)}
+
+					{game3.active && (
+						<>
+							<div className='flex flex-row'>
+								<select
+									id='data'
+									name='gameTitle'
+									value={game3.title}
+									onChange={(e) =>
+										setGame3((prev) => ({
+											...prev,
+											title: e.target.value,
+										}))
+									}
+									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+								>
+									<option hidden>選択してください</option>
+									{!loading &&
+										games.map((item, key) => (
+											<option
+												key={key}
+												value={item.title}
+											>
+												{item.title}
+											</option>
+										))}
+								</select>
+								{!game1.active || !game2.active ? (
+									<button
+										type='button'
+										onClick={(e) => addGames(game3, 3)}
+										className='p-2'
+									>
+										<MdOutlineAddCircleOutline />
+									</button>
+								) : (
+									<button
+										type='button'
+										onClick={(e) => deleteGame(3)}
+										className='p-2'
+									>
+										<RiDeleteBack2Fill />
+									</button>
+								)}
+							</div>
+						</>
+					)}
 				</div>
+
 				<div className='mb-6 flex items-start flex-col'>
 					<label className='block text-gray-700 text-sm font-bold mb-2'>
 						ご希望の曜日と時間

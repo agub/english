@@ -277,12 +277,20 @@ const updateUser = asyncHandler(async (req, res) => {
 	const { hasMatched, teacher } = req.body
 	const user = await User.findById(req.params.id)
 	const existTeacher = await User.findById(teacher)
+
 	console.log(req.body)
+	//Confirm match with teacher && adding user to students[]_______________
 	if (user && teacher) {
 		if (existTeacher) {
 			user.teacher = teacher || null
 			user.hasMatched = hasMatched
-			existTeacher.student = user._id
+			const existStudent = existTeacher.students.some(
+				(obj) => obj.toString() === user.teacher.toString()
+			)
+			if (!existStudent) {
+				existTeacher.students = [...existTeacher.students, user._id]
+			}
+
 			await existTeacher.save()
 			const updatedUser = await user.save()
 
@@ -299,15 +307,22 @@ const updateUser = asyncHandler(async (req, res) => {
 			throw new Error('teacher is not found')
 		}
 	}
+	//Unmatch with teacher && excluding student from students[] _______________
 	if (user) {
 		if (!existTeacher) {
 			const formerTeacher = await User.findById(user.teacher)
+			const existStudent = formerTeacher.students.some(
+				(obj) => obj.toString() === user._id.toString()
+			)
+			if (existStudent) {
+				formerTeacher.students = formerTeacher.students.filter(
+					(obj) => obj.toString() !== user._id.toString()
+				)
+			}
 			user.hasMatched = hasMatched
 			user.teacher = null
 
-			formerTeacher.student = null
-			formerTeacher.save()
-
+			await formerTeacher.save()
 			const updatedUser = await user.save()
 
 			res.json({

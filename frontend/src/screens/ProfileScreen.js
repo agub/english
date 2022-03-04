@@ -94,6 +94,7 @@ const ProfileScreen = () => {
 			setErrorText(null)
 			setInputValue(initialValue)
 		}
+		// eslint-disable-next-line
 	}, [component, dispatch])
 
 	const submitHandler = (e) => {

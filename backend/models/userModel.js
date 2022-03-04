@@ -38,6 +38,12 @@ const userSchema = mongoose.Schema(
 			gameTitle: {
 				type: String,
 			},
+			gameLists: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Game',
+				},
+			],
 			contactBy: {
 				type: String,
 			},
@@ -78,11 +84,15 @@ const userSchema = mongoose.Schema(
 		teacher: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
+			unique: true,
 		},
-		student: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User',
-		},
+		students: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'User',
+				unique: true,
+			},
+		],
 		hadTrial: {
 			type: Boolean,
 			default: false,
