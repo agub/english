@@ -12,6 +12,8 @@ import Message from '../components/common/Message'
 import weeks from '../data/weeks'
 import consoleData from '../data/consoleData'
 import experienceData from '../data/experienceData'
+import { RiDeleteBack2Fill } from 'react-icons/ri'
+import { MdOutlineAddCircleOutline } from 'react-icons/md'
 
 const TrialRegisterScreen = () => {
 	const dispatch = useDispatch()
@@ -37,10 +39,11 @@ const TrialRegisterScreen = () => {
 		info: {
 			phoneNumber: '',
 			age: '',
-			gameTitle: '',
+			// gameTitle: '',
 			consoleType: '',
 			contactBy: '',
 			experience: '',
+			gameLists: [],
 			preferTime: [
 				{ week: '', time: '', rank: 1 },
 				{ week: '', time: '', rank: 2 },
@@ -48,8 +51,36 @@ const TrialRegisterScreen = () => {
 		},
 		rentMixer: null,
 	})
+
+	const [errorText, setErrorText] = useState(null)
+
 	const [prefer, setPrefer] = useState({ week: '', time: '', rank: 1 })
 	const [secPrefer, setSecPrefer] = useState({ week: '', time: '', rank: 2 })
+
+	const [game1, setGame1] = useState({ id: '', active: true })
+	const [game2, setGame2] = useState({ id: '', active: false })
+	const [game3, setGame3] = useState({ id: '', active: false })
+
+	function addGames(value, index) {
+		if (index === 1) {
+			setGame2({ id: '', active: true })
+		} else if (index === 2) {
+			setGame3({ id: '', active: true })
+		}
+	}
+
+	function deleteGame(index) {
+		if (index === 1) {
+			setGame1({ id: game2.id, active: true })
+			setGame2({ active: game3.active, id: game3.id })
+			setGame3({ id: '', active: false })
+		} else if (index === 2) {
+			setGame2({ active: game3.active, id: game3.id })
+			setGame3({ id: '', active: false })
+		} else if (index === 3) {
+			setGame3({ id: '', active: false })
+		}
+	}
 
 	useEffect(() => {
 		setInputValue((prev) => ({
@@ -59,11 +90,26 @@ const TrialRegisterScreen = () => {
 				preferTime: [prefer, secPrefer],
 			},
 		}))
-	}, [prefer, secPrefer])
+		const array = [game1.id, game2.id, game3.id]
+		const filteredGames = array.filter((obj) => obj !== '')
+		let uniqueGames = [...new Set(filteredGames)]
+		setInputValue((prev) => ({
+			...prev,
+			info: {
+				...prev.info,
+				gameLists: [...uniqueGames],
+			},
+		}))
+	}, [prefer, secPrefer, game1, game2, game3])
 
 	const submitHandler = (e) => {
 		e.preventDefault()
-		dispatch(trial(inputValue))
+		setErrorText(null)
+		if (inputValue.info.gameLists.length === 0) {
+			setErrorText('使用ゲームを正しく選択してください')
+		} else {
+			dispatch(trial(inputValue))
+		}
 	}
 
 	console.log(inputValue)
@@ -72,6 +118,9 @@ const TrialRegisterScreen = () => {
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
 				{trialError && <Message variant='danger'>{trialError}</Message>}
+				{errorText !== null && (
+					<Message variant='danger'>{errorText}</Message>
+				)}
 				{success && <Message variant='info'>無料体験応募完了</Message>}
 				<div className='mb-4'>
 					<InputField
@@ -201,7 +250,7 @@ const TrialRegisterScreen = () => {
 					/>
 				</div>
 				{/* ______________________________________________________________________________________________________ */}
-				<div className='mb-6'>
+				{/* <div className='mb-6'>
 					<label className='block text-gray-700 text-sm font-bold mb-2'>
 						使用ゲーム
 					</label>
@@ -228,6 +277,145 @@ const TrialRegisterScreen = () => {
 								</option>
 							))}
 					</select>
+				</div> */}
+
+				{/* ______________________________________________________________________________________________________ */}
+				<div className='mb-6'>
+					<label className='block text-gray-700 text-sm font-bold mb-2'>
+						使用ゲーム
+					</label>
+					{game1.active && (
+						<>
+							<div className='flex flex-row'>
+								<select
+									id='data'
+									name='gameTitle'
+									required
+									value={game1.id}
+									onChange={(e) =>
+										setGame1((prev) => ({
+											...prev,
+											id: e.target.value,
+										}))
+									}
+									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+								>
+									<option hidden>選択してください</option>
+									{!loading &&
+										games.map((item, key) => (
+											<option key={key} value={item._id}>
+												{item.title}
+											</option>
+										))}
+								</select>
+								{!game2.active ? (
+									<button
+										type='button'
+										onClick={(e) => addGames(game1, 1)}
+										className='p-2'
+									>
+										<MdOutlineAddCircleOutline />
+									</button>
+								) : (
+									<button
+										type='button'
+										onClick={(e) => deleteGame(1)}
+										className='p-2'
+									>
+										<RiDeleteBack2Fill />
+									</button>
+								)}
+							</div>
+						</>
+					)}
+
+					{game2.active && (
+						<>
+							<div className='flex flex-row'>
+								<select
+									id='data'
+									name='gameTitle'
+									value={game2.id}
+									onChange={(e) =>
+										setGame2((prev) => ({
+											...prev,
+											id: e.target.value,
+										}))
+									}
+									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+								>
+									<option hidden>選択してください</option>
+									{!loading &&
+										games.map((item, key) => (
+											<option key={key} value={item._id}>
+												{item.title}
+											</option>
+										))}
+								</select>
+								{!game3.active ? (
+									<button
+										type='button'
+										onClick={(e) => addGames(game2, 2)}
+										className='p-2'
+									>
+										<MdOutlineAddCircleOutline />
+									</button>
+								) : (
+									<button
+										type='button'
+										onClick={(e) => deleteGame(2)}
+										className='p-2'
+									>
+										<RiDeleteBack2Fill />
+									</button>
+								)}
+							</div>
+						</>
+					)}
+
+					{game3.active && (
+						<>
+							<div className='flex flex-row'>
+								<select
+									id='data'
+									name='gameTitle'
+									value={game3.id}
+									onChange={(e) =>
+										setGame3((prev) => ({
+											...prev,
+											id: e.target.value,
+										}))
+									}
+									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+								>
+									<option hidden>選択してください</option>
+									{!loading &&
+										games.map((item, key) => (
+											<option key={key} value={item._id}>
+												{item.title}
+											</option>
+										))}
+								</select>
+								{!game1.active || !game2.active ? (
+									<button
+										type='button'
+										onClick={(e) => addGames(game3, 3)}
+										className='p-2'
+									>
+										<MdOutlineAddCircleOutline />
+									</button>
+								) : (
+									<button
+										type='button'
+										onClick={(e) => deleteGame(3)}
+										className='p-2'
+									>
+										<RiDeleteBack2Fill />
+									</button>
+								)}
+							</div>
+						</>
+					)}
 				</div>
 				{/* ______________________________________________________________________________________________________ */}
 				<div className='mb-6 flex items-start flex-col'>

@@ -44,7 +44,6 @@ const TeacherRegisterScreen = () => {
 	})
 
 	const { email, password, confirmPassword, discordId } = inputValue
-	const [errorText, setErrorText] = useState(null)
 
 	const userRegisterTeacher = useSelector(
 		(state) => state.userRegisterTeacher
@@ -55,6 +54,8 @@ const TeacherRegisterScreen = () => {
 	const { loading: gameLoading, games } = gamesList
 
 	console.log(inputValue)
+	const [errorText, setErrorText] = useState(null)
+
 	const [prefer, setPrefer] = useState({ week: '', time: '', rank: 1 })
 	const [secPrefer, setSecPrefer] = useState({ week: '', time: '', rank: 2 })
 
@@ -353,7 +354,7 @@ const TeacherRegisterScreen = () => {
 									{!loading &&
 										games.map((item, key) => (
 											<option key={key} value={item._id}>
-												{item.id}
+												{item.title}
 											</option>
 										))}
 								</select>
@@ -397,7 +398,7 @@ const TeacherRegisterScreen = () => {
 									{!loading &&
 										games.map((item, key) => (
 											<option key={key} value={item._id}>
-												{item.id}
+												{item.title}
 											</option>
 										))}
 								</select>
@@ -441,7 +442,7 @@ const TeacherRegisterScreen = () => {
 									{!loading &&
 										games.map((item, key) => (
 											<option key={key} value={item._id}>
-												{item.id}
+												{item.title}
 											</option>
 										))}
 								</select>

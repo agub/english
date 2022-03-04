@@ -192,11 +192,11 @@ const ProfileScreen = () => {
 								type='box'
 								result={user.isTeacher ? 'Teacher' : 'Learner'}
 							/>
-							<HorizontalButton
+							{/* <HorizontalButton
 								text='ご使用ゲーム:'
 								type='box'
 								result={user.info.gameTitle}
-							/>
+							/> */}
 							<p className='mt-4'>一般</p>
 							<HorizontalButton
 								text='住所登録'
