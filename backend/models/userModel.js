@@ -40,8 +40,9 @@ const userSchema = mongoose.Schema(
 			},
 			gameLists: [
 				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Game',
+					// type: mongoose.Schema.Types.ObjectId,
+					// ref: 'Game',
+					type: String,
 				},
 			],
 			contactBy: {

@@ -43,10 +43,8 @@ const TeacherRegisterScreen = () => {
 		},
 	})
 
-	const [errorText, setErrorText] = useState(null)
-	// console.log(inputValue)
-
 	const { email, password, confirmPassword, discordId } = inputValue
+	const [errorText, setErrorText] = useState(null)
 
 	const userRegisterTeacher = useSelector(
 		(state) => state.userRegisterTeacher
@@ -58,7 +56,6 @@ const TeacherRegisterScreen = () => {
 
 	const [prefer, setPrefer] = useState({ week: '', time: '', rank: 1 })
 	const [secPrefer, setSecPrefer] = useState({ week: '', time: '', rank: 2 })
-	const [gameValue, setGameValue] = useState('')
 
 	const [game1, setGame1] = useState({ title: '', active: true })
 	const [game2, setGame2] = useState({ title: '', active: false })
@@ -80,7 +77,6 @@ const TeacherRegisterScreen = () => {
 		} else if (index === 2) {
 			setGame2({ active: game3.active, title: game3.title })
 			setGame3({ title: '', active: false })
-			// setGame3({ title: '', active: false })
 		} else if (index === 3) {
 			setGame3({ title: '', active: false })
 		}
@@ -119,8 +115,7 @@ const TeacherRegisterScreen = () => {
 			setErrorText('使用ゲームを正しく選択してください')
 		} else {
 			if (password === confirmPassword) {
-				// dispatch(teacherRegister(inputValue))
-				console.log(inputValue)
+				dispatch(teacherRegister(inputValue))
 			} else {
 				setErrorText('パスワードと確認パスワードが一致しません')
 			}
