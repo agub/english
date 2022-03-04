@@ -54,31 +54,32 @@ const TeacherRegisterScreen = () => {
 	const gamesList = useSelector((state) => state.gameList)
 	const { loading: gameLoading, games } = gamesList
 
+	console.log(inputValue)
 	const [prefer, setPrefer] = useState({ week: '', time: '', rank: 1 })
 	const [secPrefer, setSecPrefer] = useState({ week: '', time: '', rank: 2 })
 
-	const [game1, setGame1] = useState({ title: '', active: true })
-	const [game2, setGame2] = useState({ title: '', active: false })
-	const [game3, setGame3] = useState({ title: '', active: false })
+	const [game1, setGame1] = useState({ id: '', active: true })
+	const [game2, setGame2] = useState({ id: '', active: false })
+	const [game3, setGame3] = useState({ id: '', active: false })
 
 	function addGames(value, index) {
 		if (index === 1) {
-			setGame2({ title: '', active: true })
+			setGame2({ id: '', active: true })
 		} else if (index === 2) {
-			setGame3({ title: '', active: true })
+			setGame3({ id: '', active: true })
 		}
 	}
 
 	function deleteGame(index) {
 		if (index === 1) {
-			setGame1({ title: game2.title, active: true })
-			setGame2({ active: game3.active, title: game3.title })
-			setGame3({ title: '', active: false })
+			setGame1({ id: game2.id, active: true })
+			setGame2({ active: game3.active, id: game3.id })
+			setGame3({ id: '', active: false })
 		} else if (index === 2) {
-			setGame2({ active: game3.active, title: game3.title })
-			setGame3({ title: '', active: false })
+			setGame2({ active: game3.active, id: game3.id })
+			setGame3({ id: '', active: false })
 		} else if (index === 3) {
-			setGame3({ title: '', active: false })
+			setGame3({ id: '', active: false })
 		}
 	}
 
@@ -96,7 +97,7 @@ const TeacherRegisterScreen = () => {
 				preferTime: [prefer, secPrefer],
 			},
 		}))
-		const array = [game1.title, game2.title, game3.title]
+		const array = [game1.id, game2.id, game3.id]
 		const filteredGames = array.filter((obj) => obj !== '')
 		let uniqueGames = [...new Set(filteredGames)]
 		setInputValue((prev) => ({
@@ -339,11 +340,11 @@ const TeacherRegisterScreen = () => {
 									id='data'
 									name='gameTitle'
 									required
-									value={game1.title}
+									value={game1.id}
 									onChange={(e) =>
 										setGame1((prev) => ({
 											...prev,
-											title: e.target.value,
+											id: e.target.value,
 										}))
 									}
 									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
@@ -351,11 +352,8 @@ const TeacherRegisterScreen = () => {
 									<option hidden>選択してください</option>
 									{!loading &&
 										games.map((item, key) => (
-											<option
-												key={key}
-												value={item.title}
-											>
-												{item.title}
+											<option key={key} value={item._id}>
+												{item.id}
 											</option>
 										))}
 								</select>
@@ -386,11 +384,11 @@ const TeacherRegisterScreen = () => {
 								<select
 									id='data'
 									name='gameTitle'
-									value={game2.title}
+									value={game2.id}
 									onChange={(e) =>
 										setGame2((prev) => ({
 											...prev,
-											title: e.target.value,
+											id: e.target.value,
 										}))
 									}
 									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
@@ -398,11 +396,8 @@ const TeacherRegisterScreen = () => {
 									<option hidden>選択してください</option>
 									{!loading &&
 										games.map((item, key) => (
-											<option
-												key={key}
-												value={item.title}
-											>
-												{item.title}
+											<option key={key} value={item._id}>
+												{item.id}
 											</option>
 										))}
 								</select>
@@ -433,11 +428,11 @@ const TeacherRegisterScreen = () => {
 								<select
 									id='data'
 									name='gameTitle'
-									value={game3.title}
+									value={game3.id}
 									onChange={(e) =>
 										setGame3((prev) => ({
 											...prev,
-											title: e.target.value,
+											id: e.target.value,
 										}))
 									}
 									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
@@ -445,11 +440,8 @@ const TeacherRegisterScreen = () => {
 									<option hidden>選択してください</option>
 									{!loading &&
 										games.map((item, key) => (
-											<option
-												key={key}
-												value={item.title}
-											>
-												{item.title}
+											<option key={key} value={item._id}>
+												{item.id}
 											</option>
 										))}
 								</select>
