@@ -13,11 +13,6 @@ const stripePromise = loadStripe(
 )
 
 const PaymentScreen = () => {
-	const options = {
-		// passing the client secret obtained from the server
-		clientSecret: '{{CLIENT_SECRET}}',
-	}
-
 	return (
 		<Container>
 			<Elements stripe={stripePromise}>

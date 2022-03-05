@@ -5,6 +5,7 @@ import colors from 'colors'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import gameRoutes from './routes/gameRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 // import games from './data/games.js'
 
 dotenv.config()
@@ -22,6 +23,8 @@ app.get('/', (req, res) => {
 app.use('/api/games', gameRoutes)
 
 app.use('/api/users', userRoutes)
+
+app.use('/api/orders', orderRoutes)
 
 app.use(notFound)
 
