@@ -7,40 +7,51 @@ const orderSchema = mongoose.Schema(
 			required: true,
 			ref: 'User',
 		},
-		orderItem: [
+
+		orderItems: [
 			{
+				customerId: {
+					required: true,
+					type: String,
+				},
+				orderId: {
+					required: true,
+					type: String,
+				},
 				plan: { type: String, required: true },
 				price: { type: Number, required: true },
-				game: {
-					type: mongoose.Schema.Types.ObjectId,
+				email_address: { type: String },
+				email: { type: String, required: true },
+				fullName: {
+					type: String,
 					required: true,
-					ref: 'Game',
+				},
+				isPaid: {
+					type: Boolean,
+					required: true,
+					default: false,
+				},
+				paidAt: {
+					type: Date,
+				},
+				isCancelled: {
+					type: Boolean,
+					required: true,
+					default: false,
 				},
 			},
 		],
-		fullName: {
-			type: String,
-			required: true,
-		},
-		paymentResult: {
-			id: { type: String },
-			status: { type: String },
-			update_time: { type: String },
-			email_address: { type: String },
-		},
-		totalPrice: {
-			type: Number,
-			required: true,
-			default: 0,
-		},
-		isPaid: {
-			type: Boolean,
-			required: true,
-			default: false,
-		},
-		paidAt: {
-			type: Date,
-		},
+		// paymentResult: {
+		// 	id: { type: String },
+		// 	status: { type: String },
+		// 	update_time: { type: String },
+		// 	email_address: { type: String },
+		// },
+		// totalPrice: {
+		// 	type: Number,
+		// 	required: true,
+		// 	default: 0,
+		// },
 	},
 	{ timestamps: true }
 )

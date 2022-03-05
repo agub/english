@@ -74,10 +74,10 @@ const userSchema = mongoose.Schema(
 			address: { type: String },
 			building: { type: String },
 		},
-		isSubscribe: {
-			type: Boolean,
-			default: false,
-		},
+		// isSubscribe: {
+		// 	type: Boolean,
+		// 	default: false,
+		// },
 		hasMatched: {
 			type: Boolean,
 			default: false,
@@ -98,10 +98,10 @@ const userSchema = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
-		isPaid: {
-			type: Boolean,
-			default: false,
-		},
+		// isPaid: {
+		// 	type: Boolean,
+		// 	default: false,
+		// },
 		isTeacher: {
 			type: Boolean,
 			default: false,
