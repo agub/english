@@ -16,7 +16,10 @@ import {
 	userListReducer,
 	userUpdateReducer,
 } from './redux/reducers/userReducers'
-import { orderStripeReducer } from './redux/reducers/orderReducers'
+import {
+	orderStripeReducer,
+	orderDataSetReducer,
+} from './redux/reducers/orderReducers'
 
 const reducer = combineReducers({
 	gameList: gameListReducer,
@@ -31,6 +34,7 @@ const reducer = combineReducers({
 	userList: userListReducer,
 	userUpdate: userUpdateReducer,
 	orderStripe: orderStripeReducer,
+	orderDataSet: orderDataSetReducer,
 })
 const userInfoFromStorage = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))

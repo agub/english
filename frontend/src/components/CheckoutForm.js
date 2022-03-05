@@ -9,7 +9,7 @@ import axios from 'axios'
 import FormContainer from './common/FormContainer'
 import InputField from './common/InputField'
 import { useDispatch, useSelector } from 'react-redux'
-import { orderSubscription } from '../redux/actions/orderActions'
+import { orderSetData, orderSubscription } from '../redux/actions/orderActions'
 
 const CardInput = () => {
 	const CARD_ELEMENT_OPTIONS = {
@@ -90,18 +90,28 @@ const CheckoutForm = () => {
 							// The card was declined (i.e. insufficient funds, card has expired, etc)
 						} else {
 							console.log('You got the money!')
-							console.log(data.orderItem)
+							dispatch(
+								orderSetData({
+									orderItem: data.orderItem,
+									id: userInfo._id,
+								})
+							)
 							// Show a success message to your customer
 						}
 					})
 			} else {
 				console.log('You got the money!')
-				console.log(data.orderItem)
+				dispatch(
+					orderSetData({
+						orderItem: data.orderItem,
+						id: userInfo._id,
+					})
+				)
 				// No additional information was needed
 				// Show a success message to your customer
 			}
 		}
-	}, [data])
+	}, [data, dispatch])
 	return (
 		<FormContainer>
 			<CardInput />
