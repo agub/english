@@ -11,6 +11,8 @@ import ProfileScreen from './screens/ProfileScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import TeacherRegisterScreen from './screens/TeacherRegisterScreen'
+import PaymentScreen from './screens/PaymentScreen'
+
 
 function App() {
 	return (
@@ -24,6 +26,7 @@ function App() {
 				<Route path='/login' element={<LoginScreen />} />
 				<Route path='/trial' element={<TrialRegisterScreen />} />
 				<Route path='/profile' element={<ProfileScreen />} />
+				<Route path='/payment' element={<PaymentScreen />} />
 				<Route
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}
