@@ -11,7 +11,7 @@ const stripe = Stripe(
 // @route    GET/ api/orders/subscription
 // @access   Private
 const orderSubscription = asyncHandler(async (req, res) => {
-	const { email, payment_method, id } = req.body
+	const { email, payment_method, id, fullName } = req.body
 	const user = await User.findById(id)
 
 	if (user) {
@@ -34,7 +34,7 @@ const orderSubscription = asyncHandler(async (req, res) => {
 			plan: 'price_1KZnrnGBYewul3wwfNDo8yqn',
 			price: subscription.plan.amount,
 			email: email,
-			fullName: 'sampleFullname',
+			fullName: fullName,
 			isPaid: true,
 			paidAt: new Date(),
 			isCancelled: false,
