@@ -1,41 +1,23 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
 	useStripe,
 	useElements,
 	PaymentElement,
 	CardElement,
 } from '@stripe/react-stripe-js'
-import axios from 'axios'
+
 import FormContainer from './common/FormContainer'
 import InputField from './common/InputField'
 import { useDispatch, useSelector } from 'react-redux'
 import { orderSetData, orderSubscription } from '../redux/actions/orderActions'
-
-const CardInput = () => {
-	const CARD_ELEMENT_OPTIONS = {
-		style: {
-			base: {
-				'color': '#32325d',
-				'fontFamily': '"Helvetica Neue", Helvetica, sans-serif',
-				'fontSmoothing': 'antialiased',
-				'fontSize': '16px',
-				'::placeholder': {
-					color: '#aab7c4',
-				},
-			},
-			invalid: {
-				color: '#fa755a',
-				iconColor: '#fa755a',
-			},
-		},
-	}
-
-	return <CardElement options={CARD_ELEMENT_OPTIONS} />
-}
-
+import CardInput from '../components/CardInput'
 const CheckoutForm = () => {
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
 	const [email, setEmail] = useState('')
+	const [fullName, setFullName] = useState('')
 	const stripe = useStripe()
 	const elements = useElements()
 
@@ -76,6 +58,12 @@ const CheckoutForm = () => {
 	}
 
 	useEffect(() => {
+		if (!userInfo) {
+			navigate('/login')
+		}
+	}, [navigate, userInfo])
+
+	useEffect(() => {
 		if (data && data.client_secret && data.status) {
 			console.log(data.client_secret)
 			console.log(data.status)
@@ -111,20 +99,31 @@ const CheckoutForm = () => {
 				// Show a success message to your customer
 			}
 		}
-	}, [data, dispatch])
+	}, [data, dispatch, userInfo, stripe])
+
 	return (
 		<FormContainer>
-			<CardInput />
 			<div className='mb-4'>
 				<InputField
 					type='email'
 					value={email}
 					placeholder='Email'
-					label=''
+					label='メールアドレス'
 					name='email'
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 			</div>
+			<div className='mb-4'>
+				<InputField
+					type='カード名義'
+					value={fullName}
+					placeholder='カード名義'
+					label='カード名義'
+					name='fullName'
+					onChange={(e) => setFullName(e.target.value)}
+				/>
+			</div>
+			<CardInput />
 			<button onClick={handleSubmit}>pay</button>
 		</FormContainer>
 	)

@@ -82,7 +82,7 @@ const orderDataSet = asyncHandler(async (req, res) => {
 		})
 	} else {
 		res.status(400)
-		throw new Error('orderItem is missing or can not update')
+		throw new Error('orderItem is missing or data is enable to update')
 	}
 })
 
