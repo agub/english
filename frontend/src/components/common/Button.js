@@ -8,13 +8,15 @@ const Button = ({
 	textColor,
 	hoverColor,
 	type,
+	disabled,
 	size,
 }) => {
 	return (
 		<button
 			id={id}
+			disabled={disabled ? disabled : null}
 			className={classnames(
-				`${bgColor} hover:${hoverColor} font-bold flex justify-center items-center rounded focus:outline-none focus:shadow-outline shadow appearance-none`,
+				`${bgColor}  disabled:bg-slate-700 hover:${hoverColor} font-bold flex justify-center items-center rounded focus:outline-none focus:shadow-outline shadow appearance-none`,
 				{
 					'py-2 px-4': size === 'sm',
 					'py-3 px-6': size === 'md',

@@ -15,7 +15,7 @@ import {
 import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
 import ChangePassword from '../components/ChangePassword'
 import ChangeDiscordId from '../components/ChangeDiscordId'
-import ChangeAddress from '../components/ChangeAddress'
+
 import { usePostalJp } from 'use-postal-jp'
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
 import PaymentHistoryScreen from './PaymentHistoryScreen'
@@ -199,16 +199,17 @@ const ProfileScreen = () => {
 								result={user.info.gameTitle}
 							/> */}
 							<p className='mt-4'>一般</p>
-							<HorizontalButton
-								text='住所登録'
-								type='button'
-								result={
-									IsObjectEmpty(user.homeAddress)
-										? '未登録'
-										: '登録済み'
-								}
-								setState={() => setComponent('address')}
-							/>
+							<Link to={`/profile/address`}>
+								<HorizontalButton
+									text='住所登録'
+									type='button'
+									result={
+										IsObjectEmpty(user.homeAddress)
+											? '未登録'
+											: '登録済み'
+									}
+								/>
+							</Link>
 							<HorizontalButton
 								text='お支払いプラン'
 								type='button'
@@ -239,7 +240,7 @@ const ProfileScreen = () => {
 								/>
 							)} */}
 							<p className='mt-4'>設定</p>
-							<Link to={`/paymentHistory`}>
+							<Link to={`/profile/payment/history`}>
 								<HorizontalButton
 									text='月額支払い設定'
 									type='button'
@@ -306,7 +307,7 @@ const ProfileScreen = () => {
 						<PaymentHistoryScreen id={userInfo._id} />
 					</>
 				)}
-				{component === 'address' && user && user.homeAddress && (
+				{/* {component === 'address' && user && user.homeAddress && (
 					<ChangeAddress
 						component={() => setComponent('')}
 						homeAddress={
@@ -344,7 +345,7 @@ const ProfileScreen = () => {
 						}
 						submitHandler={submitHandler}
 					/>
-				)}
+				)} */}
 			</FormContainer>
 		</Container>
 	)

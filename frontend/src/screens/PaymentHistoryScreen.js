@@ -29,20 +29,22 @@ const PaymentHistoryScreen = ({ userId }) => {
 			<FormContainer onSubmit={submitHandler}>
 				{orderItems &&
 					orderItems.map((item) => (
-						<div key={item._id}>
+						<div className='border-b bottom-1 p-2' key={item._id}>
 							<p>ID: {item.orderId}</p>
 							<p>月額: ¥{item.price}</p>
 							<p>
 								ステイタス:{' '}
 								{item.isCancelled ? 'キャンセル済み' : '継続'}
 							</p>
-							<button
-								className='border'
-								id={item.orderId}
-								onClick={submitHandler}
-							>
-								キャンセルする
-							</button>
+							{!item.isCancelled && (
+								<button
+									className='border'
+									id={item.orderId}
+									onClick={submitHandler}
+								>
+									キャンセルする
+								</button>
+							)}
 							{/* <p>ステータス: {item.isPaid ? '支払い済み' : '未払'}</p> */}
 						</div>
 					))}

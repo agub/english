@@ -13,7 +13,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import TeacherRegisterScreen from './screens/TeacherRegisterScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PaymentHistoryScreen from './screens/PaymentHistoryScreen'
-
+import ChangeAddressScreen from './screens/ChangeAddressScreen'
 function App() {
 	return (
 		<>
@@ -25,12 +25,16 @@ function App() {
 				<Route path='/register' element={<RegisterScreen />} />
 				<Route path='/login' element={<LoginScreen />} />
 				<Route path='/trial' element={<TrialRegisterScreen />} />
-				<Route path='/profile' element={<ProfileScreen />} />
-				<Route path='/payment' element={<PaymentScreen />} />
 				<Route
-					path='/paymentHistory'
+					path='profile/address'
+					element={<ChangeAddressScreen />}
+				/>
+				<Route
+					path='/profile/payment/history'
 					element={<PaymentHistoryScreen />}
 				/>
+				<Route path='/profile' element={<ProfileScreen />} exact />
+				<Route path='/payment' element={<PaymentScreen />} />
 				<Route
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}
