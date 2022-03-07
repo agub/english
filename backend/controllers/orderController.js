@@ -31,7 +31,8 @@ const orderSubscription = asyncHandler(async (req, res) => {
 
 		const orderItem = {
 			customerId: customer.id,
-			orderId: payment_method,
+			payment_method: payment_method,
+			orderId: subscription.id,
 			plan: 'price_1KZnrnGBYewul3wwfNDo8yqn',
 			price: subscription.plan.amount,
 			email: email,
@@ -40,6 +41,7 @@ const orderSubscription = asyncHandler(async (req, res) => {
 			paidAt: new Date(),
 			isCancelled: false,
 		}
+		console.log(orderItem)
 
 		const status =
 			subscription['latest_invoice']['payment_intent']['status']
@@ -90,7 +92,7 @@ const orderDataSet = asyncHandler(async (req, res) => {
 // @desc     Order setting on data
 // @route    GET/ api/orders
 // @access   Private
-const orderListMySub = asyncHandler(async (req, res) => {
+const listMyOrders = asyncHandler(async (req, res) => {
 	const order = await Order.findOne({ user: req.user._id })
 
 	if (order) {
@@ -101,4 +103,22 @@ const orderListMySub = asyncHandler(async (req, res) => {
 	}
 })
 
-export { orderSubscription, orderDataSet, orderListMySub }
+// @desc     fetch subscription detail
+// @route    GET/ api/orders/:id
+// @access   Private
+const getSubscriptionById = asyncHandler(async (req, res) => {
+	const order = await Order.findOne({ user: req.user._id })
+
+	if (order) {
+		const sub = await stripe.subscriptions.update(
+			'sub_1KaWZUGBYewul3wwCKTHYj9W',
+			{ cancel_at_period_end: true }
+		)
+		res.json(sub)
+	} else {
+		res.status(400)
+		throw new Error('orderItem is missing or data is enable to update')
+	}
+})
+
+export { orderSubscription, orderDataSet, listMyOrders, getSubscriptionById }
