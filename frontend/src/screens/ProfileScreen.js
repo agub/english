@@ -14,11 +14,9 @@ import {
 } from '../redux/actions/userActions'
 import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
 import ChangePassword from '../components/ChangePassword'
-import ChangeDiscordId from '../components/ChangeDiscordId'
 
-import { usePostalJp } from 'use-postal-jp'
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
-import PaymentHistoryScreen from './PaymentHistoryScreen'
+import ChangeDiscordIdScreen from './ChangeDiscordIdScreen'
 
 const ProfileScreen = () => {
 	const navigate = useNavigate()
@@ -29,27 +27,12 @@ const ProfileScreen = () => {
 		confirmPassword: '',
 		newPassword: '',
 		discordId: '',
-		postalCode: '',
-		address: '',
-		prefecture: '',
-		building: '',
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
 	const [errorText, setErrorText] = useState(null)
 	const [component, setComponent] = useState('')
-	const {
-		password,
-		confirmPassword,
-		discordId,
-		newPassword,
-		postalCode,
-		prefecture,
-		address,
-		building,
-	} = inputValue
-
-	const [autoAddress] = usePostalJp(postalCode, postalCode.length >= 7)
+	const { password, confirmPassword, discordId, newPassword } = inputValue
 
 	const userDetails = useSelector((state) => state.userDetails)
 	const { loading, user, error } = userDetails
@@ -78,16 +61,6 @@ const ProfileScreen = () => {
 		if (userUpdateLoading) dispatch(getUserDetails('profile'))
 	}, [navigate, userInfo, user, dispatch, userUpdateLoading, user.teacher])
 
-	//Search postal code screen ___________________________________
-	useEffect(() => {
-		if (autoAddress !== null && postalCode !== '') {
-			setInputValue((prev) => ({
-				...prev,
-				prefecture: autoAddress.prefecture,
-				address: autoAddress.address1 + autoAddress.address2,
-			}))
-		}
-	}, [autoAddress, postalCode])
 	//Change screen ___________________________________
 	useEffect(() => {
 		if (component === '') {
@@ -123,20 +96,6 @@ const ProfileScreen = () => {
 		//Changing discordId___________________________________
 		if (inputValue.discordId) {
 			dispatch(userProfileUpdate({ id: user._id, discordId }))
-			dispatch(getUserDetails('profile'))
-			setInputValue(initialValue)
-		}
-		//Changing address___________________________________
-		if (inputValue.address && component === 'address') {
-			dispatch(
-				userProfileUpdate({
-					id: user._id,
-					postalCode,
-					prefecture,
-					address,
-					building,
-				})
-			)
 			dispatch(getUserDetails('profile'))
 			setInputValue(initialValue)
 		}
@@ -252,11 +211,12 @@ const ProfileScreen = () => {
 								type='button'
 								setState={() => setComponent('password')}
 							/>
-							<HorizontalButton
-								text='Discordの名前変更'
-								type='button'
-								setState={() => setComponent('discord')}
-							/>
+							<Link to={'/profile/discordId'}>
+								<HorizontalButton
+									text='Discordの名前変更'
+									type='button'
+								/>
+							</Link>
 						</>
 					)}
 
@@ -287,9 +247,9 @@ const ProfileScreen = () => {
 						submitHandler={submitHandler}
 					/>
 				)}
-				{component === 'discord' && user && user.info.discordId && (
-					<ChangeDiscordId
-						component={() => setComponent('')}
+				{/* {component === 'discord' && user && user.info.discordId && (
+					<ChangeDiscordIdScreen
+						// component={() => setComponent('')}
 						discordIdValue={discordId}
 						discordIdSetter={(e) =>
 							setInputValue((prev) => ({
@@ -298,52 +258,6 @@ const ProfileScreen = () => {
 							}))
 						}
 						user={user}
-					/>
-				)}
-				{component === 'payment' && (
-					<>
-						<h1>payment</h1>
-						<button onClick={() => setComponent('')}>back</button>
-						<PaymentHistoryScreen id={userInfo._id} />
-					</>
-				)}
-				{/* {component === 'address' && user && user.homeAddress && (
-					<ChangeAddress
-						component={() => setComponent('')}
-						homeAddress={
-							IsObjectEmpty(user.homeAddress)
-								? null
-								: user.homeAddress
-						}
-						postalCodeValue={postalCode}
-						postalCodeSetter={(e) =>
-							setInputValue((prev) => ({
-								...prev,
-								postalCode: e.target.value,
-							}))
-						}
-						prefectureValue={prefecture}
-						prefectureSetter={(e) =>
-							setInputValue((prev) => ({
-								...prev,
-								prefecture: e.target.value,
-							}))
-						}
-						addressValue={address}
-						addressSetter={(e) =>
-							setInputValue((prev) => ({
-								...prev,
-								address: e.target.value,
-							}))
-						}
-						buildingValue={building}
-						buildingSetter={(e) =>
-							setInputValue((prev) => ({
-								...prev,
-								building: e.target.value,
-							}))
-						}
-						submitHandler={submitHandler}
 					/>
 				)} */}
 			</FormContainer>

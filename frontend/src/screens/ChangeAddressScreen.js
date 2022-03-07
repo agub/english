@@ -8,11 +8,7 @@ import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	getTeacherDetails,
-	getUserDetails,
-	userProfileUpdate,
-} from '../redux/actions/userActions'
+import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
 import {
 	USER_DETAILS_RESET,
 	USER_PROFILE_UPDATE_RESET,
@@ -20,7 +16,7 @@ import {
 import { usePostalJp } from 'use-postal-jp'
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
 
-import { PREF_OPTIONS } from '../data/Prefetures'
+import { PREF_OPTIONS } from '../data/Prefectures'
 import Loader from '../components/common/Loader'
 
 const ChangeAddressScreen = () => {
@@ -28,10 +24,6 @@ const ChangeAddressScreen = () => {
 	const dispatch = useDispatch()
 
 	const initialValue = {
-		password: '',
-		confirmPassword: '',
-		newPassword: '',
-		discordId: '',
 		postalCode: '',
 		address: '',
 		prefecture: '',
@@ -39,11 +31,8 @@ const ChangeAddressScreen = () => {
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
-	const [errorText, setErrorText] = useState(null)
 
 	const { postalCode, prefecture, address, building } = inputValue
-
-	console.log(inputValue)
 	const [autoAddress] = usePostalJp(postalCode, postalCode.length >= 7)
 
 	const userDetails = useSelector((state) => state.userDetails)
@@ -86,8 +75,6 @@ const ChangeAddressScreen = () => {
 	const submitHandler = (e) => {
 		dispatch({ type: USER_PROFILE_UPDATE_RESET })
 		e.preventDefault()
-		setErrorText(null)
-
 		//Changing address___________________________________
 		if (inputValue.address) {
 			dispatch(
@@ -152,7 +139,6 @@ const ChangeAddressScreen = () => {
 									value={postalCode}
 									placeholder='xxxxxxx'
 									label='郵便番号'
-									// name='password'
 									onChange={(e) =>
 										setInputValue((prev) => ({
 											...prev,
@@ -194,7 +180,6 @@ const ChangeAddressScreen = () => {
 									value={address}
 									placeholder='市区町村・番地'
 									label='市区町村・番地'
-									name='confirmPassword'
 									onChange={(e) =>
 										setInputValue((prev) => ({
 											...prev,
@@ -209,7 +194,6 @@ const ChangeAddressScreen = () => {
 									value={building}
 									placeholder='建物名・部屋番号'
 									label='建物名・部屋番号'
-									name='confirmPassword'
 									onChange={(e) =>
 										setInputValue((prev) => ({
 											...prev,

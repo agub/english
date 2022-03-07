@@ -14,6 +14,7 @@ import TeacherRegisterScreen from './screens/TeacherRegisterScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PaymentHistoryScreen from './screens/PaymentHistoryScreen'
 import ChangeAddressScreen from './screens/ChangeAddressScreen'
+import ChangeDiscordIdScreen from './screens/ChangeDiscordIdScreen'
 function App() {
 	return (
 		<>
@@ -25,6 +26,10 @@ function App() {
 				<Route path='/register' element={<RegisterScreen />} />
 				<Route path='/login' element={<LoginScreen />} />
 				<Route path='/trial' element={<TrialRegisterScreen />} />
+				<Route
+					path='profile/discordId'
+					element={<ChangeDiscordIdScreen />}
+				/>
 				<Route
 					path='profile/address'
 					element={<ChangeAddressScreen />}
