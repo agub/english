@@ -152,7 +152,7 @@ export const orderUnsub = (orderId) => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await axios.put(`/api/orders/${orderId}`, config)
+		const { data } = await axios.put(`/api/orders/${orderId}`, {}, config)
 		dispatch({
 			type: ORDER_UNSUBSCRIBE_SUCCESS,
 			payload: data,

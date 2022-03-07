@@ -12,7 +12,7 @@ import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import TeacherRegisterScreen from './screens/TeacherRegisterScreen'
 import PaymentScreen from './screens/PaymentScreen'
-
+import PaymentHistoryScreen from './screens/PaymentHistoryScreen'
 
 function App() {
 	return (
@@ -27,6 +27,10 @@ function App() {
 				<Route path='/trial' element={<TrialRegisterScreen />} />
 				<Route path='/profile' element={<ProfileScreen />} />
 				<Route path='/payment' element={<PaymentScreen />} />
+				<Route
+					path='/paymentHistory'
+					element={<PaymentHistoryScreen />}
+				/>
 				<Route
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}

@@ -111,17 +111,14 @@ const listMyOrders = asyncHandler(async (req, res) => {
 const unsubscribeById = asyncHandler(async (req, res) => {
 	const order = await Order.findOne({ user: req.user._id })
 	// const { orderId } = req.params.orderId
-	console.log(req.params.orderId)
+	console.log(req.params.id)
 
 	if (order) {
-		const unSub = await stripe.subscriptions.update(
-			'sub_1KaZhhGBYewul3wwt8VtZw5F',
-			{
-				cancel_at_period_end: true,
-			}
-		)
+		const unSub = await stripe.subscriptions.update(req.params.id, {
+			cancel_at_period_end: true,
+		})
 		for (const item of order.orderItems) {
-			if (item.orderId === 'sub_1KaZhhGBYewul3wwt8VtZw5F') {
+			if (item.orderId === req.params.id) {
 				item.isCancelled = unSub.cancel_at_period_end ? true : false
 				// item.isCancelled = false
 				break

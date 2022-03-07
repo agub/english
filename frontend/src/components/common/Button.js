@@ -1,9 +1,18 @@
 import React from 'react'
 import classnames from 'classnames'
 
-const Button = ({ children, bgColor, textColor, hoverColor, type, size }) => {
+const Button = ({
+	id,
+	children,
+	bgColor,
+	textColor,
+	hoverColor,
+	type,
+	size,
+}) => {
 	return (
 		<button
+			id={id}
 			className={classnames(
 				`${bgColor} hover:${hoverColor} font-bold flex justify-center items-center rounded focus:outline-none focus:shadow-outline shadow appearance-none`,
 				{
