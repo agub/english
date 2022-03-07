@@ -108,13 +108,23 @@ const listMyOrders = asyncHandler(async (req, res) => {
 // @access   Private
 const getSubscriptionById = asyncHandler(async (req, res) => {
 	const order = await Order.findOne({ user: req.user._id })
+	const { orderId } = req.body
 
 	if (order) {
-		const sub = await stripe.subscriptions.update(
-			'sub_1KaWZUGBYewul3wwCKTHYj9W',
-			{ cancel_at_period_end: true }
+		const unSub = await stripe.subscriptions.update(
+			'sub_1KaZhhGBYewul3wwt8VtZw5F',
+			{
+				cancel_at_period_end: true,
+			}
 		)
-		res.json(sub)
+		for (const item of order.orderItems) {
+			if (item.orderId === 'sub_1KaZhhGBYewul3wwt8VtZw5F') {
+				item.isCancelled = unSub.cancel_at_period_end ? true : false
+				break
+			}
+		}
+		await order.save()
+		res.json(order)
 	} else {
 		res.status(400)
 		throw new Error('orderItem is missing or data is enable to update')

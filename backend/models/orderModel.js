@@ -40,8 +40,8 @@ const orderSchema = mongoose.Schema(
 				},
 				isCancelled: {
 					type: Boolean,
-					required: true,
 					default: false,
+					required: true,
 				},
 			},
 		],

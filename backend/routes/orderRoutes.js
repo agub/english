@@ -13,7 +13,7 @@ const router = express.Router()
 
 router.route('/').post(protect, orderDataSet).get(protect, listMyOrders)
 router.route('/subscription').post(protect, orderSubscription)
-router.route('/:id').post(protect, getSubscriptionById)
+router.route('/:id').put(protect, getSubscriptionById)
 // router.route('/subscription/:id').get(protect, orderListMySub)
 
 export default router
