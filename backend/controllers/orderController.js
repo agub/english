@@ -28,6 +28,7 @@ const orderSubscription = asyncHandler(async (req, res) => {
 			items: [{ plan: 'price_1KZnrnGBYewul3wwfNDo8yqn' }],
 			expand: ['latest_invoice.payment_intent'],
 		})
+
 		const orderItem = {
 			customerId: customer.id,
 			orderId: payment_method,
@@ -57,7 +58,7 @@ const orderSubscription = asyncHandler(async (req, res) => {
 })
 
 // @desc     Order setting on data
-// @route    GET/ api/orders
+// @route    POST/ api/orders
 // @access   Private
 const orderDataSet = asyncHandler(async (req, res) => {
 	const { orderItem, id } = req.body
@@ -86,4 +87,18 @@ const orderDataSet = asyncHandler(async (req, res) => {
 	}
 })
 
-export { orderSubscription, orderDataSet }
+// @desc     Order setting on data
+// @route    GET/ api/orders
+// @access   Private
+const orderListMySub = asyncHandler(async (req, res) => {
+	const order = await Order.findOne({ user: req.user._id })
+
+	if (order) {
+		res.status(201).json(order.orderItems)
+	} else {
+		res.status(400)
+		throw new Error('orderItem is missing or data is enable to update')
+	}
+})
+
+export { orderSubscription, orderDataSet, orderListMySub }

@@ -18,6 +18,7 @@ import ChangeDiscordId from '../components/ChangeDiscordId'
 import ChangeAddress from '../components/ChangeAddress'
 import { usePostalJp } from 'use-postal-jp'
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
+import PaymentHistoryScreen from './PaymentHistoryScreen'
 
 const ProfileScreen = () => {
 	const navigate = useNavigate()
@@ -300,6 +301,7 @@ const ProfileScreen = () => {
 					<>
 						<h1>payment</h1>
 						<button onClick={() => setComponent('')}>back</button>
+						<PaymentHistoryScreen id={userInfo._id} />
 					</>
 				)}
 				{component === 'address' && user && user.homeAddress && (

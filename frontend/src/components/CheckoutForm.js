@@ -16,11 +16,11 @@ const CheckoutForm = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
-	const [email, setEmail] = useState('')
-	const [fullName, setFullName] = useState('')
-
 	const stripe = useStripe()
 	const elements = useElements()
+
+	const [email, setEmail] = useState('')
+	const [fullName, setFullName] = useState('')
 
 	const orderStripe = useSelector((state) => state.orderStripe)
 	const { data } = orderStripe
@@ -50,10 +50,10 @@ const CheckoutForm = () => {
 		} else if (result && email && fullName) {
 			dispatch(
 				orderSubscription({
-					'payment_method': result.paymentMethod.id,
-					'email': email,
-					'id': userInfo._id,
-					'fullName': fullName,
+					payment_method: result.paymentMethod.id,
+					email: email,
+					id: userInfo._id,
+					fullName: fullName,
 				})
 			)
 		} else {

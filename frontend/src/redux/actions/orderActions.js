@@ -1,5 +1,8 @@
 import axios from 'axios'
 import {
+	ORDER_LIST_MY_SUBSCRIPTION_FAIL,
+	ORDER_LIST_MY_SUBSCRIPTION_REQUEST,
+	ORDER_LIST_MY_SUBSCRIPTION_SUCCESS,
 	ORDER_SUBSCRIPTION_DATA_SET_FAIL,
 	ORDER_SUBSCRIPTION_DATA_SET_REQUEST,
 	ORDER_SUBSCRIPTION_DATA_SET_SUCCESS,
@@ -92,6 +95,39 @@ export const orderSetData = (orderItem) => async (dispatch, getState) => {
 		}
 		dispatch({
 			type: ORDER_SUBSCRIPTION_DATA_SET_FAIL,
+			payload: message,
+		})
+	}
+}
+
+export const orderListMySub = (userId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: ORDER_LIST_MY_SUBSCRIPTION_REQUEST,
+		})
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await axios.get('/api/orders', config)
+		dispatch({
+			type: ORDER_LIST_MY_SUBSCRIPTION_SUCCESS,
+			payload: data,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		dispatch({
+			type: ORDER_LIST_MY_SUBSCRIPTION_FAIL,
 			payload: message,
 		})
 	}

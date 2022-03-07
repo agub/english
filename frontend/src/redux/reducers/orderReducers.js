@@ -1,4 +1,8 @@
 import {
+	ORDER_LIST_MY_SUBSCRIPTION_FAIL,
+	ORDER_LIST_MY_SUBSCRIPTION_REQUEST,
+	ORDER_LIST_MY_SUBSCRIPTION_RESET,
+	ORDER_LIST_MY_SUBSCRIPTION_SUCCESS,
 	ORDER_SUBSCRIPTION_DATA_SET_FAIL,
 	ORDER_SUBSCRIPTION_DATA_SET_REQUEST,
 	ORDER_SUBSCRIPTION_DATA_SET_RESET,
@@ -56,6 +60,32 @@ export const orderDataSetReducer = (state = {}, action) => {
 			}
 		case ORDER_SUBSCRIPTION_DATA_SET_RESET:
 			return {}
+		default:
+			return state
+	}
+}
+
+export const orderListMySubscriptionReducer = (
+	state = { orderItems: [] },
+	action
+) => {
+	switch (action.type) {
+		case ORDER_LIST_MY_SUBSCRIPTION_REQUEST:
+			return {
+				loading: true,
+			}
+		case ORDER_LIST_MY_SUBSCRIPTION_SUCCESS:
+			return {
+				loading: false,
+				orderItems: action.payload,
+			}
+		case ORDER_LIST_MY_SUBSCRIPTION_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			}
+		case ORDER_LIST_MY_SUBSCRIPTION_RESET:
+			return { orderItems: [] }
 		default:
 			return state
 	}

@@ -19,6 +19,7 @@ import {
 import {
 	orderStripeReducer,
 	orderDataSetReducer,
+	orderListMySubscriptionReducer,
 } from './redux/reducers/orderReducers'
 
 const reducer = combineReducers({
@@ -35,6 +36,7 @@ const reducer = combineReducers({
 	userUpdate: userUpdateReducer,
 	orderStripe: orderStripeReducer,
 	orderDataSet: orderDataSetReducer,
+	orderListMySubscription: orderListMySubscriptionReducer,
 })
 const userInfoFromStorage = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
