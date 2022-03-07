@@ -37,8 +37,8 @@ const orderSubscription = asyncHandler(async (req, res) => {
 			price: subscription.plan.amount,
 			email: email,
 			fullName: fullName,
-			isPaid: true,
-			paidAt: new Date(),
+			isPaid: false,
+			createdAt: new Date(subscription.current_period_start * 1000),
 			isCancelled: false,
 		}
 		console.log(orderItem)
@@ -66,18 +66,20 @@ const orderDataSet = asyncHandler(async (req, res) => {
 	const { orderItem, id } = req.body
 
 	const hasOrder = await Order.findOne({ user: id })
-
 	if (!hasOrder) {
 		const newOrder = await Order.create({
 			user: id,
-			orderItems: [orderItem],
+			orderItems: [{ ...orderItem, isPaid: true }],
 		})
 		res.status(201).json({
 			user: newOrder.id,
 			orderItems: newOrder.orderItems,
 		})
 	} else if (hasOrder) {
-		hasOrder.orderItems = [...hasOrder.orderItems, orderItem]
+		hasOrder.orderItems = [
+			...hasOrder.orderItems,
+			{ ...orderItem, isPaid: true },
+		]
 		const updateOrder = await hasOrder.save()
 		res.status(201).json({
 			user: updateOrder.id,
@@ -104,11 +106,12 @@ const listMyOrders = asyncHandler(async (req, res) => {
 })
 
 // @desc     fetch subscription detail
-// @route    GET/ api/orders/:id
+// @route    PUT / api/orders/:id
 // @access   Private
-const getSubscriptionById = asyncHandler(async (req, res) => {
+const unsubscribeById = asyncHandler(async (req, res) => {
 	const order = await Order.findOne({ user: req.user._id })
-	const { orderId } = req.body
+	// const { orderId } = req.params.orderId
+	console.log(req.params.orderId)
 
 	if (order) {
 		const unSub = await stripe.subscriptions.update(
@@ -120,6 +123,7 @@ const getSubscriptionById = asyncHandler(async (req, res) => {
 		for (const item of order.orderItems) {
 			if (item.orderId === 'sub_1KaZhhGBYewul3wwt8VtZw5F') {
 				item.isCancelled = unSub.cancel_at_period_end ? true : false
+				// item.isCancelled = false
 				break
 			}
 		}
@@ -131,4 +135,24 @@ const getSubscriptionById = asyncHandler(async (req, res) => {
 	}
 })
 
-export { orderSubscription, orderDataSet, listMyOrders, getSubscriptionById }
+// @desc     fetch subscription detail
+// @route    GET / api/orders/:id
+// @access   Private
+const getOrderById = asyncHandler(async (req, res) => {
+	const subscription = await stripe.subscriptions.retrieve(
+		'sub_1KaZhhGBYewul3wwt8VtZw5F'
+	)
+	if (subscription) {
+		res.json(subscription)
+	} else {
+		throw new Error()
+	}
+})
+
+export {
+	orderSubscription,
+	orderDataSet,
+	listMyOrders,
+	unsubscribeById,
+	getOrderById,
+}

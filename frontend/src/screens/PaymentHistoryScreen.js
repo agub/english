@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { orderListMySub } from '../redux/actions/orderActions'
+import Button from '../components/common/Button'
 
 const PaymentHistoryScreen = ({ id }) => {
 	const dispatch = useDispatch()
@@ -10,6 +11,12 @@ const PaymentHistoryScreen = ({ id }) => {
 	)
 	const { orderItems } = orderListMySubscription
 
+	const submitHandler = (e) => {
+		e.preventDefault()
+
+		// dispatch(orderUnsub)
+	}
+
 	useEffect(() => {
 		console.log('fired on payment')
 		dispatch(orderListMySub(id))
@@ -17,12 +24,25 @@ const PaymentHistoryScreen = ({ id }) => {
 	return (
 		<div>
 			{orderItems &&
-				orderItems.map((item, index) => (
+				orderItems.map((item) => (
 					<div key={item._id}>
-						<p>{index + 1}</p>
 						<p>ID: {item.orderId}</p>
-						<p>Price: {item.price}</p>
-						<p>ステータス: {item.isPaid ? '支払い済み' : '未払'}</p>
+						<p>月額: ¥{item.price}</p>
+						<p>
+							ステイタス:{' '}
+							{item.isCancelled ? 'キャンセル済み' : '継続'}
+						</p>
+						{/* <p>ステータス: {item.isPaid ? '支払い済み' : '未払'}</p> */}
+						<Button
+							onClick={submitHandler}
+							type='submit'
+							bgColor='bg-blue-500'
+							textColor='text-white'
+							hoverColor='bg-blue-700'
+							size='sm'
+						>
+							キャンセルする
+						</Button>
 					</div>
 				))}
 		</div>

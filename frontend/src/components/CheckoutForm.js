@@ -78,7 +78,7 @@ const CheckoutForm = () => {
 						if (result.error) {
 							console.log('There was an issue!')
 							console.log(result.error)
-							// Display error message in your UI.
+							// Display error message in your UI. IsPaid is still trueeee!!!!!!!
 							// The card was declined (i.e. insufficient funds, card has expired, etc)
 						} else {
 							console.log('You got the money!')

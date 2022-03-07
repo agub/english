@@ -11,6 +11,10 @@ import {
 	ORDER_SUBSCRIPTION_REQUEST,
 	ORDER_SUBSCRIPTION_RESET,
 	ORDER_SUBSCRIPTION_SUCCESS,
+	ORDER_UNSUBSCRIBE_FAIL,
+	ORDER_UNSUBSCRIBE_REQUEST,
+	ORDER_UNSUBSCRIBE_RESET,
+	ORDER_UNSUBSCRIBE_SUCCESS,
 } from '../constants/orderConstants'
 
 export const orderStripeReducer = (state = {}, action) => {
@@ -86,6 +90,30 @@ export const orderListMySubscriptionReducer = (
 			}
 		case ORDER_LIST_MY_SUBSCRIPTION_RESET:
 			return { orderItems: [] }
+		default:
+			return state
+	}
+}
+
+export const orderUnsubscribeReducer = (state = {}, action) => {
+	switch (action.type) {
+		case ORDER_UNSUBSCRIBE_REQUEST:
+			return {
+				loading: true,
+			}
+		case ORDER_UNSUBSCRIBE_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+				orderItems: action.payload,
+			}
+		case ORDER_UNSUBSCRIBE_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			}
+		case ORDER_UNSUBSCRIBE_RESET:
+			return {}
 		default:
 			return state
 	}
