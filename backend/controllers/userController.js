@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 
 import User from '../models/userModel.js'
+import { sendSampleEmail } from '../utils/email.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -342,16 +343,19 @@ const updateUser = asyncHandler(async (req, res) => {
 })
 
 // @desc    Update user
-// @route   PUT /api/users/contact
+// @route   POST /api/users/contact
 // @access  Private/Admin
 const contactForm = asyncHandler(async (req, res) => {
 	const { title, email, text } = req.body
 	console.log(title, email, text)
-	if (title) {
-		res.json({ title, email, text })
-	} else {
-		res.status(404)
-		throw new Error('title or email or text is missing')
+	try {
+		console.log(1)
+		sendSampleEmail(email)
+		console.log(4)
+		res.json({ message: '送信完了' })
+		console.log(5)
+	} catch (error) {
+		res.status(400).send(error.message)
 	}
 })
 

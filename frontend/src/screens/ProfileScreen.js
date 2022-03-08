@@ -37,9 +37,8 @@ const ProfileScreen = () => {
 				setTimeout(() => setStartAnimate(true), 400)
 			}
 		}
+		return () => setStartAnimate()
 	}, [navigate, userInfo, user, dispatch])
-
-	// setTimeout(() => setState(true), 400)
 
 	const animationClass = classnames(
 		`transition-transform duration-200 ease-in-out scale-y-0 origin-top`,
@@ -54,7 +53,6 @@ const ProfileScreen = () => {
 				{error && <Message variant='danger'>{error}</Message>}
 				<h1>プロファイル</h1>
 				{(loading || !startAnimate) && <Loader />}
-
 				{!loading &&
 					user &&
 					user.info &&
