@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 
 import User from '../models/userModel.js'
-import { sendEmail, sendSampleEmail } from '../utils/email.js'
+import { sendEmail } from '../utils/email.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -345,15 +345,24 @@ const updateUser = asyncHandler(async (req, res) => {
 // @desc    Update user
 // @route   POST /api/users/contact
 // @access  Private/Admin
+
 const contactForm = asyncHandler(async (req, res) => {
 	const { title, email, text } = req.body
 	console.log(title, email, text)
-	try {
-		await sendSampleEmail({ title, email, text })
-	} catch (error) {
-		res.status(400).send(error.message)
+	const mailObj = {
+		from: 'sample website <info@umaishio.com>',
+		recipients: [email],
+		subject: title,
+		message: text,
 	}
-	res.json({ message: '送信完了' })
+
+	const data = await sendEmail(mailObj)
+	if (data.success) {
+		res.json({ message: 'success' })
+	} else {
+		res.status(400)
+		throw new Error(data.error)
+	}
 })
 
 export {

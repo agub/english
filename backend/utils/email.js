@@ -5,11 +5,9 @@ import nodemailer from 'nodemailer'
 
 // dotenv.config()
 
-export const sendEmail = asyncHandler(async (mailObj) => {
+export async function sendEmail(mailObj) {
 	const { from, recipients, subject, message } = mailObj
-
-	try {
-		// Create a transporter
+	return new Promise((resolve, reject) => {
 		let transporter = nodemailer.createTransport({
 			host: 'smtp.zoho.eu',
 			secure: true,
@@ -19,38 +17,39 @@ export const sendEmail = asyncHandler(async (mailObj) => {
 				pass: 'ie1H74CCqNbB',
 			},
 		})
-
-		// send mail with defined transport object
-		let mailStatus = await transporter.sendMail({
-			from: from, // sender address
-			to: recipients, // list of recipients
-			subject: subject, // Subject line
-			html: message, // plain text
-		})
-
-		console.log(`Message sent: ${mailStatus.messageId}`)
-		return `Message sent: ${mailStatus.messageId}`
-	} catch (error) {
-		console.error(
-			`Something went wrong in the sendmail method. Error: ${error.message}`
+		transporter.sendMail(
+			{
+				from: from, // sender address
+				to: recipients, // list of recipients
+				subject: subject, // Subject line
+				html: message, // plain text
+			},
+			(error, info) => {
+				if (error) {
+					console.log(error.response)
+					resolve({ error: error.response })
+				} else {
+					console.log('Email sent: ' + info.response)
+					resolve({ success: info.response })
+				}
+			}
 		)
-	}
-})
-
-export const sendSampleEmail = async (obj) => {
-	const { title, email, text } = obj
-	const mailObj = {
-		from: 'sample website <info@umaishio.com>',
-		recipients: [email],
-		subject: title,
-		message: text,
-	}
-	try {
-		await sendEmail(mailObj)
-		return
-	} catch (error) {
-		console.error(
-			`Something went wrong in the sendmail method. Error: ${error.message}`
-		)
-	}
+	})
 }
+
+// export const sendSampleEmail = async (obj) => {
+// 	const { title, email, text } = obj
+// 	const mailObj = {
+// 		from: 'sample website <info@umaishio.com>',
+// 		recipients: [email],
+// 		subject: title,
+// 		message: text,
+// 	}
+// 	try {
+// 		const data = await sendEmail(mailObj)
+// 		// console.log(data)
+// 		return data
+// 	} catch (error) {
+// 		console.error(` ${error.message}`)
+// 	}
+// }
