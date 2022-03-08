@@ -19,6 +19,9 @@ module.exports = {
 			width: {
 				'/7': 'calc(100% / 7)',
 			},
+			transitionProperty: {
+				height: 'height',
+			},
 		},
 	},
 	plugins: [],

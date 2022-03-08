@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
@@ -10,8 +10,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getTeacherDetails, getUserDetails } from '../redux/actions/userActions'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
+import { SampleAnimation } from './SampleAnimation'
+import classnames from 'classnames'
 
 const ProfileScreen = () => {
+	const [state, setState] = useState(false)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
@@ -28,102 +31,130 @@ const ProfileScreen = () => {
 		} else {
 			if (IsObjectEmpty(user)) {
 				dispatch(getUserDetails('profile'))
+				setTimeout(() => setState(true), 400)
 				if (user.teacher) dispatch(getTeacherDetails(user.teacher))
+			}
+			if (user) {
+				setTimeout(() => setState(true), 400)
 			}
 		}
 	}, [navigate, userInfo, user, dispatch])
+
+	// setTimeout(() => setState(true), 400)
+
+	const animationClass = classnames(
+		`transition-transform duration-200 ease-in-out scale-y-0 origin-top`,
+		{
+			'scale-y-100': state,
+		}
+	)
 
 	return (
 		<Container>
 			<FormContainer>
 				{error && <Message variant='danger'>{error}</Message>}
-				{loading && <Loader />}
-				{user && user.info && user.name && user.homeAddress && (
-					<>
-						<h1>プロファイル</h1>
-						{!user.isTeacher && <Calender />}
-						<p className='mt-4'>ユーザー情報</p>
-						<HorizontalButton
-							text='お名前:'
-							type='box'
-							result={
-								user.name.lastName + ' ' + user.name.firstName
-							}
-						/>
-						<HorizontalButton
-							text='メールアドレス:'
-							type='box'
-							result={user.email}
-						/>
-						<HorizontalButton
-							text='Discordアカウント:'
-							type='box'
-							result={user.info.discordId}
-						/>
-						<HorizontalButton
-							text='受講日:'
-							type='box'
-							result='データーモデルに追加'
-						/>
-						<HorizontalButton
-							text='アカウント:'
-							type='box'
-							result={user.isTeacher ? 'Teacher' : 'Learner'}
-						/>
-						{/* <HorizontalButton
+				<h1>プロファイル</h1>
+				{(loading || !state) && <Loader />}
+
+				{!loading &&
+					user &&
+					user.info &&
+					user.name &&
+					user.homeAddress && (
+						<>
+							<div className={animationClass}>
+								{!user.isTeacher && <Calender />}
+								<p className='mt-4'>ユーザー情報</p>
+								<HorizontalButton
+									text='お名前:'
+									type='box'
+									result={
+										user.name.lastName +
+										' ' +
+										user.name.firstName
+									}
+								/>
+								<HorizontalButton
+									text='メールアドレス:'
+									type='box'
+									result={user.email}
+								/>
+								<HorizontalButton
+									text='Discordアカウント:'
+									type='box'
+									result={user.info.discordId}
+								/>
+								<HorizontalButton
+									text='受講日:'
+									type='box'
+									result='データーモデルに追加'
+								/>
+								<HorizontalButton
+									text='アカウント:'
+									type='box'
+									result={
+										user.isTeacher ? 'Teacher' : 'Learner'
+									}
+								/>
+								{/* <HorizontalButton
 								text='ご使用ゲーム:'
 								type='box'
 								result={user.info.gameTitle}
 							/> */}
-						<p className='mt-4'>一般</p>
-						<Link to={`/profile/address`}>
-							<HorizontalButton
-								text='住所登録'
-								type='button'
-								result={
-									IsObjectEmpty(user.homeAddress)
-										? '未登録'
-										: '登録済み'
-								}
-							/>
-						</Link>
-						<HorizontalButton
-							text='お支払いプラン'
-							type='button'
-							result='定額'
-						/>
-						{!user.isTeacher && (
-							<HorizontalButton
-								text='先生'
-								type='button'
-								result={
-									user.teacher
-										? teacher.name.kanaFirstName + '先生'
-										: '未定'
-								}
-							/>
-						)}
-						<p className='mt-4'>設定</p>
-						<Link to={`/profile/payment/history`}>
-							<HorizontalButton
-								text='月額支払い設定'
-								type='button'
-							/>
-						</Link>
-						<Link to={'/profile/password'}>
-							<HorizontalButton
-								text='パスワードの変更'
-								type='button'
-							/>
-						</Link>
-						<Link to={'/profile/discordId'}>
-							<HorizontalButton
-								text='Discordの名前変更'
-								type='button'
-							/>
-						</Link>
-					</>
-				)}
+								<p className='mt-4'>一般</p>
+								<Link to={`/profile/address`}>
+									<HorizontalButton
+										text='住所登録'
+										type='button'
+										result={
+											IsObjectEmpty(user.homeAddress)
+												? '未登録'
+												: '登録済み'
+										}
+									/>
+								</Link>
+								<Link to={`/profile/payment/history`}>
+									<HorizontalButton
+										text='お支払いプラン'
+										type='button'
+										result='定額'
+									/>
+								</Link>
+								{!user.isTeacher && (
+									<HorizontalButton
+										text='先生'
+										type='button'
+										result={
+											user.teacher
+												? teacher.name.kanaFirstName +
+												  '先生'
+												: '未定'
+										}
+									/>
+								)}
+								<p className='mt-4'>設定</p>
+
+								<Link to={`/payment`}>
+									<HorizontalButton
+										text='月額支払い設定'
+										type='button'
+									/>
+								</Link>
+								<Link to={'/profile/password'}>
+									<HorizontalButton
+										text='パスワードの変更'
+										type='button'
+									/>
+								</Link>
+								<Link to={'/profile/discordId'}>
+									<HorizontalButton
+										text='Discordの名前変更'
+										type='button'
+									/>
+								</Link>
+							</div>
+						</>
+					)}
 			</FormContainer>
 		</Container>
 	)
