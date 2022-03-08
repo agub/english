@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer'
 
 // dotenv.config()
 
-const sendEmail = asyncHandler(async (mailObj) => {
+export const sendEmail = asyncHandler(async (mailObj) => {
 	const { from, recipients, subject, message } = mailObj
 
 	try {
@@ -37,22 +37,20 @@ const sendEmail = asyncHandler(async (mailObj) => {
 	}
 })
 
-export const sendSampleEmail = asyncHandler(async (email) => {
-	console.log(2)
+export const sendSampleEmail = async (obj) => {
+	const { title, email, text } = obj
 	const mailObj = {
 		from: 'sample website <info@umaishio.com>',
 		recipients: [email],
-		subject: 'sample',
-		message: `しん
-		<br/>
-		sample message
-		</p>`,
+		subject: title,
+		message: text,
 	}
-
-	await sendEmail(mailObj).then((res) => {
-		console.log(res)
-		console.log(3)
-	})
-
-	return mailObj
-})
+	try {
+		await sendEmail(mailObj)
+		return
+	} catch (error) {
+		console.error(
+			`Something went wrong in the sendmail method. Error: ${error.message}`
+		)
+	}
+}
