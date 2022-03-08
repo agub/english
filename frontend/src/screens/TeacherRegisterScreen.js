@@ -110,18 +110,31 @@ const TeacherRegisterScreen = () => {
 		}))
 	}, [prefer, secPrefer, game1, game2, game3])
 
+	const checkPasswordLength = (password) => {
+		if (password.length >= 6) {
+			return true
+		} else {
+			return false
+		}
+	}
+
 	const submitHandler = (e) => {
 		e.preventDefault()
 		setErrorText(null)
 		if (inputValue.info.gameLists.length === 0) {
 			setErrorText('使用ゲームを正しく選択してください')
-		} else {
-			if (password === confirmPassword) {
-				dispatch(teacherRegister(inputValue))
-			} else {
-				setErrorText('パスワードと確認パスワードが一致しません')
-			}
+			return
 		}
+		if (password !== confirmPassword) {
+			setErrorText('パスワードと確認パスワードが一致しません')
+			return
+		}
+		if (!checkPasswordLength(password)) {
+			setErrorText('パスワードは6桁以上必要です')
+			return
+		}
+
+		dispatch(teacherRegister(inputValue))
 	}
 	return (
 		<Container>

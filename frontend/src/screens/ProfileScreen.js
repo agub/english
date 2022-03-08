@@ -4,17 +4,17 @@ import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import HorizontalButton from '../components/common/HorizontalButton'
+import IsObjectEmpty from '../components/common/IsObjectEmpty'
 import Loader from '../components/common/Loader'
 import Calender from '../components/Calender'
+
+import classnames from 'classnames'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { getTeacherDetails, getUserDetails } from '../redux/actions/userActions'
 
-import IsObjectEmpty from '../components/common/IsObjectEmpty'
-import { SampleAnimation } from './SampleAnimation'
-import classnames from 'classnames'
-
 const ProfileScreen = () => {
-	const [state, setState] = useState(false)
+	const [startAnimate, setStartAnimate] = useState(false)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
@@ -31,11 +31,10 @@ const ProfileScreen = () => {
 		} else {
 			if (IsObjectEmpty(user)) {
 				dispatch(getUserDetails('profile'))
-				setTimeout(() => setState(true), 400)
+				setTimeout(() => setStartAnimate(true), 400)
 				if (user.teacher) dispatch(getTeacherDetails(user.teacher))
-			}
-			if (user) {
-				setTimeout(() => setState(true), 400)
+			} else {
+				setTimeout(() => setStartAnimate(true), 400)
 			}
 		}
 	}, [navigate, userInfo, user, dispatch])
@@ -45,7 +44,7 @@ const ProfileScreen = () => {
 	const animationClass = classnames(
 		`transition-transform duration-200 ease-in-out scale-y-0 origin-top`,
 		{
-			'scale-y-100': state,
+			'scale-y-100': startAnimate,
 		}
 	)
 
@@ -54,7 +53,7 @@ const ProfileScreen = () => {
 			<FormContainer>
 				{error && <Message variant='danger'>{error}</Message>}
 				<h1>プロファイル</h1>
-				{(loading || !state) && <Loader />}
+				{(loading || !startAnimate) && <Loader />}
 
 				{!loading &&
 					user &&

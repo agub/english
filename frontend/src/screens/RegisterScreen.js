@@ -14,6 +14,7 @@ const RegisterScreen = () => {
 		discordId: '',
 		confirmPassword: '',
 	})
+
 	const [errorText, setErrorText] = useState(null)
 
 	const { email, password, confirmPassword, discordId } = inputValue
@@ -23,14 +24,27 @@ const RegisterScreen = () => {
 
 	const dispatch = useDispatch()
 
+	const checkPasswordLength = (password) => {
+		if (password.length >= 6) {
+			return true
+		} else {
+			return false
+		}
+	}
+
 	const submitHandler = (e) => {
 		e.preventDefault()
 		setErrorText(null)
-		if (password === confirmPassword) {
-			dispatch(register(inputValue))
-		} else {
+		if (password !== confirmPassword) {
 			setErrorText('パスワードと確認パスワードが一致しません')
+			return
 		}
+		if (!checkPasswordLength(password)) {
+			setErrorText('パスワードは6桁以上必要です')
+			return
+		}
+		if (inputValue.email && inputValue.password && inputValue.discordId)
+			dispatch(register(inputValue))
 	}
 
 	return (

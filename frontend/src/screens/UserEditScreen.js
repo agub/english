@@ -57,8 +57,6 @@ const UserEditScreen = () => {
 				})
 			)
 		}
-		// dispatch(register(inputValue))
-		// setErrorText('パスワードと確認パスワードが一致しません')
 	}
 
 	useEffect(() => {

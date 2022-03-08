@@ -29,7 +29,6 @@ const LoginScreen = () => {
 	}, [navigate, redirect, userInfo])
 
 	const submitHandler = (e) => {
-		console.log('submit')
 		e.preventDefault()
 		dispatch(login(email, password))
 	}
