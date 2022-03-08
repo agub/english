@@ -16,6 +16,8 @@ import PaymentHistoryScreen from './screens/PaymentHistoryScreen'
 import ChangeAddressScreen from './screens/ChangeAddressScreen'
 import ChangeDiscordIdScreen from './screens/ChangeDiscordIdScreen'
 import ChangePasswordScreen from './screens/ChangePasswordScreen'
+import ContactScreen from './screens/ContactScreen'
+
 function App() {
 	return (
 		<>
@@ -45,7 +47,7 @@ function App() {
 					element={<ChangePasswordScreen />}
 				/>
 				<Route path='/payment' element={<PaymentScreen />} />
-
+				<Route path='/contact' element={<ContactScreen />} />
 				<Route
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}

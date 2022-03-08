@@ -13,6 +13,7 @@ import {
 	getUserById,
 	updateUser,
 	getTeacherById,
+	contactForm,
 } from '../controllers/userController.js'
 
 router.route('/trial').post(trialRegisterUser)
@@ -31,5 +32,7 @@ router
 	.route('/:id')
 	.get(protect, admin, getUserById)
 	.put(protect, admin, updateUser)
+
+router.route('/contact').post(contactForm)
 
 export default router

@@ -1,5 +1,8 @@
 import axios from 'axios'
 import {
+	USER_CONTACT_FAIL,
+	USER_CONTACT_REQUEST,
+	USER_CONTACT_SUCCESS,
 	USER_DETAILS_FAIL,
 	USER_DETAILS_REQUEST,
 	USER_DETAILS_RESET,
@@ -336,6 +339,30 @@ export const updateUser = (user) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: USER_UPDATE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const sendMessage = (object) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_CONTACT_REQUEST,
+		})
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+		await axios.post(`/api/users/contact`, object, config)
+		dispatch({ type: USER_CONTACT_SUCCESS })
+	} catch (error) {
+		dispatch({
+			type: USER_CONTACT_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

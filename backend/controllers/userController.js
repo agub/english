@@ -341,6 +341,20 @@ const updateUser = asyncHandler(async (req, res) => {
 	}
 })
 
+// @desc    Update user
+// @route   PUT /api/users/contact
+// @access  Private/Admin
+const contactForm = asyncHandler(async (req, res) => {
+	const { title, email, text } = req.body
+	console.log(title, email, text)
+	if (title) {
+		res.json({ title, email, text })
+	} else {
+		res.status(404)
+		throw new Error('title or email or text is missing')
+	}
+})
+
 export {
 	authUser,
 	getUserProfile,
@@ -352,4 +366,5 @@ export {
 	getUserById,
 	updateUser,
 	getTeacherById,
+	contactForm,
 }

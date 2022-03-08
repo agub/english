@@ -44,6 +44,12 @@ function Nav() {
 									>
 										Game-lists
 									</Link>
+									<Link
+										to='/contact'
+										className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+									>
+										Contact
+									</Link>
 									{!userInfo ? (
 										<>
 											<Link
@@ -173,6 +179,12 @@ function Nav() {
 									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 								>
 									Game-lists
+								</Link>
+								<Link
+									to='/contact'
+									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								>
+									Contact
 								</Link>
 								{!userInfo ? (
 									<>
