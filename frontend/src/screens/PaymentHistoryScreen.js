@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { orderListMySub, orderUnsub } from '../redux/actions/orderActions'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
+import { Link } from 'react-router-dom'
+import BackButton from '../components/common/BackButton'
+import Message from '../components/common/Message'
+import Loader from '../components/common/Loader'
 
 const PaymentHistoryScreen = ({ userId }) => {
 	const dispatch = useDispatch()
@@ -11,10 +15,10 @@ const PaymentHistoryScreen = ({ userId }) => {
 	const orderListMySubscription = useSelector(
 		(state) => state.orderListMySubscription
 	)
-	const { orderItems } = orderListMySubscription
-
+	const { orderItems, loading: orderListLoading } = orderListMySubscription
 	const orderUnsubscribe = useSelector((state) => state.orderUnsubscribe)
-	const { success, error } = orderUnsubscribe
+	const { success, error, loading } = orderUnsubscribe
+
 	const submitHandler = (e) => {
 		e.preventDefault()
 		console.log(e.currentTarget.id)
@@ -24,9 +28,16 @@ const PaymentHistoryScreen = ({ userId }) => {
 	useEffect(() => {
 		dispatch(orderListMySub(userId))
 	}, [userId, dispatch, success])
+
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
+				<Link to={`/profile`}>
+					<BackButton />
+				</Link>
+				{error && <Message variant='danger'>{error}</Message>}
+				{(loading || orderListLoading) && <Loader />}
+				<h1 className='text-center'>支払い履歴</h1>
 				{orderItems &&
 					orderItems.map((item) => (
 						<div className='border-b bottom-1 p-2' key={item._id}>
