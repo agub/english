@@ -11,6 +11,9 @@ const userSchema = mongoose.Schema(
 		password: {
 			type: String,
 		},
+		verify: {
+			type: String,
+		},
 		name: {
 			firstName: {
 				type: String,

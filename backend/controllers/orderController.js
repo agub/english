@@ -2,10 +2,11 @@ import asyncHandler from 'express-async-handler'
 import Stripe from 'stripe'
 import User from '../models/userModel.js'
 import Order from '../models/orderModel.js'
+import dotenv from 'dotenv'
 
-const stripe = Stripe(
-	'sk_test_51JhBtOGBYewul3wwUYpHVr4ZH1sZPSEjpr6RuxG2k8wizhPEc9KpgVY7P1x2lpe8DQ5xvQ33Cz6oSL2A6YZqmjcr006jwUVrkj'
-)
+dotenv.config()
+
+const stripe = Stripe(process.env.STRIPE_SECRET)
 
 // @desc     Order subscription
 // @route    GET/ api/orders/subscription
@@ -25,7 +26,7 @@ const orderSubscription = asyncHandler(async (req, res) => {
 
 		const subscription = await stripe.subscriptions.create({
 			customer: customer.id,
-			items: [{ plan: 'price_1KZnrnGBYewul3wwfNDo8yqn' }],
+			items: [{ plan: process.env.STRIPE_SUBSCRIPTION_PLAN }],
 			expand: ['latest_invoice.payment_intent'],
 		})
 
@@ -33,7 +34,7 @@ const orderSubscription = asyncHandler(async (req, res) => {
 			customerId: customer.id,
 			payment_method: payment_method,
 			orderId: subscription.id,
-			plan: 'price_1KZnrnGBYewul3wwfNDo8yqn',
+			plan: process.env.STRIPE_SUBSCRIPTION_PLAN,
 			price: subscription.plan.amount,
 			email: email,
 			fullName: fullName,

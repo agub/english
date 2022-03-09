@@ -4,6 +4,7 @@ import generateToken from '../utils/generateToken.js'
 
 import User from '../models/userModel.js'
 import { sendEmail } from '../utils/email.js'
+import { contactMail } from '../utils/mails.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -74,32 +75,42 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 
 const registerUser = asyncHandler(async (req, res) => {
 	const { email, password, discordId } = req.body
-
-	const user = await User.findOne({ email })
-
-	if (user && !user.password) {
-		user.email = email || user.email
-		if (password) {
-			user.password = password
+	try {
+		const user = await User.findOne({ email })
+		const emailVerificationToken = crypto.randomBytes(20).toString('hex')
+		if (user && !user.password) {
+			user.email = email || user.email
+			user.discordId = discordId
+			user.verify = emailVerificationToken
+			if (password) {
+				user.password = password
+			}
+			const updatedUser = await user.save()
+			// sendWelcomeEmail(
+			// 	updatedUser.email,
+			// 	updatedUser.name,
+			// 	updatedUser._id,
+			// 	updatedUser.verify
+			// )
+			res.status(201).json({
+				_id: updatedUser._id,
+				name: updatedUser.name,
+				email: updatedUser.email,
+				isAdmin: user.isAdmin,
+				token: generateToken(updatedUser._id),
+			})
+		} else if (user) {
+			res.status(400)
+			throw new Error('このメールアドレスは登録済みです')
+		} else {
+			res.status(400)
+			throw new Error(
+				'トライヤルを申し込んだ時のメールアドレスをお使いください。'
+			)
 		}
-		user.discordId = discordId
-		const updatedUser = await user.save()
-
-		res.status(201).json({
-			_id: updatedUser._id,
-			name: updatedUser.name,
-			email: updatedUser.email,
-			isAdmin: user.isAdmin,
-			token: generateToken(updatedUser._id),
-		})
-	} else if (user) {
+	} catch (error) {
 		res.status(400)
-		throw new Error('このメールアドレスは登録済みです')
-	} else {
-		res.status(400)
-		throw new Error(
-			'トライヤルを申し込んだ時のメールアドレスをお使いください。'
-		)
+		throw new Error(error)
 	}
 })
 
@@ -349,19 +360,13 @@ const updateUser = asyncHandler(async (req, res) => {
 const contactForm = asyncHandler(async (req, res) => {
 	const { title, email, text } = req.body
 	console.log(title, email, text)
-	const mailObj = {
-		from: 'sample website <info@umaishio.com>',
-		recipients: [email],
-		subject: title,
-		message: text,
-	}
 
-	const data = await sendEmail(mailObj)
-	if (data.success) {
-		res.json({ message: 'success' })
-	} else {
+	try {
+		const data = await sendEmail(contactMail(title, email, text))
+		res.json({ message: data })
+	} catch (error) {
 		res.status(400)
-		throw new Error(data.error)
+		throw new Error(error)
 	}
 })
 

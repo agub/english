@@ -1,9 +1,9 @@
 import asyncHandler from 'express-async-handler'
 import nodemailer from 'nodemailer'
 
-// import dotenv from 'dotenv'
+import dotenv from 'dotenv'
 
-// dotenv.config()
+dotenv.config()
 
 export async function sendEmail(mailObj) {
 	const { from, recipients, subject, message } = mailObj
@@ -14,7 +14,7 @@ export async function sendEmail(mailObj) {
 			port: 465,
 			auth: {
 				user: 'info@umaishio.com',
-				pass: 'ie1H74CCqNbB',
+				pass: process.env.ZOHO_PASSWORD,
 			},
 		})
 		transporter.sendMail(
@@ -27,7 +27,7 @@ export async function sendEmail(mailObj) {
 			(error, info) => {
 				if (error) {
 					console.log(error.response)
-					resolve({ error: error.response })
+					reject(new Error(error.response))
 				} else {
 					console.log('Email sent: ' + info.response)
 					resolve({ success: info.response })
