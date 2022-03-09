@@ -36,6 +36,10 @@ import {
 	USER_CONTACT_SUCCESS,
 	USER_CONTACT_FAIL,
 	USER_CONTACT_RESET,
+	USER_VERIFY_REQUEST,
+	USER_VERIFY_SUCCESS,
+	USER_VERIFY_FAIL,
+	USER_VERIFY_RESET,
 } from '../constants/userConstants.js'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -173,6 +177,21 @@ export const userContactReducer = (state = {}, action) => {
 		case USER_CONTACT_FAIL:
 			return { loading: false, error: action.payload }
 		case USER_CONTACT_RESET:
+			return {}
+		default:
+			return state
+	}
+}
+
+export const userVerifyReducer = (state = {}, action) => {
+	switch (action.type) {
+		case USER_VERIFY_REQUEST:
+			return { loading: true }
+		case USER_VERIFY_SUCCESS:
+			return { loading: false, success: true }
+		case USER_VERIFY_FAIL:
+			return { loading: false, error: action.payload }
+		case USER_VERIFY_RESET:
 			return {}
 		default:
 			return state

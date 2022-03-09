@@ -6,6 +6,7 @@ import {
 	authUser,
 	getUserProfile,
 	registerUser,
+	verifyEmail,
 	trialRegisterUser,
 	teacherRegisterUser,
 	updateUserProfile,
@@ -34,5 +35,7 @@ router
 	.put(protect, admin, updateUser)
 
 router.route('/contact').post(contactForm)
+
+router.route('/verify/:id/:token').post(verifyEmail)
 
 export default router

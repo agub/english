@@ -17,6 +17,7 @@ import ChangeAddressScreen from './screens/ChangeAddressScreen'
 import ChangeDiscordIdScreen from './screens/ChangeDiscordIdScreen'
 import ChangePasswordScreen from './screens/ChangePasswordScreen'
 import ContactScreen from './screens/ContactScreen'
+import VerifyUserScreen from './screens/VerifyUserScreen'
 
 function App() {
 	return (
@@ -52,6 +53,11 @@ function App() {
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}
 				/>
+				<Route
+					path='/verify/:id/:token'
+					element={<VerifyUserScreen />}
+				/>
+
 				<Route path='/admin/userList' element={<UserListScreen />} />
 				<Route path='/admin/:id/edit' element={<UserEditScreen />} />
 			</Routes>

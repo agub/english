@@ -16,6 +16,7 @@ import {
 	userListReducer,
 	userUpdateReducer,
 	userContactReducer,
+	userVerifyReducer,
 } from './redux/reducers/userReducers'
 import {
 	orderStripeReducer,
@@ -37,6 +38,7 @@ const reducer = combineReducers({
 	userList: userListReducer,
 	userContact: userContactReducer,
 	userUpdate: userUpdateReducer,
+	userVerify: userVerifyReducer,
 	orderStripe: orderStripeReducer,
 	orderDataSet: orderDataSetReducer,
 	orderListMySubscription: orderListMySubscriptionReducer,

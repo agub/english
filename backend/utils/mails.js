@@ -16,12 +16,14 @@ export const contactMail = (title, email, text) => {
 	}
 }
 
-const registerVerifyMail = (email, name, id, token) => {
+export const registerVerifyMail = (object) => {
+	const { email, fullName, id, token } = object
+	console.log(`${process.env.API_URI}/verify/${id}/${token}`)
 	return {
 		from: 'xxx会社 <info@umaishio.com>',
 		recipients: [email],
 		subject: 'xxx会社の登録のご案内',
-		message: `<p>${name}様
+		message: `<p>${fullName}様
 		<br/>
 		xxx会社のご登録ありがとうございます。
 		<br/>

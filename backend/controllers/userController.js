@@ -1,10 +1,10 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
-
+import crypto from 'crypto'
 import User from '../models/userModel.js'
 import { sendEmail } from '../utils/email.js'
-import { contactMail } from '../utils/mails.js'
+import { contactMail, registerVerifyMail } from '../utils/mails.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -77,21 +77,26 @@ const registerUser = asyncHandler(async (req, res) => {
 	const { email, password, discordId } = req.body
 	try {
 		const user = await User.findOne({ email })
-		const emailVerificationToken = crypto.randomBytes(20).toString('hex')
+		const emailVerificationToken = crypto.randomBytes(10).toString('hex')
 		if (user && !user.password) {
 			user.email = email || user.email
 			user.discordId = discordId
 			user.verify = emailVerificationToken
-			if (password) {
-				user.password = password
-			}
+			if (password) user.password = password
+
 			const updatedUser = await user.save()
-			// sendWelcomeEmail(
-			// 	updatedUser.email,
-			// 	updatedUser.name,
-			// 	updatedUser._id,
-			// 	updatedUser.verify
-			// )
+
+			await sendEmail(
+				registerVerifyMail({
+					email: updatedUser.email,
+					fullName:
+						updatedUser.name.lastName +
+						' ' +
+						updatedUser.name.firstName,
+					id: updatedUser._id,
+					token: updatedUser.verify,
+				})
+			)
 			res.status(201).json({
 				_id: updatedUser._id,
 				name: updatedUser.name,
@@ -111,6 +116,25 @@ const registerUser = asyncHandler(async (req, res) => {
 	} catch (error) {
 		res.status(400)
 		throw new Error(error)
+	}
+})
+// @desc    Verify Email
+// @route   POST /verify/:id/:token
+// @access  Public
+
+const verifyEmail = asyncHandler(async (req, res) => {
+	try {
+		const user = await User.findById(req.params.id)
+		if (!user || user.verify !== req.params.token) {
+			throw new Error()
+		}
+		user.verify = undefined
+		await user.save()
+
+		res.send('ログインをしてください')
+	} catch (err) {
+		res.status(400)
+		throw new Error('このページは存在しません')
 	}
 })
 
@@ -374,6 +398,7 @@ export {
 	authUser,
 	getUserProfile,
 	registerUser,
+	verifyEmail,
 	teacherRegisterUser,
 	trialRegisterUser,
 	updateUserProfile,

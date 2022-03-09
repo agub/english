@@ -33,6 +33,9 @@ import {
 	USER_UPDATE_FAIL,
 	USER_UPDATE_REQUEST,
 	USER_UPDATE_SUCCESS,
+	USER_VERIFY_FAIL,
+	USER_VERIFY_REQUEST,
+	USER_VERIFY_SUCCESS,
 } from '../constants/userConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -367,6 +370,41 @@ export const sendMessage = (object) => async (dispatch) => {
 				error.response && error.response.data.message
 					? error.response.data.message
 					: error.message,
+		})
+	}
+}
+
+export const verifyUser = (id, token) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_VERIFY_REQUEST,
+		})
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+
+		const { data } = await axios.post(
+			`/api/users/verify/${id}/${token}`,
+			{ id, token },
+			config
+		)
+		dispatch({
+			type: USER_VERIFY_SUCCESS,
+			payload: data,
+		})
+
+		console.log(data)
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+
+		dispatch({
+			type: USER_VERIFY_FAIL,
+			payload: message,
 		})
 	}
 }
