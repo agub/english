@@ -62,7 +62,7 @@ const userSchema = mongoose.Schema(
 				},
 			],
 			rentMixer: {
-				type: Boolean,
+				type: String,
 			},
 			discordId: {
 				type: String,

@@ -4,7 +4,12 @@ import generateToken from '../utils/generateToken.js'
 import crypto from 'crypto'
 import User from '../models/userModel.js'
 import { sendEmail } from '../utils/email.js'
-import { contactMail, registerVerifyMail } from '../utils/mails.js'
+import {
+	contactMail,
+	registerVerifyMail,
+	trialMail,
+	registerConfirmationMail,
+} from '../utils/mails.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -34,36 +39,33 @@ const authUser = asyncHandler(async (req, res) => {
 // @access  Public
 
 const trialRegisterUser = asyncHandler(async (req, res) => {
-	const {
-		email,
-		// password,
-		// addthisone
-		name,
-		info,
-
-		rentMixer,
-	} = req.body
+	const { email, name, info } = req.body
 
 	const userExists = await User.findOne({ email })
-
 	if (userExists) {
 		res.status(400)
 		throw new Error('User already exist')
 	}
-	const user = await User.create({
-		email,
-		name,
-		info,
-		rentMixer,
-	})
-	if (user) {
+	try {
+		const user = await User.create({
+			email,
+			name,
+			info,
+		})
+		await sendEmail(
+			await trialMail({
+				email: user.email,
+				fullName: user.name.lastName + ' ' + user.name.firstName,
+				info: user.info,
+			})
+		)
 		res.status(201).json({
 			_id: user._id,
 			name: user.name,
 			email: user.email,
 			token: generateToken(user._id),
 		})
-	} else {
+	} catch (error) {
 		res.status(400)
 		throw new Error('Invalid user data')
 	}
@@ -129,8 +131,17 @@ const verifyEmail = asyncHandler(async (req, res) => {
 			throw new Error()
 		}
 		user.verify = undefined
-		await user.save()
-
+		const updatedUser = await user.save()
+		registerConfirmationMail
+		await sendEmail(
+			registerConfirmationMail({
+				email: updatedUser.email,
+				fullName:
+					updatedUser.name.lastName +
+					' ' +
+					updatedUser.name.firstName,
+			})
+		)
 		res.send('ログインをしてください')
 	} catch (err) {
 		res.status(400)
@@ -141,34 +152,45 @@ const verifyEmail = asyncHandler(async (req, res) => {
 // @desc    Register teacher
 // @route   POST /api/users/teacher
 // @access  Public
-
 const teacherRegisterUser = asyncHandler(async (req, res) => {
 	const { email, password, name, info } = req.body
 
 	const userExists = await User.findOne({ email })
-
 	if (userExists) {
 		res.status(400)
-		throw new Error('User already exist')
+		throw new Error('このメールアドレスは登録済みです')
 	}
-	const user = await User.create({
-		email,
-		password,
-		name,
-		info,
-		isTeacher: true,
-	})
-	if (user) {
-		res.status(201).json({
-			_id: user._id,
-			name: user.name,
-			email: user.email,
-			info: user.info,
-			token: generateToken(user._id),
+	try {
+		const emailVerificationToken = crypto.randomBytes(10).toString('hex')
+		const user = await User.create({
+			email,
+			password,
+			name,
+			info,
+			verify: emailVerificationToken,
+			isTeacher: true,
 		})
-	} else {
+
+		await sendEmail(
+			registerVerifyMail({
+				email: user.email,
+				fullName: user.name.lastName + ' ' + user.name.firstName,
+				id: user._id,
+				token: user.verify,
+			})
+		)
+		if (user) {
+			res.status(201).json({
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				info: user.info,
+				token: generateToken(user._id),
+			})
+		}
+	} catch (error) {
 		res.status(400)
-		throw new Error('Invalid user data')
+		throw new Error('アカウント作成エラー')
 	}
 })
 

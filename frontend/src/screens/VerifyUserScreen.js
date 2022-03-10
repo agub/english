@@ -20,7 +20,7 @@ const VerifyUserScreen = ({ match, history }) => {
 		if (!success) {
 			dispatch(verifyUser(id, token))
 			console.log(id, token)
-			navigate('/profile')
+			navigate('/login')
 		}
 	}, [success, dispatch, navigate, id, token]) // eslint-disable-line react-hooks/exhaustive-deps
 	return null

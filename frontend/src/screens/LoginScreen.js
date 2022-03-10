@@ -18,6 +18,8 @@ const LoginScreen = () => {
 	const [inputValue, setInputValue] = useState({ email: '', password: '' })
 	const { email, password } = inputValue
 
+	const { success } = useSelector((state) => state.userVerify)
+
 	console.log(email)
 	const userLogin = useSelector((state) => state.userLogin)
 	const { loading, error, userInfo } = userLogin
@@ -45,6 +47,11 @@ const LoginScreen = () => {
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
 				{error && <Message variant='danger'>{error}</Message>}
+				{success && (
+					<Message variant='info'>
+						メールアドレスの認証が完了しました
+					</Message>
+				)}
 				<div className='mb-4'>
 					<InputField
 						type='email'

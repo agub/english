@@ -44,12 +44,12 @@ const TrialRegisterScreen = () => {
 			contactBy: '',
 			experience: '',
 			gameLists: [],
+			rentMixer: '',
 			preferTime: [
 				{ week: '', time: '', rank: 1 },
 				{ week: '', time: '', rank: 2 },
 			],
 		},
-		rentMixer: null,
 	})
 
 	const [errorText, setErrorText] = useState(null)
@@ -618,7 +618,7 @@ const TrialRegisterScreen = () => {
 					*24時間表記でお願いします。
 				</div>
 				{/* ______________________________________________________________________________________________________ */}
-				{(inputValue.info.consoleType === 'ps4' ||
+				{(inputValue.info.consoleType === 'tv' ||
 					inputValue.info.consoleType === 'switch') && (
 					<div className='mb-6 flex items-start flex-col'>
 						<label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -632,12 +632,15 @@ const TrialRegisterScreen = () => {
 							<input
 								required
 								name='rentMixer'
-								value={false}
+								value={'no_need'}
 								type='radio'
 								onChange={(e) => {
 									setInputValue((prev) => ({
 										...prev,
-										rentMixer: e.target.value,
+										info: {
+											...prev.info,
+											rentMixer: e.target.value,
+										},
 									}))
 								}}
 							/>
@@ -647,12 +650,15 @@ const TrialRegisterScreen = () => {
 							<input
 								required
 								name='rentMixer'
-								value={true}
+								value={'rent_mixer'}
 								type='radio'
 								onChange={(e) => {
 									setInputValue((prev) => ({
 										...prev,
-										rentMixer: e.target.value,
+										info: {
+											...prev.info,
+											rentMixer: e.target.value,
+										},
 									}))
 								}}
 							/>
@@ -662,12 +668,15 @@ const TrialRegisterScreen = () => {
 							<input
 								required
 								name='rentMixer'
-								value={undefined}
+								value={'required_additional_info'}
 								type='radio'
 								onChange={(e) => {
 									setInputValue((prev) => ({
 										...prev,
-										rentMixer: e.target.value,
+										info: {
+											...prev.info,
+											rentMixer: e.target.value,
+										},
 									}))
 								}}
 							/>
