@@ -1,4 +1,3 @@
-import asyncHandler from 'express-async-handler'
 import nodemailer from 'nodemailer'
 
 import dotenv from 'dotenv'
@@ -6,7 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export async function sendEmail(mailObj) {
-	const { from, recipients, subject, message } = mailObj
+	const { from, recipients, subject, message, bcc } = mailObj
 	return new Promise((resolve, reject) => {
 		let transporter = nodemailer.createTransport({
 			host: 'smtp.zoho.eu',
@@ -20,6 +19,7 @@ export async function sendEmail(mailObj) {
 		transporter.sendMail(
 			{
 				from: from, // sender address
+				bcc: bcc ? bcc : null,
 				to: recipients, // list of recipients
 				subject: subject, // Subject line
 				html: message, // plain text

@@ -1,4 +1,3 @@
-import express from 'express'
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import crypto from 'crypto'
@@ -9,6 +8,7 @@ import {
 	registerVerifyMail,
 	trialMail,
 	registerConfirmationMail,
+	seekTeacherMail,
 } from '../utils/mails.js'
 
 // @desc    Auth user & get token
@@ -19,8 +19,48 @@ const authUser = asyncHandler(async (req, res) => {
 	const { email, password } = req.body
 
 	const user = await User.findOne({ email })
-
+	// await sendEmail(contactMail('title', 'shintrfc@gmail.com', 'adfasfa'))
 	if (user && (await user.matchPassword(password))) {
+		// __________________________________
+		// const teachers = await User.find({ isTeacher: true })
+		// const teacherLists = teachers.map((teacher) => {
+		// 	return {
+		// 		teacherEmail: teacher.email,
+		// 		teacherFullName:
+		// 			teacher.name.lastName + ' ' + teacher.name.firstName,
+		// 		info: user.info,
+		// 	}
+		// })
+		// console.log(teacherLists)
+		// __________________________________
+		const sampleLists = [
+			{
+				teacherEmail: 'shintrfc@gmail.com',
+				teacherFullName: 'Shinichiro Suzuki',
+				info: user.info,
+			},
+		]
+		const sendAllTeacher = async () => {
+			for (const item of sampleLists) {
+				await sendEmail(
+					await seekTeacherMail({
+						teacherEmail: item.teacherEmail,
+						teacherFullName: item.teacherFullName,
+						info: item.info,
+					})
+				)
+				console.log(item)
+			}
+		}
+		sendAllTeacher()
+		// __________________________________
+		// await sendEmail(
+		// 	await trialMail({
+		// 		email: user.email,
+		// 		fullName: user.name.lastName + ' ' + user.name.firstName,
+		// 		info: user.info,
+		// 	})
+		// )
 		res.json({
 			_id: user._id,
 			name: user.name,
@@ -65,6 +105,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			token: generateToken(user._id),
 		})
+		// sendMsg
 	} catch (error) {
 		res.status(400)
 		throw new Error('Invalid user data')

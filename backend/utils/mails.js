@@ -1,6 +1,13 @@
 import dotenv from 'dotenv'
 import { experienceData, weeks, consoleData } from '../utils/data.js'
+import {
+	getConsoleType,
+	getExperienceValue,
+	getGameObject,
+	getPreferWeekValue,
+} from '../utils/reuseable.js'
 import Games from '../models/gameModel.js'
+import User from '../models/userModel.js'
 
 dotenv.config()
 
@@ -47,31 +54,7 @@ export const registerVerifyMail = (object) => {
 
 export const trialMail = async (object) => {
 	const { email, fullName, info } = object
-	//__________getExperienceData from Number__________
-	const getExperienceValue = () => {
-		for (const data of experienceData) {
-			if (data.value === info.experience) return data.title
-		}
-	}
-	//__________getPreferWeek from weeks number__________
-	const preferWeek = info.preferTime.map((obj) =>
-		weeks.find((week) => week.data === obj.week)
-	)
-	const convertedWeek = preferWeek.map((obj, index) => ({
-		...obj,
-		time: info.preferTime[index].time,
-		rank: info.preferTime[index].rank,
-	}))
-	//__________getConsoleType from data__________
-	const consoleType = consoleData.filter(
-		(obj) => obj.data === info.consoleType
-	)[0].title
-	//__________getGameTitle from Games__________
 	const games = await Games.find({})
-	const getGameObject = info.gameLists.map((game) =>
-		games.find((obj) => obj._id.toString() === game.toString())
-	)
-
 	return {
 		from: 'xxx会社 <info@umaishio.com>',
 		recipients: [email],
@@ -93,23 +76,24 @@ export const trialMail = async (object) => {
 			<br />
 			・電話番号: ${info.phoneNumber}
 			<br />
-			・英会話のレベル: ${getExperienceValue()}
-			<br />
-			・希望時間: ${convertedWeek
-				.map((obj) => {
-					return /*html*/ ` <br />
+			・英会話のレベル: ${getExperienceValue(info.experience, experienceData)}
+				<br />
+			・希望時間: ${getPreferWeekValue(info.preferTime, weeks)
+				.map(
+					(obj) => /*html*/ ` <br />
 							<span>&nbsp;&nbsp;&nbsp;- 第${obj.rank}希望: ${obj.title} ${obj.time}時 ~</span>`
-				})
+				)
 				.join('')}
 			<br />
-			・お使いの機種: ${consoleType}
+			・お使いの機種: ${getConsoleType(info.consoleType, consoleData)}
 			<br />
 			・使用ゲーム: 
 			<br /> 
-			${getGameObject
-				.map((item) => {
-					return /*html*/ ` <span> &nbsp;&nbsp;&nbsp;- ${item.title}</span><br /> `
-				})
+			${getGameObject(info.gameLists, games)
+				.map(
+					(item) =>
+						/*html*/ ` <span> &nbsp;&nbsp;&nbsp;- ${item.title}</span><br /> `
+				)
 				.join('')}
 			<br />
 			<br />
@@ -134,6 +118,51 @@ export const registerConfirmationMail = (object) => {
 			>からプロフィールなどの設定を変更が可能です。
 			<br />
 			xxx会社
+		</p>`,
+	}
+}
+
+export const seekTeacherMail = async (object) => {
+	const { teacherEmail, teacherFullName, info } = object
+	const games = await Games.find({})
+
+	return {
+		from: 'xxx会社 <info@umaishio.com>',
+		// bcc: [...teacherLists, 'info@umaishio.com'],
+		recipients: [teacherEmail],
+		subject: '先生募集中: xxx会社のからのご案内',
+		message: /*html*/ `<p>
+			${teacherFullName}様
+			<br />
+			先生募集中のご案内です。
+			<br />
+			ただいま先生の募集をしています。
+			<br />
+			【生徒内容】
+			<br />
+			<br />
+			・年齢: ${info.age}歳
+			<br />
+			・英会話のレベル: ${getExperienceValue(info.experience, experienceData)}
+				<br />
+			・希望時間: ${getPreferWeekValue(info.preferTime, weeks)
+				.map(
+					(obj) => /*html*/ ` <br />
+							<span>&nbsp;&nbsp;&nbsp;- 第${obj.rank}希望: ${obj.title} ${obj.time}時 ~</span>`
+				)
+				.join('')}
+			<br />
+			・お使いの機種: ${getConsoleType(info.consoleType, consoleData)}
+			<br />
+			・使用ゲーム: 
+			<br /> 
+			${getGameObject(info.gameLists, games)
+				.map(
+					(item) =>
+						/*html*/ ` <span> &nbsp;&nbsp;&nbsp;- ${item.title}</span><br /> `
+				)
+				.join('')}
+			<br />
 		</p>`,
 	}
 }
