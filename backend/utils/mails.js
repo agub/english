@@ -23,7 +23,7 @@ export const contactMail = (title, email, text) => {
 		from: 'sample website <info@umaishio.com>',
 		recipients: [email],
 		subject: title,
-		message: text,
+		// message: text,
 	}
 }
 

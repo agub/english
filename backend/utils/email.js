@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer'
-
+import hbs from 'nodemailer-express-handlebars'
 import dotenv from 'dotenv'
+import * as fs from 'fs'
+import handlebars from 'handlebars'
 
 dotenv.config()
 
@@ -16,13 +18,27 @@ export async function sendEmail(mailObj) {
 				pass: process.env.ZOHO_PASSWORD,
 			},
 		})
+
+		const emailTemplateSource = fs.readFileSync(
+			new URL('../views/index.handlebars', import.meta.url),
+			'utf8'
+		)
+		const template = handlebars.compile(emailTemplateSource)
+		// const htmlToSend = template()
+		const htmlToSend = template({ message: 'Hello World!' })
+		// _____________________________________
+
 		transporter.sendMail(
 			{
 				from: from, // sender address
 				bcc: bcc ? bcc : null,
 				to: recipients, // list of recipients
 				subject: subject, // Subject line
-				html: message, // plain text
+				// html: message, // plain text
+
+				// template: 'index',
+				html: htmlToSend,
+				// template: 'index',
 			},
 			(error, info) => {
 				if (error) {

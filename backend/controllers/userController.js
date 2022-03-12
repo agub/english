@@ -33,26 +33,33 @@ const authUser = asyncHandler(async (req, res) => {
 		// })
 		// console.log(teacherLists)
 		// __________________________________
-		const sampleLists = [
-			{
-				teacherEmail: 'shintrfc@gmail.com',
-				teacherFullName: 'Shinichiro Suzuki',
-				info: user.info,
-			},
-		]
-		const sendAllTeacher = async () => {
-			for (const item of sampleLists) {
-				await sendEmail(
-					await seekTeacherMail({
-						teacherEmail: item.teacherEmail,
-						teacherFullName: item.teacherFullName,
-						info: item.info,
-					})
-				)
-				console.log(item)
-			}
+		// const sampleLists = [
+		// 	{
+		// 		teacherEmail: 'shintrfc@gmail.com',
+		// 		teacherFullName: 'Shinichiro Suzuki',
+		// 		info: user.info,
+		// 	},
+		// ]
+		// const sendAllTeacher = async () => {
+		// 	for (const item of sampleLists) {
+		// 		await sendEmail(
+		// 			await seekTeacherMail({
+		// 				teacherEmail: item.teacherEmail,
+		// 				teacherFullName: item.teacherFullName,
+		// 				info: item.info,
+		// 			})
+		// 		)
+		// 		console.log(item)
+		// 	}
+		// }
+		// sendAllTeacher()
+		// __________________________________
+
+		const sendSampleEmail = async () => {
+			await sendEmail(contactMail('afasfa', 'shintrfc@gmail.com'))
 		}
-		sendAllTeacher()
+		sendSampleEmail()
+
 		// __________________________________
 		// await sendEmail(
 		// 	await trialMail({
