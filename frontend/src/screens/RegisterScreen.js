@@ -22,6 +22,8 @@ const RegisterScreen = () => {
 	const userRegister = useSelector((state) => state.userRegister)
 	const { loading, success, error } = userRegister
 
+	console.log(inputValue)
+
 	const dispatch = useDispatch()
 
 	const checkPasswordLength = (password) => {
@@ -45,6 +47,7 @@ const RegisterScreen = () => {
 		}
 		if (inputValue.email && inputValue.password && inputValue.discordId)
 			dispatch(register(inputValue))
+		// console.log('fired')
 	}
 
 	return (

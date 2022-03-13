@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        h2 { 
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+     <p>
+			{{fullName}}様
+			<br />
+			xxx会社のご登録ありがとうございます。
+			<br />
+			<a href="{{URI}}/verify/{{id}}/{{verify}}">こちら</a
+			>をクリック後、会員登録が完了いたします。
+			<br />
+			※会員登録に心当たりがない場合は、こちらの対応は不要となります。
+			<br />
+			<br />
+			またアクセスできない場合は、以下のURLからアクセスください。
+			<br />
+			{{URI}}/verify/{{id}}/{{verify}}
+		</p>
+        <img width="100%" height="100" src="https://source.unsplash.com/random"></img>
+    </div>
+</body>
+</html>

@@ -23,32 +23,25 @@ export const contactMail = (title, email, text) => {
 		from: 'sample website <info@umaishio.com>',
 		recipients: [email],
 		subject: title,
-		// message: text,
+		directly: '../views/contactMail.handlebars',
+		iterates: { text },
 	}
 }
 
 export const registerVerifyMail = (object) => {
-	const { email, fullName, id, token } = object
-	console.log(`${process.env.API_URI}/verify/${id}/${token}`)
+	const { email, fullName, id, verify } = object
+	console.log(`${process.env.API_URI}/verify/${id}/${verify}`)
 	return {
 		from: 'xxx会社 <info@umaishio.com>',
 		recipients: [email],
 		subject: 'xxx会社の登録のご案内',
-		message: /*html*/ `<p>
-			${fullName}様
-			<br />
-			xxx会社のご登録ありがとうございます。
-			<br />
-			<a href="${process.env.API_URI}/verify/${id}/${token}">こちら</a
-			>をクリック後、会員登録が完了いたします。
-			<br />
-			※会員登録に心当たりがない場合は、こちらの対応は不要となります。
-			<br />
-			<br />
-			またアクセスできない場合は、以下のURLからアクセスください。
-			<br />
-			${process.env.API_URI}/verify/${id}/${token}
-		</p>`,
+		directly: '../views/registerVerifyMail.handlebars',
+		iterates: {
+			fullName: fullName,
+			URI: process.env.API_URI,
+			verify: verify,
+			id: id,
+		},
 	}
 }
 
@@ -59,46 +52,16 @@ export const trialMail = async (object) => {
 		from: 'xxx会社 <info@umaishio.com>',
 		recipients: [email],
 		subject: 'xxx会社無料体験のご案内',
-		message: /*html*/ `<p>
-			${fullName}様
-			<br />
-			xxx会社の無料体験を申し込みいただきありがとうございます。
-			<br />
-			お客様のご都合に合う先生を探します。お時間に約x週間程度を必要としています。
-			<br />
-			<br />
-			【申し込み内容】
-			<br />
-			<br />
-			・お名前: ${fullName} 様
-			<br />
-			・年齢: ${info.age}歳
-			<br />
-			・電話番号: ${info.phoneNumber}
-			<br />
-			・英会話のレベル: ${getExperienceValue(info.experience, experienceData)}
-				<br />
-			・希望時間: ${getPreferWeekValue(info.preferTime, weeks)
-				.map(
-					(obj) => /*html*/ ` <br />
-							<span>&nbsp;&nbsp;&nbsp;- 第${obj.rank}希望: ${obj.title} ${obj.time}時 ~</span>`
-				)
-				.join('')}
-			<br />
-			・お使いの機種: ${getConsoleType(info.consoleType, consoleData)}
-			<br />
-			・使用ゲーム: 
-			<br /> 
-			${getGameObject(info.gameLists, games)
-				.map(
-					(item) =>
-						/*html*/ ` <span> &nbsp;&nbsp;&nbsp;- ${item.title}</span><br /> `
-				)
-				.join('')}
-			<br />
-			<br />
-			<br />
-		</p>`,
+		directly: '../views/trialMail.handlebars',
+		iterates: {
+			fullName: fullName,
+			age: info.age,
+			phoneNumber: info.phoneNumber,
+			experience: getExperienceValue(info.experience, experienceData),
+			preferWeek: getPreferWeekValue(info.preferTime, weeks),
+			consoleType: getConsoleType(info.consoleType, consoleData),
+			gameLists: getGameObject(info.gameLists, games),
+		},
 	}
 }
 
@@ -109,16 +72,18 @@ export const registerConfirmationMail = (object) => {
 		from: 'xxx会社 <info@umaishio.com>',
 		recipients: [email],
 		subject: 'xxx会社の登録のご案内',
-		message: /*html*/ `<p>
-			${fullName}様
-			<br />
-			xxx会社の本登録が完了いたしました。
-			<br />
-			<a href="${process.env.API_URI}/profile">こちら</a
-			>からプロフィールなどの設定を変更が可能です。
-			<br />
-			xxx会社
-		</p>`,
+		directly: '../views/registerConfirmationMail.handlebars',
+		iterates: { fullName: fullName, URI: process.env.API_URI },
+		// message: /*html*/ `<p>
+		// 	${fullName}様
+		// 	<br />
+		// 	xxx会社の本登録が完了いたしました。
+		// 	<br />
+		// 	<a href="${process.env.API_URI}/profile">こちら</a
+		// 	>からプロフィールなどの設定を変更が可能です。
+		// 	<br />
+		// 	xxx会社
+		// </p>`,
 	}
 }
 

@@ -130,6 +130,8 @@ export const register = (object) => async (dispatch) => {
 
 		const { email, password, discordId } = object
 
+		console.log(email, password, discordId)
+
 		const { data } = await axios.post(
 			'/api/users',
 			{

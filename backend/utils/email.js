@@ -3,11 +3,13 @@ import hbs from 'nodemailer-express-handlebars'
 import dotenv from 'dotenv'
 import * as fs from 'fs'
 import handlebars from 'handlebars'
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 
 dotenv.config()
 
 export async function sendEmail(mailObj) {
-	const { from, recipients, subject, message, bcc } = mailObj
+	const { from, recipients, subject, message, bcc, directly, iterates } =
+		mailObj
 	return new Promise((resolve, reject) => {
 		let transporter = nodemailer.createTransport({
 			host: 'smtp.zoho.eu',
@@ -20,14 +22,14 @@ export async function sendEmail(mailObj) {
 		})
 
 		const emailTemplateSource = fs.readFileSync(
-			new URL('../views/index.handlebars', import.meta.url),
+			new URL(directly, import.meta.url),
 			'utf8'
 		)
-		const template = handlebars.compile(emailTemplateSource)
-		// const htmlToSend = template()
-		const htmlToSend = template({ message: 'Hello World!' })
-		// _____________________________________
 
+		const insecureHandlebars = allowInsecurePrototypeAccess(handlebars)
+		const template = insecureHandlebars.compile(emailTemplateSource)
+		// const htmlToSend = template()
+		const htmlToSend = template(iterates)
 		transporter.sendMail(
 			{
 				from: from, // sender address

@@ -56,7 +56,13 @@ const authUser = asyncHandler(async (req, res) => {
 		// __________________________________
 
 		const sendSampleEmail = async () => {
-			await sendEmail(contactMail('afasfa', 'shintrfc@gmail.com'))
+			await sendEmail(
+				contactMail(
+					'afasfa',
+					'shintrfc@gmail.com',
+					'sample text is here with iterates'
+				)
+			)
 		}
 		sendSampleEmail()
 
@@ -144,16 +150,17 @@ const registerUser = asyncHandler(async (req, res) => {
 						' ' +
 						updatedUser.name.firstName,
 					id: updatedUser._id,
-					token: updatedUser.verify,
+					verify: updatedUser.verify,
 				})
 			)
-			res.status(201).json({
-				_id: updatedUser._id,
-				name: updatedUser.name,
-				email: updatedUser.email,
-				isAdmin: user.isAdmin,
-				token: generateToken(updatedUser._id),
-			})
+			// res.status(201).json({
+			// 	_id: updatedUser._id,
+			// 	name: updatedUser.name,
+			// 	email: updatedUser.email,
+			// 	isAdmin: user.isAdmin,
+			// 	token: generateToken(updatedUser._id),
+			// })
+			res.send('success')
 		} else if (user) {
 			res.status(400)
 			throw new Error('このメールアドレスは登録済みです')
@@ -180,7 +187,6 @@ const verifyEmail = asyncHandler(async (req, res) => {
 		}
 		user.verify = undefined
 		const updatedUser = await user.save()
-		registerConfirmationMail
 		await sendEmail(
 			registerConfirmationMail({
 				email: updatedUser.email,
@@ -190,10 +196,15 @@ const verifyEmail = asyncHandler(async (req, res) => {
 					updatedUser.name.firstName,
 			})
 		)
-		res.send('ログインをしてください')
+		res.status(201).json({
+			_id: updatedUser._id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			info: updatedUser.info,
+		})
 	} catch (err) {
 		res.status(400)
-		throw new Error('このページは存在しません')
+		throw new Error('認証中のエラー')
 	}
 })
 
