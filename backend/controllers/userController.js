@@ -32,39 +32,39 @@ const authUser = asyncHandler(async (req, res) => {
 		// 	}
 		// })
 		// console.log(teacherLists)
-		// __________________________________
-		// const sampleLists = [
-		// 	{
-		// 		teacherEmail: 'shintrfc@gmail.com',
-		// 		teacherFullName: 'Shinichiro Suzuki',
-		// 		info: user.info,
-		// 	},
-		// ]
-		// const sendAllTeacher = async () => {
-		// 	for (const item of sampleLists) {
-		// 		await sendEmail(
-		// 			await seekTeacherMail({
-		// 				teacherEmail: item.teacherEmail,
-		// 				teacherFullName: item.teacherFullName,
-		// 				info: item.info,
-		// 			})
-		// 		)
-		// 		console.log(item)
-		// 	}
-		// }
-		// sendAllTeacher()
-		// __________________________________
-
-		const sendSampleEmail = async () => {
-			await sendEmail(
-				contactMail(
-					'afasfa',
-					'shintrfc@gmail.com',
-					'sample text is here with iterates'
+		// _______________seek teacher___________________
+		const sampleLists = [
+			{
+				teacherEmail: 'shintrfc@gmail.com',
+				teacherFullName: 'Shinichiro Suzuki',
+				info: user.info,
+			},
+		]
+		const sendAllTeacher = async () => {
+			for (const item of sampleLists) {
+				await sendEmail(
+					await seekTeacherMail({
+						teacherEmail: item.teacherEmail,
+						teacherFullName: item.teacherFullName,
+						info: item.info,
+					})
 				)
-			)
+				console.log(item)
+			}
 		}
-		sendSampleEmail()
+		sendAllTeacher()
+		// _______________contact sample___________________
+
+		// const sendSampleEmail = async () => {
+		// 	await sendEmail(
+		// 		contactMail(
+		// 			'afasfa',
+		// 			'shintrfc@gmail.com',
+		// 			'sample text is here with iterates'
+		// 		)
+		// 	)
+		// }
+		// sendSampleEmail()
 
 		// __________________________________
 		// await sendEmail(
@@ -136,7 +136,7 @@ const registerUser = asyncHandler(async (req, res) => {
 		const emailVerificationToken = crypto.randomBytes(10).toString('hex')
 		if (user && !user.password) {
 			user.email = email || user.email
-			user.discordId = discordId
+			user.info.discordId = discordId
 			user.verify = emailVerificationToken
 			if (password) user.password = password
 
@@ -153,13 +153,6 @@ const registerUser = asyncHandler(async (req, res) => {
 					verify: updatedUser.verify,
 				})
 			)
-			// res.status(201).json({
-			// 	_id: updatedUser._id,
-			// 	name: updatedUser.name,
-			// 	email: updatedUser.email,
-			// 	isAdmin: user.isAdmin,
-			// 	token: generateToken(updatedUser._id),
-			// })
 			res.send('success')
 		} else if (user) {
 			res.status(400)

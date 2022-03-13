@@ -74,16 +74,6 @@ export const registerConfirmationMail = (object) => {
 		subject: 'xxx会社の登録のご案内',
 		directly: '../views/registerConfirmationMail.handlebars',
 		iterates: { fullName: fullName, URI: process.env.API_URI },
-		// message: /*html*/ `<p>
-		// 	${fullName}様
-		// 	<br />
-		// 	xxx会社の本登録が完了いたしました。
-		// 	<br />
-		// 	<a href="${process.env.API_URI}/profile">こちら</a
-		// 	>からプロフィールなどの設定を変更が可能です。
-		// 	<br />
-		// 	xxx会社
-		// </p>`,
 	}
 }
 
@@ -96,38 +86,48 @@ export const seekTeacherMail = async (object) => {
 		// bcc: [...teacherLists, 'info@umaishio.com'],
 		recipients: [teacherEmail],
 		subject: '先生募集中: xxx会社のからのご案内',
-		message: /*html*/ `<p>
-			${teacherFullName}様
-			<br />
-			先生募集中のご案内です。
-			<br />
-			ただいま先生の募集をしています。
-			<br />
-			【生徒内容】
-			<br />
-			<br />
-			・年齢: ${info.age}歳
-			<br />
-			・英会話のレベル: ${getExperienceValue(info.experience, experienceData)}
-				<br />
-			・希望時間: ${getPreferWeekValue(info.preferTime, weeks)
-				.map(
-					(obj) => /*html*/ ` <br />
-							<span>&nbsp;&nbsp;&nbsp;- 第${obj.rank}希望: ${obj.title} ${obj.time}時 ~</span>`
-				)
-				.join('')}
-			<br />
-			・お使いの機種: ${getConsoleType(info.consoleType, consoleData)}
-			<br />
-			・使用ゲーム: 
-			<br /> 
-			${getGameObject(info.gameLists, games)
-				.map(
-					(item) =>
-						/*html*/ ` <span> &nbsp;&nbsp;&nbsp;- ${item.title}</span><br /> `
-				)
-				.join('')}
-			<br />
-		</p>`,
+		directly: '../views/seekTeacherMail.handlebars',
+		iterates: {
+			teacherFullName: teacherFullName,
+			age: info.age,
+			phoneNumber: info.phoneNumber,
+			experience: getExperienceValue(info.experience, experienceData),
+			preferWeek: getPreferWeekValue(info.preferTime, weeks),
+			consoleType: getConsoleType(info.consoleType, consoleData),
+			gameLists: getGameObject(info.gameLists, games),
+		},
+		// message: /*html*/ `<p>
+		// 	${teacherFullName}様
+		// 	<br />
+		// 	先生募集中のご案内です。
+		// 	<br />
+		// 	ただいま先生の募集をしています。
+		// 	<br />
+		// 	【生徒内容】
+		// 	<br />
+		// 	<br />
+		// 	・年齢: ${info.age}歳
+		// 	<br />
+		// 	・英会話のレベル: ${getExperienceValue(info.experience, experienceData)}
+		// 		<br />
+		// 	・希望時間: ${getPreferWeekValue(info.preferTime, weeks)
+		// 		.map(
+		// 			(obj) => /*html*/ ` <br />
+		// 					<span>&nbsp;&nbsp;&nbsp;- 第${obj.rank}希望: ${obj.title} ${obj.time}時 ~</span>`
+		// 		)
+		// 		.join('')}
+		// 	<br />
+		// 	・お使いの機種: ${getConsoleType(info.consoleType, consoleData)}
+		// 	<br />
+		// 	・使用ゲーム:
+		// 	<br />
+		// 	${getGameObject(info.gameLists, games)
+		// 		.map(
+		// 			(item) =>
+		// 				/*html*/ ` <span> &nbsp;&nbsp;&nbsp;- ${item.title}</span><br /> `
+		// 		)
+		// 		.join('')}
+		// 	<br />
+		// </p>`,
 	}
 }
