@@ -60,7 +60,10 @@ const WaitListScreen = () => {
 			<FormContainer>
 				{students &&
 					students.map((student) => (
-						<Link to={`/teacher/waitList/${student._id}`}>
+						<Link
+							to={`/teacher/waitList/${student._id}`}
+							key={student._id}
+						>
 							<StudentsLists
 								text='英語が少し話せる'
 								type='button'
