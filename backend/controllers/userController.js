@@ -349,6 +349,7 @@ const getUserById = asyncHandler(async (req, res) => {
 		throw new Error('user not found')
 	}
 })
+
 // @desc    Get user by ID
 // @route   GET /api/teacher/:id
 // @access  Private/Admin

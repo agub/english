@@ -207,7 +207,7 @@ export const userWaitListsReducer = (state = { students: [] }, action) => {
 		case USER_WAIT_LISTS_REQUEST:
 			return { loading: true }
 		case USER_WAIT_LISTS_SUCCESS:
-			return { loading: false, students: action.payload }
+			return { loading: false, students: action.payload, success: true }
 		case USER_WAIT_LISTS_FAIL:
 			return { loading: false, error: action.payload }
 		case USER_WAIT_LISTS_RESET:

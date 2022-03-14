@@ -2,11 +2,12 @@ import classNames from 'classnames'
 import React, { useEffect } from 'react'
 import { FiChevronRight } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import { listWaitLists } from '../redux/actions/userActions'
 
-const SeekerListsScreen = () => {
+const WaitListScreen = () => {
 	const StudentsLists = ({
 		setState,
 		text,
@@ -14,6 +15,7 @@ const SeekerListsScreen = () => {
 		result,
 		time,
 		consoleType,
+		student,
 	}) => {
 		return (
 			<div
@@ -56,15 +58,20 @@ const SeekerListsScreen = () => {
 	return (
 		<Container>
 			<FormContainer>
-				<StudentsLists
-					text='英語が少し話せる'
-					type='button'
-					time='木曜日 10pm ~, 金曜日 10pm ~'
-					consoleType='Nintendo Switch'
-				/>
+				{students &&
+					students.map((student) => (
+						<Link to={`/teacher/waitList/${student._id}`}>
+							<StudentsLists
+								text='英語が少し話せる'
+								type='button'
+								time='木曜日 10pm ~, 金曜日 10pm ~'
+								consoleType={student.info.consoleType}
+							/>
+						</Link>
+					))}
 			</FormContainer>
 		</Container>
 	)
 }
 
-export default SeekerListsScreen
+export default WaitListScreen

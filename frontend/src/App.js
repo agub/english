@@ -18,7 +18,8 @@ import ChangeDiscordIdScreen from './screens/ChangeDiscordIdScreen'
 import ChangePasswordScreen from './screens/ChangePasswordScreen'
 import ContactScreen from './screens/ContactScreen'
 import VerifyUserScreen from './screens/VerifyUserScreen'
-import SeekerListsScreen from './screens/SeekerListsScreen'
+import WaitListScreen from './screens/WaitListScreen'
+import WaitListStudent from './screens/WaitListStudent'
 
 function App() {
 	return (
@@ -54,7 +55,11 @@ function App() {
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}
 				/>
-				<Route path='/teacher/seeker' element={<SeekerListsScreen />} />
+				<Route path='/teacher/waitList' element={<WaitListScreen />} />
+				<Route
+					path='/teacher/waitList/:id'
+					element={<WaitListStudent />}
+				/>
 				<Route
 					path='/verify/:id/:token'
 					element={<VerifyUserScreen />}
