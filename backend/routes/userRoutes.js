@@ -15,6 +15,7 @@ import {
 	updateUser,
 	getTeacherById,
 	contactForm,
+	getWaitLists,
 } from '../controllers/userController.js'
 
 router.route('/trial').post(trialRegisterUser)
@@ -29,13 +30,13 @@ router
 	.get(protect, getUserProfile)
 	.put(protect, updateUserProfile)
 
+router.route('/waitLists').get(protect, getWaitLists)
 router
 	.route('/:id')
 	.get(protect, admin, getUserById)
 	.put(protect, admin, updateUser)
 
 router.route('/contact').post(contactForm)
-
 router.route('/verify/:id/:token').post(verifyEmail)
 
 export default router

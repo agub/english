@@ -19,40 +19,7 @@ const authUser = asyncHandler(async (req, res) => {
 	const { email, password } = req.body
 
 	const user = await User.findOne({ email })
-	// await sendEmail(contactMail('title', 'shintrfc@gmail.com', 'adfasfa'))
 	if (user && (await user.matchPassword(password))) {
-		// __________________________________
-		// const teachers = await User.find({ isTeacher: true })
-		// const teacherLists = teachers.map((teacher) => {
-		// 	return {
-		// 		teacherEmail: teacher.email,
-		// 		teacherFullName:
-		// 			teacher.name.lastName + ' ' + teacher.name.firstName,
-		// 		info: user.info,
-		// 	}
-		// })
-		// console.log(teacherLists)
-		// _______________seek teacher___________________
-		const sampleLists = [
-			{
-				teacherEmail: 'shintrfc@gmail.com',
-				teacherFullName: 'Shinichiro Suzuki',
-				info: user.info,
-			},
-		]
-		const sendAllTeacher = async () => {
-			for (const item of sampleLists) {
-				await sendEmail(
-					await seekTeacherMail({
-						teacherEmail: item.teacherEmail,
-						teacherFullName: item.teacherFullName,
-						info: item.info,
-					})
-				)
-				console.log(item)
-			}
-		}
-		sendAllTeacher()
 		// _______________contact sample___________________
 
 		// const sendSampleEmail = async () => {
@@ -65,15 +32,6 @@ const authUser = asyncHandler(async (req, res) => {
 		// 	)
 		// }
 		// sendSampleEmail()
-
-		// __________________________________
-		// await sendEmail(
-		// 	await trialMail({
-		// 		email: user.email,
-		// 		fullName: user.name.lastName + ' ' + user.name.firstName,
-		// 		info: user.info,
-		// 	})
-		// )
 		res.json({
 			_id: user._id,
 			name: user.name,
@@ -118,6 +76,29 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			token: generateToken(user._id),
 		})
+		// __________________________________
+		const teachers = await User.find({ isTeacher: true })
+		const teacherLists = teachers.map((teacher) => {
+			return {
+				teacherEmail: teacher.email,
+				teacherFullName:
+					teacher.name.lastName + ' ' + teacher.name.firstName,
+				info: user.info,
+			}
+		})
+		// _______________seek teacher___________________
+		const sendAllTeacher = async () => {
+			for (const item of teacherLists) {
+				await sendEmail(
+					await seekTeacherMail({
+						teacherEmail: item.teacherEmail,
+						teacherFullName: item.teacherFullName,
+						info: item.info,
+					})
+				)
+			}
+		}
+		sendAllTeacher()
 		// sendMsg
 	} catch (error) {
 		res.status(400)
@@ -405,6 +386,8 @@ const updateUser = asyncHandler(async (req, res) => {
 			await existTeacher.save()
 			const updatedUser = await user.save()
 
+			// sendMatched
+
 			res.json({
 				_id: updatedUser._id,
 				name: updatedUser.name,
@@ -468,6 +451,20 @@ const contactForm = asyncHandler(async (req, res) => {
 	}
 })
 
+// @desc    Get all users
+// @route   GET /api/users/students
+// @access  Private
+const getWaitLists = asyncHandler(async (req, res) => {
+	const waitingLists = await User.find({
+		isTeacher: false,
+		hasMatched: false,
+	})
+	// const users = await User.find({})
+	console.log(waitingLists)
+	// const user = await User.findOne({ email: 'shintrfc@gmail.com' })
+	res.send(waitingLists)
+})
+
 export {
 	authUser,
 	getUserProfile,
@@ -481,4 +478,5 @@ export {
 	updateUser,
 	getTeacherById,
 	contactForm,
+	getWaitLists,
 }

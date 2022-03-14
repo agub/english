@@ -96,38 +96,5 @@ export const seekTeacherMail = async (object) => {
 			consoleType: getConsoleType(info.consoleType, consoleData),
 			gameLists: getGameObject(info.gameLists, games),
 		},
-		// message: /*html*/ `<p>
-		// 	${teacherFullName}様
-		// 	<br />
-		// 	先生募集中のご案内です。
-		// 	<br />
-		// 	ただいま先生の募集をしています。
-		// 	<br />
-		// 	【生徒内容】
-		// 	<br />
-		// 	<br />
-		// 	・年齢: ${info.age}歳
-		// 	<br />
-		// 	・英会話のレベル: ${getExperienceValue(info.experience, experienceData)}
-		// 		<br />
-		// 	・希望時間: ${getPreferWeekValue(info.preferTime, weeks)
-		// 		.map(
-		// 			(obj) => /*html*/ ` <br />
-		// 					<span>&nbsp;&nbsp;&nbsp;- 第${obj.rank}希望: ${obj.title} ${obj.time}時 ~</span>`
-		// 		)
-		// 		.join('')}
-		// 	<br />
-		// 	・お使いの機種: ${getConsoleType(info.consoleType, consoleData)}
-		// 	<br />
-		// 	・使用ゲーム:
-		// 	<br />
-		// 	${getGameObject(info.gameLists, games)
-		// 		.map(
-		// 			(item) =>
-		// 				/*html*/ ` <span> &nbsp;&nbsp;&nbsp;- ${item.title}</span><br /> `
-		// 		)
-		// 		.join('')}
-		// 	<br />
-		// </p>`,
 	}
 }

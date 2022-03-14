@@ -40,6 +40,10 @@ import {
 	USER_VERIFY_SUCCESS,
 	USER_VERIFY_FAIL,
 	USER_VERIFY_RESET,
+	USER_WAIT_LISTS_REQUEST,
+	USER_WAIT_LISTS_SUCCESS,
+	USER_WAIT_LISTS_FAIL,
+	USER_WAIT_LISTS_RESET,
 } from '../constants/userConstants.js'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -193,6 +197,21 @@ export const userVerifyReducer = (state = {}, action) => {
 			return { loading: false, error: action.payload }
 		case USER_VERIFY_RESET:
 			return {}
+		default:
+			return state
+	}
+}
+
+export const userWaitListsReducer = (state = { students: [] }, action) => {
+	switch (action.type) {
+		case USER_WAIT_LISTS_REQUEST:
+			return { loading: true }
+		case USER_WAIT_LISTS_SUCCESS:
+			return { loading: false, students: action.payload }
+		case USER_WAIT_LISTS_FAIL:
+			return { loading: false, error: action.payload }
+		case USER_WAIT_LISTS_RESET:
+			return { students: [] }
 		default:
 			return state
 	}

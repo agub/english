@@ -36,6 +36,9 @@ import {
 	USER_VERIFY_FAIL,
 	USER_VERIFY_REQUEST,
 	USER_VERIFY_SUCCESS,
+	USER_WAIT_LISTS_FAIL,
+	USER_WAIT_LISTS_REQUEST,
+	USER_WAIT_LISTS_SUCCESS,
 } from '../constants/userConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -407,6 +410,33 @@ export const verifyUser = (id, token) => async (dispatch) => {
 		dispatch({
 			type: USER_VERIFY_FAIL,
 			payload: message,
+		})
+	}
+}
+export const listWaitLists = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_WAIT_LISTS_REQUEST,
+		})
+
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+		const { data } = await axios.get('/api/users/waitLists', config)
+		dispatch({ type: USER_WAIT_LISTS_SUCCESS, payload: data })
+	} catch (error) {
+		dispatch({
+			type: USER_WAIT_LISTS_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
 		})
 	}
 }
