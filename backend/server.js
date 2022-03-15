@@ -6,6 +6,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import gameRoutes from './routes/gameRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
+import roomRoutes from './routes/roomsRoutes.js'
 // import games from './data/games.js'
 
 dotenv.config()
@@ -25,6 +26,8 @@ app.use('/api/games', gameRoutes)
 app.use('/api/users', userRoutes)
 
 app.use('/api/orders', orderRoutes)
+
+app.use('/api/rooms', roomRoutes)
 
 app.use(notFound)
 
