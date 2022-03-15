@@ -97,6 +97,16 @@ const userSchema = mongoose.Schema(
 				unique: true,
 			},
 		],
+		// candidate: [
+		// 	{
+		// 		studentId: {
+		// 			type: mongoose.Schema.Types.ObjectId,
+		// 			ref: 'User',
+		// 			unique: true,
+		// 		},
+		// 		rank: { type: String },
+		// 	},
+		// ],
 		hadTrial: {
 			type: Boolean,
 			default: false,

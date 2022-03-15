@@ -6,18 +6,19 @@ import FormContainer from '../components/common/FormContainer'
 import { listWaitLists } from '../redux/actions/userActions'
 import { USER_WAIT_LISTS_RESET } from '../redux/constants/userConstants'
 import BackButton from '../components/common/BackButton'
+import Button from '../components/common/Button'
 import weeks from '../data/weeks'
 import { listGames } from '../redux/actions/gameActions'
+import Loader from '../components/common/Loader'
 
 const WaitListScreen = () => {
 	const [rank, setRank] = useState('')
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const { id } = useParams()
-	const { students, success } = useSelector((state) => state.userWaitLists)
-
-	const filteredStudent =
-		students && students.filter((student) => student._id === id)[0]
+	const { students, success, loading } = useSelector(
+		(state) => state.userWaitLists
+	)
 
 	const { loading: gameLoading, games } = useSelector(
 		(state) => state.gameList
@@ -37,6 +38,9 @@ const WaitListScreen = () => {
 			gameData.find((obj) => obj._id.toString() === game.toString())
 		)
 
+	const filteredStudent =
+		students && students.filter((student) => student._id === id)[0]
+
 	const submitHandler = (e) => {
 		e.preventDefault()
 		console.log(rank)
@@ -44,16 +48,12 @@ const WaitListScreen = () => {
 	}
 
 	useEffect(() => {
-		if (students && students.length === 0 && !success) {
+		if (students && !success) {
 			dispatch(listGames())
-			dispatch({ type: USER_WAIT_LISTS_RESET })
+			// dispatch({ type: USER_WAIT_LISTS_RESET })
 			dispatch(listWaitLists())
 		}
-
-		if (filteredStudent && filteredStudent.info && games) {
-			console.log(getGameObject(filteredStudent.info.gameLists, games))
-		}
-	}, [dispatch, success, students, games])
+	}, [dispatch, success, students])
 
 	return (
 		<Container>
@@ -61,54 +61,79 @@ const WaitListScreen = () => {
 				<BackButton
 					onClick={(e) => {
 						e.preventDefault()
+						dispatch({ type: USER_WAIT_LISTS_RESET })
 						navigate('/teacher/waitList')
 					}}
 				/>
-				{students && filteredStudent && games && (
-					<div>
-						<p>経験度: {filteredStudent.info.experience}</p>
-						<p>機種: {filteredStudent.info.consoleType}</p>
-						<p>歳: {filteredStudent.info.age}歳</p>
-						<p>
-							使用ゲーム: <br></br>
-							&nbsp; &nbsp;
-							{getGameObject(
-								filteredStudent.info.gameLists,
-								games
-							).map((game) => (
-								<span key={game._id}>{game.title}, </span>
-							))}
-						</p>
-					</div>
-				)}
-				<div className='mb-6 flex items-start flex-col'>
-					<label className='block text-gray-700 text-sm font-bold mb-2'>
-						希望時間
-					</label>
-					{students &&
-						filteredStudent &&
-						getPreferWeekValue(
-							filteredStudent.info.preferTime,
-							weeks
-						).map((student, index) => (
-							<div key={index}>
-								<input
-									required
-									name='preferWeek'
-									value={student.rank}
-									type='radio'
-									onChange={(e) => setRank(e.target.value)}
-								/>
-								<label>
-									第{student.rank}希望: {student.title}{' '}
-									{student.time}時 ~
-								</label>
+				{loading ? (
+					<Loader />
+				) : (
+					games &&
+					students &&
+					filteredStudent &&
+					filteredStudent.info.gameLists && (
+						<>
+							<div>
+								<p>経験度: {filteredStudent.info.experience}</p>
+								<p>機種: {filteredStudent.info.consoleType}</p>
+								<p>歳: {filteredStudent.info.age}歳</p>
+								<p>
+									使用ゲーム: <br></br>
+									&nbsp; &nbsp;
+									{filteredStudent &&
+										games &&
+										filteredStudent.info.gameLists &&
+										getGameObject(
+											filteredStudent.info.gameLists,
+											games
+										).map((obj) => (
+											<span key={obj._id}>
+												{obj.title},{' '}
+											</span>
+										))}
+								</p>
 							</div>
-						))}
-				</div>
-				<button type='submit' onClick={submitHandler}>
-					応募
-				</button>
+							<div className='mb-6 flex items-start flex-col'>
+								<label className='block text-gray-700 text-sm font-bold mb-2'>
+									希望時間
+								</label>
+								{students &&
+									filteredStudent &&
+									getPreferWeekValue(
+										filteredStudent.info.preferTime,
+										weeks
+									).map((student, index) => (
+										<div key={index}>
+											<input
+												required
+												name='preferWeek'
+												value={student.rank}
+												type='radio'
+												onChange={(e) =>
+													setRank(e.target.value)
+												}
+											/>
+											<label>
+												第{student.rank}希望:{' '}
+												{student.title} {student.time}時
+												~
+											</label>
+										</div>
+									))}
+							</div>
+							<Button
+								onClick={submitHandler}
+								type='submit'
+								bgColor='bg-blue-500'
+								textColor='text-white'
+								hoverColor='bg-blue-700'
+								size='sm'
+							>
+								APPLY
+							</Button>
+						</>
+					)
+				)}
 			</FormContainer>
 		</Container>
 	)
