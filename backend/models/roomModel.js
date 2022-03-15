@@ -2,16 +2,28 @@ import mongoose from 'mongoose'
 
 const roomSchema = mongoose.Schema(
 	{
-		student: {
+		students: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'User',
+			},
+		],
+		teacher: {
 			type: mongoose.Schema.Types.ObjectId,
-			required: true,
 			ref: 'User',
+		},
+		time: {
+			week: { type: String },
+			time: { type: Number },
+		},
+		game: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Game',
 		},
 		candidate: [
 			{
 				teacherId: {
 					type: mongoose.Schema.Types.ObjectId,
-					required: true,
 					ref: 'User',
 				},
 				rank: { type: Number },

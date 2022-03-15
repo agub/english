@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import crypto from 'crypto'
 import User from '../models/userModel.js'
+import Room from '../models/roomModel.js'
 import { sendEmail } from '../utils/email.js'
 import {
 	contactMail,
@@ -63,6 +64,15 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			name,
 			info,
 		})
+		const newRoom = await Room.create({
+			students: [user._id],
+			teacher: null,
+			candidate: null,
+			game: null,
+		})
+		user.roomId = newRoom._id
+		await user.save()
+
 		await sendEmail(
 			await trialMail({
 				email: user.email,
@@ -75,34 +85,35 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			token: generateToken(user._id),
+			roomId: newRoom._id,
 		})
-		// __________________________________
-		const teachers = await User.find({ isTeacher: true })
-		const teacherLists = teachers.map((teacher) => {
-			return {
-				teacherEmail: teacher.email,
-				teacherFullName:
-					teacher.name.lastName + ' ' + teacher.name.firstName,
-				info: user.info,
-			}
-		})
-		// _______________seek teacher___________________
-		const sendAllTeacher = async () => {
-			for (const item of teacherLists) {
-				await sendEmail(
-					await seekTeacherMail({
-						teacherEmail: item.teacherEmail,
-						teacherFullName: item.teacherFullName,
-						info: item.info,
-					})
-				)
-			}
-		}
-		sendAllTeacher()
+		// ________________seek teacher___________________
+		// const teachers = await User.find({ isTeacher: true })
+		// const teacherLists = teachers.map((teacher) => {
+		// 	return {
+		// 		teacherEmail: teacher.email,
+		// 		teacherFullName:
+		// 			teacher.name.lastName + ' ' + teacher.name.firstName,
+		// 		info: user.info,
+		// 	}
+		// })
+		// // _______________seek teacher___________________
+		// const sendAllTeacher = async () => {
+		// 	for (const item of teacherLists) {
+		// 		await sendEmail(
+		// 			await seekTeacherMail({
+		// 				teacherEmail: item.teacherEmail,
+		// 				teacherFullName: item.teacherFullName,
+		// 				info: item.info,
+		// 			})
+		// 		)
+		// 	}
+		// }
+		// sendAllTeacher()
 		// sendMsg
 	} catch (error) {
 		res.status(400)
-		throw new Error('Invalid user data')
+		throw new Error(error)
 	}
 })
 

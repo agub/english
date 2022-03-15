@@ -123,6 +123,11 @@ const userSchema = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+
+		roomId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Room',
+		},
 	},
 	{ timestamps: true }
 )
