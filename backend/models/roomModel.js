@@ -29,6 +29,7 @@ const roomSchema = mongoose.Schema(
 				rank: { type: Number },
 			},
 		],
+		isWaiting: { type: Boolean, default: true },
 	},
 	{ timestamps: true }
 )

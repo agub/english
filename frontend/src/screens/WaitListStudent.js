@@ -13,6 +13,9 @@ import Loader from '../components/common/Loader'
 
 const WaitListScreen = () => {
 	const [rank, setRank] = useState('')
+	const [selectGame, setSelectGame] = useState('')
+
+	console.log(rank, selectGame)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const { id } = useParams()
@@ -121,6 +124,55 @@ const WaitListScreen = () => {
 										</div>
 									))}
 							</div>
+							{/* <div className='mb-6 flex items-start flex-col'>
+								<label className='block text-gray-700 text-sm font-bold mb-2'>
+									希望時間
+								</label>
+								{filteredStudent &&
+									games &&
+									filteredStudent.info.gameLists &&
+									getGameObject(
+										filteredStudent.info.gameLists,
+										games
+									).map((student, index) => (
+										<div key={index}>
+											<input
+												required
+												name='preferWeek'
+												value={student}
+												type='radio'
+												// onChange={(e) =>
+												// 	setRank(e.target.value)
+												// }
+											/>
+											<label></label>
+										</div>
+									))}
+							</div> */}
+							<label className='block text-gray-700 text-sm font-bold mb-2'>
+								使用ゲーム
+							</label>
+							<select
+								id='data'
+								name='gameTitle'
+								required
+								value={selectGame}
+								onChange={(e) => setSelectGame(e.target.value)}
+								className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+							>
+								<option hidden>選択してください</option>
+								{filteredStudent &&
+									games &&
+									filteredStudent.info.gameLists &&
+									getGameObject(
+										filteredStudent.info.gameLists,
+										games
+									).map((item, key) => (
+										<option key={key} value={item._id}>
+											{item.title}
+										</option>
+									))}
+							</select>
 							<Button
 								onClick={submitHandler}
 								type='submit'

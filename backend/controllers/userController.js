@@ -383,8 +383,12 @@ const getTeacherById = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
 	const { hasMatched, teacher } = req.body
 	const user = await User.findById(req.params.id)
-	const room = await Room.findById(user.roomId)
 
+	// ___________________new___________________
+	const room = await Room.findById(user.roomId)
+	// ______________________________________
+
+	//fixme *input is writeable
 	const existTeacher = await User.findById(teacher)
 
 	console.log(req.body)
@@ -402,7 +406,15 @@ const updateUser = asyncHandler(async (req, res) => {
 
 			await existTeacher.save()
 			const updatedUser = await user.save()
+			// _________________new_____________________
 
+			room.teacher = teacher
+			// teacher should be inside of room.candidate?
+			// !!!!!!!!!!!!Need add gameTitle!!!!
+			const newRoom = await room.save()
+
+			console.log(newRoom)
+			// ______________________________________
 			// sendMatched
 
 			res.json({
@@ -435,6 +447,14 @@ const updateUser = asyncHandler(async (req, res) => {
 
 			await formerTeacher.save()
 			const updatedUser = await user.save()
+
+			// __________________new ____________________
+
+			room.teacher = null
+			const updateRoom = await room.save()
+
+			console.log(updateRoom)
+			// ______________________________________
 
 			res.json({
 				_id: updatedUser._id,
@@ -472,6 +492,8 @@ const contactForm = asyncHandler(async (req, res) => {
 // @route   GET /api/users/students
 // @access  Private
 const getWaitLists = asyncHandler(async (req, res) => {
+	// should be on room controller??
+
 	const waitingLists = await User.find({
 		isTeacher: false,
 		hasMatched: false,

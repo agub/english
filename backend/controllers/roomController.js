@@ -3,8 +3,8 @@ import asyncHandler from 'express-async-handler'
 
 import Room from '../models/roomModel.js'
 
-// @desc     Fetch all games
-// @route    GET/ api/games
+// @desc     Fetch all rooms
+// @route    GET/ api/rooms
 // @access   Public
 const getRooms = asyncHandler(async (req, res) => {
 	const rooms = await Room.find({})

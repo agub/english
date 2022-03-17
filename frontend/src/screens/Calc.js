@@ -14,8 +14,9 @@ const Calc = () => {
 	let margin = inputValue.price - perMonth
 	let percent = (margin / inputValue.price) * 100
 
-	let mutiplyRevenue = inputValue.numClass * inputValue.price
-	let mutiplyMargin = margin * inputValue.numClass
+	let mutiplyRevenue =
+		inputValue.numClass * inputValue.price * inputValue.numPerson
+	let mutiplyMargin = margin * inputValue.numClass * inputValue.numPerson
 
 	let totalRevenue = mutiplyRevenue * 12
 	let totalMargin = mutiplyMargin * 12
