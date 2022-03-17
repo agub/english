@@ -20,7 +20,10 @@ const authUser = asyncHandler(async (req, res) => {
 	const { email, password } = req.body
 
 	const user = await User.findOne({ email })
+
 	if (user && (await user.matchPassword(password))) {
+		// const room = await Room.findById(user.roomId)
+		// console.log(room)
 		// _______________contact sample___________________
 
 		// const sendSampleEmail = async () => {
@@ -380,6 +383,8 @@ const getTeacherById = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
 	const { hasMatched, teacher } = req.body
 	const user = await User.findById(req.params.id)
+	const room = await Room.findById(user.roomId)
+
 	const existTeacher = await User.findById(teacher)
 
 	console.log(req.body)

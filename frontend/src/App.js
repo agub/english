@@ -20,6 +20,7 @@ import ContactScreen from './screens/ContactScreen'
 import VerifyUserScreen from './screens/VerifyUserScreen'
 import WaitListScreen from './screens/WaitListScreen'
 import WaitListStudent from './screens/WaitListStudent'
+import Calc from './screens/Calc'
 
 function App() {
 	return (
@@ -27,12 +28,14 @@ function App() {
 			<Nav />
 			<Routes>
 				<Route path='/' element={<HomeScreen />} exact />
+
 				<Route path='/lists' element={<GameListsScreen />} />
 				<Route path='/games/:id' element={<GameScreen />} />
 				<Route path='/register' element={<RegisterScreen />} />
 				<Route path='/login' element={<LoginScreen />} />
 				<Route path='/trial' element={<TrialRegisterScreen />} />
 				<Route path='/profile' element={<ProfileScreen />} exact />
+				<Route path='/calc' element={<Calc />} />
 				<Route
 					path='profile/discordId'
 					element={<ChangeDiscordIdScreen />}
