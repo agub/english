@@ -7,6 +7,8 @@ import gameRoutes from './routes/gameRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import roomRoutes from './routes/roomsRoutes.js'
+import customerRoutes from './routes/customerRoutes.js'
+import employeeRoutes from './routes/employeeRoutes.js'
 // import games from './data/games.js'
 
 dotenv.config()
@@ -28,6 +30,10 @@ app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 
 app.use('/api/rooms', roomRoutes)
+
+app.use('/api/customers', customerRoutes)
+
+app.use('/api/employees', employeeRoutes)
 
 app.use(notFound)
 
