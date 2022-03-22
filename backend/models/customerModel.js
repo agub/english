@@ -1,14 +1,43 @@
 import mongoose from 'mongoose'
 
 const customerSchema = mongoose.Schema({
-	title: {
-		type: String,
-		required: true,
+	userId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+		unique: true,
 	},
-	// description: {
-	// 	type: String,
-	// 	required: true,
-	// },
+	homeAddress: {
+		postalCode: { type: String || Number },
+		prefecture: { type: String },
+		address: { type: String },
+		building: { type: String },
+	},
+	//______________________info______________________
+	phoneNumber: {
+		type: String,
+	},
+	age: {
+		type: Number,
+	},
+	gameLists: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Game',
+		},
+	],
+	preferTime: [
+		{
+			week: { type: String },
+			time: { type: Number },
+			rank: { type: Number },
+		},
+	],
+	discordId: {
+		type: String,
+	},
+	gender: {
+		type: String,
+	},
 })
 
 const Customer = mongoose.model('Customer', customerSchema)

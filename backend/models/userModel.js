@@ -28,6 +28,7 @@ const userSchema = mongoose.Schema(
 				type: String,
 			},
 		},
+		//______________________Moved to customer or employee Model______________________
 		info: {
 			phoneNumber: {
 				type: String,
@@ -77,6 +78,7 @@ const userSchema = mongoose.Schema(
 			address: { type: String },
 			building: { type: String },
 		},
+		//______________________Moved to customer or employee Model______________________
 		// isSubscribe: {
 		// 	type: Boolean,
 		// 	default: false,
@@ -85,6 +87,11 @@ const userSchema = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		hadTrial: {
+			type: Boolean,
+			default: false,
+		},
+		//______________________Moved to room model______________________
 		teacher: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
@@ -97,24 +104,9 @@ const userSchema = mongoose.Schema(
 				unique: true,
 			},
 		],
-		// candidate: [
-		// 	{
-		// 		studentId: {
-		// 			type: mongoose.Schema.Types.ObjectId,
-		// 			ref: 'User',
-		// 			unique: true,
-		// 		},
-		// 		rank: { type: String },
-		// 	},
-		// ],
-		hadTrial: {
-			type: Boolean,
-			default: false,
-		},
-		// isPaid: {
-		// 	type: Boolean,
-		// 	default: false,
-		// },
+		//______________________Moved to room model______________________
+
+		//______________________admin, customer, employee______________________
 		isTeacher: {
 			type: Boolean,
 			default: false,
@@ -123,7 +115,7 @@ const userSchema = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
-
+		//______________________admin, customer, employee______________________
 		roomId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Room',
