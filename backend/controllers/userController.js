@@ -3,6 +3,8 @@ import generateToken from '../utils/generateToken.js'
 import crypto from 'crypto'
 import User from '../models/userModel.js'
 import Room from '../models/roomModel.js'
+import Customer from '../models/customerModel.js'
+import Employee from '../models/employeeModel.js'
 import { sendEmail } from '../utils/email.js'
 import {
 	contactMail,
@@ -65,8 +67,15 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 		const user = await User.create({
 			email,
 			name,
-			info,
+			//fix me
+			// info,
+			//fix me
 		})
+		const newCustomer = await Customer.create({
+			userId: user._id,
+			info: info,
+		})
+
 		const newRoom = await Room.create({
 			students: [user._id],
 			teacher: null,
@@ -74,13 +83,16 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			game: null,
 		})
 		user.roomId = newRoom._id
+
 		await user.save()
 
 		await sendEmail(
 			await trialMail({
 				email: user.email,
 				fullName: user.name.lastName + ' ' + user.name.firstName,
-				info: user.info,
+				//fix me
+				info: newCustomer.info,
+				//fix me
 			})
 		)
 		res.status(201).json({
@@ -163,10 +175,10 @@ const registerUser = asyncHandler(async (req, res) => {
 		throw new Error(error)
 	}
 })
+
 // @desc    Verify Email
 // @route   POST /verify/:id/:token
 // @access  Public
-
 const verifyEmail = asyncHandler(async (req, res) => {
 	try {
 		const user = await User.findById(req.params.id)
@@ -213,9 +225,13 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 			email,
 			password,
 			name,
-			info,
 			verify: emailVerificationToken,
 			isTeacher: true,
+		})
+
+		const newEmployee = await Employee.create({
+			userId: user._id,
+			info,
 		})
 
 		await sendEmail(
@@ -231,7 +247,7 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 				_id: user._id,
 				name: user.name,
 				email: user.email,
-				info: user.info,
+				info: newEmployee.info,
 				token: generateToken(user._id),
 			})
 		}
@@ -246,6 +262,10 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id)
+	const customer = await Customer.findById({
+		userId: req.user._id,
+	})
+	console.log(customer)
 
 	if (user) {
 		res.json({
@@ -255,7 +275,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			isAdmin: user.isAdmin,
 			isTeacher: user.isTeacher,
 			teacher: user.teacher,
-			info: user.info,
+			info: customer.info,
 			homeAddress: user.homeAddress,
 			token: generateToken(user._id),
 		})

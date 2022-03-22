@@ -78,6 +78,7 @@ const userSchema = mongoose.Schema(
 			address: { type: String },
 			building: { type: String },
 		},
+
 		//______________________Moved to customer or employee Model______________________
 		// isSubscribe: {
 		// 	type: Boolean,

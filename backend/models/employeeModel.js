@@ -6,50 +6,37 @@ const employeeSchema = mongoose.Schema({
 		ref: 'User',
 		unique: true,
 	},
-	students: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User',
-			unique: true,
-		},
-	],
+	// students: [
+	// 	{
+	// 		type: mongoose.Schema.Types.ObjectId,
+	// 		ref: 'User',
+	// 		unique: true,
+	// 	},
+	// ],
 	//______________________info______________________
-	phoneNumber: {
-		type: String,
-	},
-	age: {
-		type: Number,
-	},
-	consoleType: {
-		type: String,
-	},
-	gameLists: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Game',
+	info: {
+		discordId: {
+			type: String,
 		},
-	],
-	contactBy: {
-		type: String,
-	},
-	experience: {
-		type: Number,
-	},
-	preferTime: [
-		{
-			week: { type: String },
-			time: { type: Number },
-			rank: { type: Number },
+		gender: {
+			type: String,
 		},
-	],
-	rentMixer: {
-		type: String,
-	},
-	discordId: {
-		type: String,
-	},
-	gender: {
-		type: String,
+		age: {
+			type: Number,
+		},
+		gameLists: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Game',
+			},
+		],
+		preferTime: [
+			{
+				week: { type: String },
+				time: { type: Number },
+				rank: { type: Number },
+			},
+		],
 	},
 	//______________________info______________________
 })

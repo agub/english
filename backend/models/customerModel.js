@@ -5,6 +5,7 @@ const customerSchema = mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
 		unique: true,
+		required: true,
 	},
 	homeAddress: {
 		postalCode: { type: String || Number },
@@ -13,30 +14,44 @@ const customerSchema = mongoose.Schema({
 		building: { type: String },
 	},
 	//______________________info______________________
-	phoneNumber: {
-		type: String,
-	},
-	age: {
-		type: Number,
-	},
-	gameLists: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Game',
+	info: {
+		phoneNumber: {
+			type: String,
 		},
-	],
-	preferTime: [
-		{
-			week: { type: String },
-			time: { type: Number },
-			rank: { type: Number },
+		age: {
+			type: Number,
 		},
-	],
-	discordId: {
-		type: String,
-	},
-	gender: {
-		type: String,
+		consoleType: {
+			type: String,
+		},
+		contactBy: {
+			type: String,
+		},
+		experience: {
+			type: Number,
+		},
+		gameLists: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Game',
+			},
+		],
+		rentMixer: {
+			type: String,
+		},
+		preferTime: [
+			{
+				week: { type: String },
+				time: { type: Number },
+				rank: { type: Number },
+			},
+		],
+		discordId: {
+			type: String,
+		},
+		gender: {
+			type: String,
+		},
 	},
 })
 
