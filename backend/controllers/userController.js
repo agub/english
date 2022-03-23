@@ -297,7 +297,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 				email: user.email,
 				isAdmin: user.isAdmin,
 				//fixme
-				isTeacher: user.isTeacher,
+				// isTeacher: user.isTeacher,
 				//fixme
 				userType: user.userType,
 				teacher: user.teacher,
@@ -313,7 +313,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 				email: user.email,
 				isAdmin: user.isAdmin,
 				//fixme
-				isTeacher: user.isTeacher,
+				// isTeacher: user.isTeacher,
 				//fixme
 				userType: user.userType,
 				teacher: user.teacher,

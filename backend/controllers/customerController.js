@@ -8,7 +8,21 @@ import Customers from '../models/customerModel.js'
 // @access   Public
 const getCustomers = asyncHandler(async (req, res) => {
 	const customers = await Customers.find({})
-	res.json('success customers')
+	res.json(customers)
 })
 
-export { getCustomers }
+// @desc     Fetch all customers
+// @route    GET/ api/customers/:id
+// @access   Private
+const getCustomerById = asyncHandler(async (req, res) => {
+	const customer = await Customers.findOne({ userId: req.params.id })
+
+	if (customer) {
+		res.json(customer)
+	} else {
+		res.status(404)
+		throw new Error('Customer not found')
+	}
+})
+
+export { getCustomers, getCustomerById }

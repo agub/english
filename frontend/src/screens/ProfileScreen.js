@@ -18,12 +18,14 @@ const ProfileScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
-	const userDetails = useSelector((state) => state.userDetails)
-	const { loading, user, error } = userDetails
+	const { loading, user, error } = useSelector((state) => state.userDetails)
+
 	const userTeacherDetails = useSelector((state) => state.userTeacherDetails)
 	const { teacher } = userTeacherDetails
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
+
+	console.log(user.userType === 'employee')
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -60,7 +62,7 @@ const ProfileScreen = () => {
 					user.homeAddress && (
 						<>
 							<div className={animationClass}>
-								{!user.isTeacher && <Calender />}
+								{user.userType === 'customer' && <Calender />}
 								<p className='mt-4'>ユーザー情報</p>
 								<HorizontalButton
 									text='お名前:'
@@ -90,7 +92,9 @@ const ProfileScreen = () => {
 									text='アカウント:'
 									type='box'
 									result={
-										user.isTeacher ? 'Teacher' : 'Learner'
+										user.userType === 'customer'
+											? '生徒'
+											: '先生'
 									}
 								/>
 								{/* <HorizontalButton
@@ -117,7 +121,7 @@ const ProfileScreen = () => {
 										result='定額'
 									/>
 								</Link>
-								{!user.isTeacher && (
+								{user.userType === 'customer' && (
 									<HorizontalButton
 										text='先生'
 										type='button'

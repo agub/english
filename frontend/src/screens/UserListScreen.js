@@ -54,11 +54,12 @@ const UserListScreen = () => {
 									</td>
 									<td>{user.email}</td>
 									<td>
-										{user.isAdmin
+										{/* {user.isAdmin
 											? 'admin'
 											: user.isTeacher
 											? 'teacher'
-											: 'user'}
+											: 'user'} */}
+										{user.userType}
 									</td>
 									<td>
 										<Link to={`/admin/${user._id}/edit`}>
