@@ -43,6 +43,7 @@ const authUser = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			isAdmin: user.isAdmin,
+			userType: user.userType,
 			token: generateToken(user._id),
 		})
 	} else {
@@ -67,6 +68,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 		const user = await User.create({
 			email,
 			name,
+			userType: 'customer',
 			//fix me
 			// info,
 			//fix me
@@ -100,6 +102,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			token: generateToken(user._id),
+			userType: user.userType,
 			roomId: newRoom._id,
 		})
 		// ________________seek teacher___________________
@@ -140,10 +143,23 @@ const registerUser = asyncHandler(async (req, res) => {
 	const { email, password, discordId } = req.body
 	try {
 		const user = await User.findOne({ email })
+		const customer = await Customer.findOne({ userId: user._id })
+		const employee = await Employee.findOne({ userId: user._id })
 		const emailVerificationToken = crypto.randomBytes(10).toString('hex')
+
 		if (user && !user.password) {
 			user.email = email || user.email
-			user.info.discordId = discordId
+
+			if (employee && user.userType === 'employee') {
+				employee.info.discordId = discordId
+				await employee.save()
+			}
+			if (customer && user.userType === 'customer') {
+				customer.info.discordId = discordId
+				await customer.save()
+			}
+
+			// user.info.discordId = discordId
 			user.verify = emailVerificationToken
 			if (password) user.password = password
 
@@ -225,6 +241,7 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 			email,
 			password,
 			name,
+			userType: 'employee',
 			verify: emailVerificationToken,
 			isTeacher: true,
 		})
@@ -248,6 +265,7 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 				name: user.name,
 				email: user.email,
 				info: newEmployee.info,
+				userType: user.userType,
 				token: generateToken(user._id),
 			})
 		}
@@ -262,38 +280,44 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id)
-	const customer = await Customer.find({
+	const customer = await Customer.findOne({
 		userId: req.user._id,
 	})
-	const employee = await Employee.find({
+	const employee = await Employee.findOne({
 		userId: req.user._id,
 	})
-	console.log(customer)
-	console.log(employee)
 
 	if (user) {
-		if (!user.isTeacher) {
+		// if (!user.isTeacher) {
+		if (user.userType === 'customer') {
 			//userType
 			res.json({
 				_id: user._id,
 				name: user.name,
 				email: user.email,
 				isAdmin: user.isAdmin,
+				//fixme
 				isTeacher: user.isTeacher,
+				//fixme
+				userType: user.userType,
 				teacher: user.teacher,
-				info: customer[0].info,
+				info: customer.info,
 				homeAddress: user.homeAddress,
 				token: generateToken(user._id),
 			})
-		} else {
+		}
+		if (user.userType === 'employee') {
 			res.json({
 				_id: user._id,
 				name: user.name,
 				email: user.email,
 				isAdmin: user.isAdmin,
+				//fixme
 				isTeacher: user.isTeacher,
+				//fixme
+				userType: user.userType,
 				teacher: user.teacher,
-				info: employee[0].info,
+				info: employee.info,
 				homeAddress: user.homeAddress,
 				token: generateToken(user._id),
 			})
@@ -339,16 +363,32 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 	}
 	//update discord
 	if (discordId) {
-		if (user) {
-			user.info.discordId = discordId
-			const updatedUser = await user.save()
+		const customer = await Customer.findOne({ userId: req.user._id })
+		if (user && customer) {
+			//Delete
+
+			// user.info.discordId = discordId
+			// const updatedUser = await user.save()
+			// res.json({
+			// 	_id: updatedUser._id,
+			// 	name: updatedUser.name,
+			// 	email: updatedUser.email,
+			// 	isAdmin: updatedUser.isAdmin,
+			// 	info: updatedUser.info,
+			// 	token: generateToken(updatedUser._id),
+			// })
+
+			//Delete
+			customer.info.discordId = discordId
+
+			const updateCustomer = await customer.save()
 			res.json({
-				_id: updatedUser._id,
-				name: updatedUser.name,
-				email: updatedUser.email,
-				isAdmin: updatedUser.isAdmin,
-				info: updatedUser.info,
-				token: generateToken(updatedUser._id),
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				isAdmin: user.isAdmin,
+				info: updateCustomer.info,
+				token: generateToken(user._id),
 			})
 		} else {
 			res.status(404)
@@ -358,22 +398,37 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
 	//update address
 	if (postalCode && address && prefecture) {
+		const customer = await Customer.findOne({ userId: req.user._id })
 		if (user) {
-			user.homeAddress.postalCode = postalCode
-			user.homeAddress.address = address
-			user.homeAddress.prefecture = prefecture
-			user.homeAddress.building = building
-
-			const updatedUser = await user.save()
-
+			//Delete
+			// user.homeAddress.postalCode = postalCode
+			// user.homeAddress.address = address
+			// user.homeAddress.prefecture = prefecture
+			// user.homeAddress.building = building
+			// const updatedUser = await user.save()
+			// res.json({
+			// 	_id: updatedUser._id,
+			// 	name: updatedUser.name,
+			// 	email: updatedUser.email,
+			// 	isAdmin: updatedUser.isAdmin,
+			// 	info: updatedUser.info,
+			// 	homeAddress: updatedUser.homeAddress,
+			// 	token: generateToken(updatedUser._id),
+			// })
+			//Delete
+			customer.homeAddress.postalCode = postalCode
+			customer.homeAddress.address = address
+			customer.homeAddress.prefecture = prefecture
+			customer.homeAddress.building = building
+			const updateCustomer = await customer.save()
 			res.json({
-				_id: updatedUser._id,
-				name: updatedUser.name,
-				email: updatedUser.email,
-				isAdmin: updatedUser.isAdmin,
-				info: updatedUser.info,
-				homeAddress: updatedUser.homeAddress,
-				token: generateToken(updatedUser._id),
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				isAdmin: user.isAdmin,
+				info: updateCustomer.info,
+				homeAddress: updateCustomer.homeAddress,
+				token: generateToken(user._id),
 			})
 		} else {
 			res.status(404)
@@ -408,7 +463,7 @@ const getUserById = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getTeacherById = asyncHandler(async (req, res) => {
 	const teacher = await User.findById(req.params.id).select('-password')
-	if (teacher && teacher.isTeacher) {
+	if (teacher && teacher.userType === 'employee') {
 		res.json(teacher)
 	} else {
 		res.status(404)
@@ -534,7 +589,8 @@ const getWaitLists = asyncHandler(async (req, res) => {
 	// should be on room controller??
 
 	const waitingLists = await User.find({
-		isTeacher: false,
+		// isTeacher: false,
+		userType: 'employee',
 		hasMatched: false,
 	})
 	// const users = await User.find({})

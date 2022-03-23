@@ -1,45 +1,48 @@
 import mongoose from 'mongoose'
 
-const employeeSchema = mongoose.Schema({
-	userId: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User',
-		unique: true,
-	},
-	// students: [
-	// 	{
-	// 		type: mongoose.Schema.Types.ObjectId,
-	// 		ref: 'User',
-	// 		unique: true,
-	// 	},
-	// ],
-	//______________________info______________________
-	info: {
-		discordId: {
-			type: String,
+const employeeSchema = mongoose.Schema(
+	{
+		userId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			unique: true,
 		},
-		gender: {
-			type: String,
-		},
-		age: {
-			type: Number,
-		},
-		gameLists: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Game',
+		// students: [
+		// 	{
+		// 		type: mongoose.Schema.Types.ObjectId,
+		// 		ref: 'User',
+		// 		unique: true,
+		// 	},
+		// ],
+		//______________________info______________________
+		info: {
+			discordId: {
+				type: String,
 			},
-		],
-		preferTime: [
-			{
-				week: { type: String },
-				time: { type: Number },
-				rank: { type: Number },
+			gender: {
+				type: String,
 			},
-		],
+			age: {
+				type: Number,
+			},
+			gameLists: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Game',
+				},
+			],
+			preferTime: [
+				{
+					week: { type: String },
+					time: { type: Number },
+					rank: { type: Number },
+				},
+			],
+		},
+		//______________________info______________________
 	},
-	//______________________info______________________
-})
+	{ timestamps: true }
+)
 
 const Employee = mongoose.model('Employee', employeeSchema)
 

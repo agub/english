@@ -49,6 +49,7 @@ const TrialRegisterScreen = () => {
 				{ week: '', time: '', rank: 1 },
 				{ week: '', time: '', rank: 2 },
 			],
+			discordId: null,
 		},
 	})
 

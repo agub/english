@@ -14,6 +14,8 @@ const userSchema = mongoose.Schema(
 		verify: {
 			type: String,
 		},
+		userType: { type: String, required: true },
+		//________customer/employee/admin
 		name: {
 			firstName: {
 				type: String,
