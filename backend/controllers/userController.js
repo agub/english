@@ -262,23 +262,42 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id)
-	const customer = await Customer.findById({
+	const customer = await Customer.find({
+		userId: req.user._id,
+	})
+	const employee = await Employee.find({
 		userId: req.user._id,
 	})
 	console.log(customer)
+	console.log(employee)
 
 	if (user) {
-		res.json({
-			_id: user._id,
-			name: user.name,
-			email: user.email,
-			isAdmin: user.isAdmin,
-			isTeacher: user.isTeacher,
-			teacher: user.teacher,
-			info: customer.info,
-			homeAddress: user.homeAddress,
-			token: generateToken(user._id),
-		})
+		if (!user.isTeacher) {
+			//userType
+			res.json({
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				isAdmin: user.isAdmin,
+				isTeacher: user.isTeacher,
+				teacher: user.teacher,
+				info: customer[0].info,
+				homeAddress: user.homeAddress,
+				token: generateToken(user._id),
+			})
+		} else {
+			res.json({
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				isAdmin: user.isAdmin,
+				isTeacher: user.isTeacher,
+				teacher: user.teacher,
+				info: employee[0].info,
+				homeAddress: user.homeAddress,
+				token: generateToken(user._id),
+			})
+		}
 	} else {
 		res.status(404)
 		throw new Error('user not found')
