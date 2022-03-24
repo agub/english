@@ -16,7 +16,6 @@ const getCustomers = asyncHandler(async (req, res) => {
 // @access   Private
 const getCustomerById = asyncHandler(async (req, res) => {
 	const customer = await Customers.findOne({ userId: req.params.id })
-
 	if (customer) {
 		res.json(customer)
 	} else {
