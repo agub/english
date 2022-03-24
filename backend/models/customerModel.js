@@ -14,6 +14,7 @@ const customerSchema = mongoose.Schema(
 			address: { type: String },
 			building: { type: String },
 		},
+
 		//______________________info______________________
 		info: {
 			phoneNumber: {

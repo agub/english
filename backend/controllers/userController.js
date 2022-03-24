@@ -256,7 +256,7 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 				email: user.email,
 				fullName: user.name.lastName + ' ' + user.name.firstName,
 				id: user._id,
-				token: user.verify,
+				verify: user.verify,
 			})
 		)
 		if (user) {

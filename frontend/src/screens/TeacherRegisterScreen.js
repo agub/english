@@ -84,11 +84,11 @@ const TeacherRegisterScreen = () => {
 		}
 	}
 
-	useEffect(() => {
-		if (userInfo) {
-			navigate('/profile')
-		}
-	}, [userInfo, navigate])
+	// useEffect(() => {
+	// 	if (userInfo) {
+	// 		navigate('/profile')
+	// 	}
+	// }, [userInfo, navigate])
 
 	useEffect(() => {
 		setInputValue((prev) => ({
