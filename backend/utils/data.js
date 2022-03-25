@@ -21,3 +21,15 @@ export const consoleData = [
 	{ title: 'コンピューター', data: 'pc' },
 	{ title: 'Playstation, Xbox', data: 'tv' },
 ]
+
+const WAITING = 'WAITING'
+const TRIAL = 'TRIAL'
+const STARTED = 'STARTED'
+const PAUSED = 'PAUSED'
+
+export const statusType = {
+	WAITING,
+	TRIAL,
+	STARTED,
+	PAUSED,
+}

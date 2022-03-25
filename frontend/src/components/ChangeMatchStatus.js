@@ -16,6 +16,7 @@ const ChangeMatchStatus = ({
 	const match = userState.hasMatched === true ? true : false
 	const unMatch = userState.hasMatched === true ? false : true
 	const notRequired = userState.hasMatched === true ? true : false
+
 	return (
 		<>
 			<BackButton onClick={component} />

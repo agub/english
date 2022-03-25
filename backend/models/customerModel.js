@@ -14,7 +14,20 @@ const customerSchema = mongoose.Schema(
 			address: { type: String },
 			building: { type: String },
 		},
-
+		//delete me
+		hasMatched: {
+			type: Boolean,
+			default: false,
+		},
+		//delete me
+		hadTrial: {
+			type: Boolean,
+			default: false,
+		},
+		status: {
+			type: String,
+		},
+		// WAITING ,TRAIL, STARTED, PAUSED,
 		//______________________info______________________
 		info: {
 			phoneNumber: {

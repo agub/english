@@ -13,6 +13,7 @@ import {
 	registerConfirmationMail,
 	seekTeacherMail,
 } from '../utils/mails.js'
+import { statusType } from '../utils/data.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -43,7 +44,6 @@ const authUser = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			isAdmin: user.isAdmin,
-			userType: user.userType,
 			token: generateToken(user._id),
 		})
 	} else {
@@ -69,6 +69,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			email,
 			name,
 			userType: 'customer',
+			status: statusType.WAITING,
 			//fix me
 			// info,
 			//fix me
@@ -477,9 +478,10 @@ const getTeacherById = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
 	const { hasMatched, teacher } = req.body
 	const user = await User.findById(req.params.id)
-
+	const customer = await Customer.findOne({ userId: req.params.id })
 	// ___________________new___________________
 	const room = await Room.findById(user.roomId)
+
 	// ______________________________________
 
 	//fixme *input is writeable
@@ -488,36 +490,40 @@ const updateUser = asyncHandler(async (req, res) => {
 	console.log(req.body)
 	//Confirm match with teacher && adding user to students[]_______________
 	if (user && teacher) {
-		if (existTeacher) {
-			user.teacher = teacher || null
-			user.hasMatched = hasMatched
-			const existStudent = existTeacher.students.some(
-				(obj) => obj.toString() === user.teacher.toString()
-			)
-			if (!existStudent) {
-				existTeacher.students = [...existTeacher.students, user._id]
-			}
+		if (room.teacher !== (teacher || null)) {
+			// if (existTeacher) {
+			// user.teacher = teacher || null
+			// user.hasMatched = hasMatched
+			// const existStudent = existTeacher.students.some(
+			// 	(obj) => obj.toString() === user.teacher.toString()
+			// )
+			// if (!existStudent) {
+			// 	existTeacher.students = [...existTeacher.students, user._id]
+			// }
+			// await existTeacher.save()
+			// const updatedUser = await user.save()
 
-			await existTeacher.save()
-			const updatedUser = await user.save()
 			// _________________new_____________________
-
+			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			customer.status = statusType.TRIAL
+			const updateCustomer = await customer.save()
+			//fixme depending on situation...
 			room.teacher = teacher
 			// teacher should be inside of room.candidate?
 			// !!!!!!!!!!!!Need add gameTitle!!!!
-			const newRoom = await room.save()
+			const updateRoom = await room.save()
 
-			console.log(newRoom)
+			console.log(updateRoom)
 			// ______________________________________
 			// sendMatched
 
 			res.json({
-				_id: updatedUser._id,
-				name: updatedUser.name,
-				email: updatedUser.email,
-				hasMatched: updatedUser.hasMatched,
-				teacher: updatedUser.teacher,
-				info: updatedUser.info,
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				status: updateCustomer.status,
+				teacher: updateRoom.teacher,
+				info: customer.info,
 			})
 		} else {
 			res.status(404)
@@ -526,38 +532,50 @@ const updateUser = asyncHandler(async (req, res) => {
 	}
 	//Unmatch with teacher && excluding student from students[] _______________
 	if (user) {
-		if (!existTeacher) {
-			const formerTeacher = await User.findById(user.teacher)
-			const existStudent = formerTeacher.students.some(
-				(obj) => obj.toString() === user._id.toString()
-			)
-			if (existStudent) {
-				formerTeacher.students = formerTeacher.students.filter(
-					(obj) => obj.toString() !== user._id.toString()
-				)
-			}
-			user.hasMatched = hasMatched
-			user.teacher = null
+		if (room.teacher === teacher) {
+			// if (!existTeacher) {
+			// const formerTeacher = await User.findById(user.teacher)
+			// const existStudent = formerTeacher.students.some(
+			// 	(obj) => obj.toString() === user._id.toString()
+			// )
+			// if (existStudent) {
+			// 	formerTeacher.students = formerTeacher.students.filter(
+			// 		(obj) => obj.toString() !== user._id.toString()
+			// 	)
+			// }
+			// user.hasMatched = hasMatched
+			// user.teacher = null
 
-			await formerTeacher.save()
-			const updatedUser = await user.save()
+			// await formerTeacher.save()
+			// const updatedUser = await user.save()
 
 			// __________________new ____________________
+			//!!!!!!!!!!
+			customer.status = statusType.PAUSED
+			const updateCustomer = await customer.save()
+			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			room.teacher = null
 			const updateRoom = await room.save()
 
 			console.log(updateRoom)
 			// ______________________________________
-
 			res.json({
-				_id: updatedUser._id,
-				name: updatedUser.name,
-				email: updatedUser.email,
-				hasMatched: updatedUser.hasMatched,
-				teacher: updatedUser.teacher,
-				info: updatedUser.info,
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				status: updateCustomer.status,
+				teacher: updateRoom.teacher,
+				info: customer.info,
 			})
+			// res.json({
+			// 	_id: updatedUser._id,
+			// 	name: updatedUser.name,
+			// 	email: updatedUser.email,
+			// 	hasMatched: updatedUser.hasMatched,
+			// 	teacher: updatedUser.teacher,
+			// 	info: updatedUser.info,
+			// })
 		}
 	} else {
 		res.status(404)
@@ -588,10 +606,8 @@ const contactForm = asyncHandler(async (req, res) => {
 const getWaitLists = asyncHandler(async (req, res) => {
 	// should be on room controller??
 
-	const waitingLists = await User.find({
-		// isTeacher: false,
-		userType: 'employee',
-		hasMatched: false,
+	const waitingLists = await Customer.find({
+		status: statusType.WAITING,
 	})
 	// const users = await User.find({})
 	console.log(waitingLists)
