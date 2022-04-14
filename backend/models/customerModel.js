@@ -24,10 +24,20 @@ const customerSchema = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
-		status: {
-			type: String,
-		},
-		// WAITING ,TRAIL, STARTED, PAUSED,
+
+		// status: {
+		// 	code: { type: String },
+		// 	endTrialAt: { type: Date },
+		// 	changedAt: { type: Date },
+		// 	startAt: { type: Date },
+		// 	endAt: { type: Date },
+		// },
+		status: [
+			{
+				code: { type: String },
+			},
+		],
+		// WAITING ,TRAIL, STARTED, PAUSED, ????????
 		//______________________info______________________
 		info: {
 			phoneNumber: {
@@ -75,3 +85,4 @@ const customerSchema = mongoose.Schema(
 const Customer = mongoose.model('Customer', customerSchema)
 
 export default Customer
+

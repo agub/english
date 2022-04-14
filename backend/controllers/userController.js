@@ -489,7 +489,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
 	console.log(req.body)
 	//Confirm match with teacher && adding user to students[]_______________
-	if (user && teacher) {
+	if (user && teacher && room) {
 		if (room.teacher !== (teacher || null)) {
 			// if (existTeacher) {
 			// user.teacher = teacher || null
@@ -531,7 +531,7 @@ const updateUser = asyncHandler(async (req, res) => {
 		}
 	}
 	//Unmatch with teacher && excluding student from students[] _______________
-	if (user) {
+	if (user && room) {
 		if (room.teacher === teacher) {
 			// if (!existTeacher) {
 			// const formerTeacher = await User.findById(user.teacher)
@@ -630,3 +630,4 @@ export {
 	contactForm,
 	getWaitLists,
 }
+

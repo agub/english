@@ -35,9 +35,11 @@ const orderSchema = mongoose.Schema(
 					required: true,
 					default: false,
 				},
+				//??????
 				createdAt: {
 					type: Date,
 				},
+				//??????
 				isCancelled: {
 					type: Boolean,
 					default: false,
@@ -63,3 +65,4 @@ const orderSchema = mongoose.Schema(
 const Order = mongoose.model('Order', orderSchema)
 
 export default Order
+

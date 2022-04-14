@@ -8,6 +8,68 @@ import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
 
 const HomeScreen = () => {
+	// var d = new Date()
+	// var date = d.getDate()
+	// var day = d.getDay()
+
+	// var weekOfMonth = Math.ceil((date + 6 - day) / 7)
+	// console.log(weekOfMonth)
+
+	function padTo2Digits(num) {
+		return num.toString().padStart(2, '0')
+	}
+
+	function formatDate(date) {
+		return (
+			[
+				date.getFullYear(),
+				padTo2Digits(date.getMonth() + 1),
+				padTo2Digits(date.getDate()),
+			].join('-') +
+			' ' +
+			[
+				padTo2Digits(date.getHours()),
+				padTo2Digits(date.getMinutes()),
+			].join(':') +
+			' - ' +
+			[
+				date.getFullYear(),
+				padTo2Digits(date.getMonth() + 1),
+				padTo2Digits(date.getDate()),
+			].join('-') +
+			' ' +
+			[
+				padTo2Digits(date.getHours() + 1),
+				padTo2Digits(date.getMinutes() + 15),
+			].join(':')
+		)
+	}
+
+	function getClassWeek(startDate, weekNum, hoursNum, minuteNum) {
+		var d = new Date(),
+			month = d.getMonth(),
+			classInMonth = []
+
+		d.setDate(startDate)
+
+		// Get the first weekday in the month
+		while (d.getDay() !== weekNum) {
+			d.setDate(d.getDate() + 1)
+		}
+		// Get all the other weekday in the month
+		while (d.getMonth() === month) {
+			d.setHours(hoursNum)
+			d.setMinutes(minuteNum)
+			// classInMonth.push(new Date(d.getTime()))
+			classInMonth.push(formatDate(new Date(d.getTime())))
+			d.setDate(d.getDate() + 7)
+		}
+
+		console.log(classInMonth)
+	}
+
+	getClassWeek(12, 1, 18, 0)
+
 	return (
 		<>
 			<HomeTop />
@@ -27,3 +89,4 @@ const HomeScreen = () => {
 }
 
 export default HomeScreen
+
