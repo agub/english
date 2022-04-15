@@ -32,12 +32,16 @@ const customerSchema = mongoose.Schema(
 		// 	startAt: { type: Date },
 		// 	endAt: { type: Date },
 		// },
+		isActive: {
+			type: Boolean,
+		},
 		status: [
 			{
 				code: { type: String },
+				createdAt: { type: Date },
 			},
 		],
-		// WAITING ,TRAIL, STARTED, PAUSED, ????????
+		// PENDING,TRIAL,TRIAL_END,CANCELLED,ACTIVE,UNSUB_PENDING,UNSUBBED,
 		//______________________info______________________
 		info: {
 			phoneNumber: {

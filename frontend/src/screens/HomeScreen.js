@@ -68,7 +68,7 @@ const HomeScreen = () => {
 		console.log(classInMonth)
 	}
 
-	getClassWeek(12, 1, 18, 0)
+	getClassWeek(0, 6, 18, 0)
 
 	return (
 		<>

@@ -69,7 +69,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			email,
 			name,
 			userType: 'customer',
-			status: statusType.WAITING,
+			status: statusType.PENDING,
 			//fix me
 			// info,
 			//fix me
@@ -550,8 +550,9 @@ const updateUser = asyncHandler(async (req, res) => {
 			// const updatedUser = await user.save()
 
 			// __________________new ____________________
-			//!!!!!!!!!!
-			customer.status = statusType.PAUSED
+
+			//fixme depending on situation...
+			customer.status = statusType.CANCELLED
 			const updateCustomer = await customer.save()
 			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -607,7 +608,7 @@ const getWaitLists = asyncHandler(async (req, res) => {
 	// should be on room controller??
 
 	const waitingLists = await Customer.find({
-		status: statusType.WAITING,
+		status: statusType.PENDING,
 	})
 	// const users = await User.find({})
 	console.log(waitingLists)

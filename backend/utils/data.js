@@ -7,13 +7,13 @@ export const experienceData = [
 ]
 
 export const weeks = [
-	{ title: '月曜日', data: 'monday' },
-	{ title: '火曜日', data: 'tuesday' },
-	{ title: '水曜日', data: 'wednesday' },
-	{ title: '木曜日', data: 'thursday' },
-	{ title: '金曜日', data: 'friday' },
-	{ title: '土曜日', data: 'saturday' },
-	{ title: '日曜日', data: 'sunday' },
+	{ title: '月曜日', data: 'monday', value: 1 },
+	{ title: '火曜日', data: 'tuesday', value: 2 },
+	{ title: '水曜日', data: 'wednesday', value: 3 },
+	{ title: '木曜日', data: 'thursday', value: 4 },
+	{ title: '金曜日', data: 'friday', value: 5 },
+	{ title: '土曜日', data: 'saturday', value: 6 },
+	{ title: '日曜日', data: 'sunday', value: 0 },
 ]
 
 export const consoleData = [
@@ -22,14 +22,33 @@ export const consoleData = [
 	{ title: 'Playstation, Xbox', data: 'tv' },
 ]
 
-const WAITING = 'WAITING'
+const PENDING = 'PENDING'
 const TRIAL = 'TRIAL'
-const STARTED = 'STARTED'
-const PAUSED = 'PAUSED'
+const TRIAL_END = 'TRIAL_END'
+const CANCELLED = 'CANCELLED'
+const ACTIVE = 'ACTIVE'
+const UNSUB_PENDING = 'UNSUB_PENDING'
+const UNSUBBED = 'UNSUBBED'
 
 export const statusType = {
-	WAITING,
+	PENDING,
 	TRIAL,
-	STARTED,
-	PAUSED,
+	TRIAL_END,
+	CANCELLED,
+	ACTIVE,
+	UNSUB_PENDING,
+	UNSUBBED,
 }
+
+// const WAITING = 'WAITING'
+// const TRIAL = 'TRIAL'
+// const STARTED = 'STARTED'
+// const PAUSED = 'PAUSED'
+
+// export const statusType = {
+// 	WAITING,
+// 	TRIAL,
+// 	STARTED,
+// 	PAUSED,
+// }
+
