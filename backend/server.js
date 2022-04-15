@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
 	res.send('API IS RUNNING')
 })
 
-// cron.schedule('*/30 * * * * *', trigger, {
-// 	timezone: 'Japan',
-// })
+cron.schedule('*/10 * * * * *', trigger, {
+	timezone: 'Japan',
+})
 
 app.use('/api/games', gameRoutes)
 

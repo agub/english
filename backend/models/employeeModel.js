@@ -16,9 +16,9 @@ const employeeSchema = mongoose.Schema(
 		// ],
 		history: [
 			{
-				customerId: {
+				roomId: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: 'User',
+					ref: 'Room',
 				},
 				date: {
 					type: String,

@@ -12,8 +12,8 @@ const roomSchema = mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
 		},
-		time: {
-			week: { type: String },
+		schedule: {
+			week: { type: Number },
 			time: { type: Number },
 		},
 		isActive: {

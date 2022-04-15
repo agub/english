@@ -87,6 +87,10 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			candidate: null,
 			game: null,
 			isActive: false,
+			schedule: {
+				week: null,
+				time: null,
+			},
 		})
 		user.roomId = newRoom._id
 
@@ -517,6 +521,8 @@ const updateUser = asyncHandler(async (req, res) => {
 			//fixme depending on situation...
 			room.teacher = teacher
 			room.isActive = true
+			room.schedule.week = 5
+			room.schedule.time = 10
 			// teacher should be inside of room.candidate?
 			// !!!!!!!!!!!!Need add gameTitle!!!!
 			const updateRoom = await room.save()
@@ -571,6 +577,8 @@ const updateUser = asyncHandler(async (req, res) => {
 
 			room.teacher = null
 			room.isActive = false
+			// room.schedule.week = 5
+			// room.schedule.time = 10
 			const updateRoom = await room.save()
 
 			console.log(updateRoom)

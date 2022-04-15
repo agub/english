@@ -39,8 +39,8 @@ const HomeScreen = () => {
 			].join('-') +
 			' ' +
 			[
-				padTo2Digits(date.getHours() + 1),
-				padTo2Digits(date.getMinutes() + 15),
+				padTo2Digits(date.getHours()),
+				padTo2Digits(date.getMinutes()),
 			].join(':')
 		)
 	}
