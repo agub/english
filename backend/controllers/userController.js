@@ -77,7 +77,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 		const newCustomer = await Customer.create({
 			userId: user._id,
 			info: info,
-			isActive: false,
+			// isActive: false,
 			status: [{ code: statusType.PENDING, createdAt: new Date() }],
 		})
 
@@ -86,6 +86,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			teacher: null,
 			candidate: null,
 			game: null,
+			isActive: false,
 		})
 		user.roomId = newRoom._id
 
@@ -511,10 +512,11 @@ const updateUser = asyncHandler(async (req, res) => {
 				...customer.status,
 				{ code: statusType.TRIAL, createdAt: new Date() },
 			]
-			customer.isActive = true
+			// customer.isActive = true
 			const updateCustomer = await customer.save()
 			//fixme depending on situation...
 			room.teacher = teacher
+			room.isActive = true
 			// teacher should be inside of room.candidate?
 			// !!!!!!!!!!!!Need add gameTitle!!!!
 			const updateRoom = await room.save()
@@ -558,12 +560,17 @@ const updateUser = asyncHandler(async (req, res) => {
 			// __________________new ____________________
 
 			//fixme depending on situation...
-			customer.status = statusType.CANCELLED
-			customer.isActive = false
+
+			customer.status = [
+				...customer.status,
+				{ code: statusType.CANCELLED, createdAt: new Date() },
+			]
+			// customer.isActive = false
 			const updateCustomer = await customer.save()
 			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			room.teacher = null
+			room.isActive = false
 			const updateRoom = await room.save()
 
 			console.log(updateRoom)

@@ -16,6 +16,9 @@ const roomSchema = mongoose.Schema(
 			week: { type: String },
 			time: { type: Number },
 		},
+		isActive: {
+			type: Boolean,
+		},
 		game: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Game',

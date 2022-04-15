@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import connectDB from '../backend/config/db.js'
 import colors from 'colors'
 import cron from 'node-cron'
-import { sample } from './scheduled/sample.js'
+import { trigger } from './scheduled/cronTrigger.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import gameRoutes from './routes/gameRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 	res.send('API IS RUNNING')
 })
 
-// cron.schedule('*/10 * * * * *', sample, {
+// cron.schedule('*/30 * * * * *', trigger, {
 // 	timezone: 'Japan',
 // })
 

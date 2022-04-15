@@ -32,9 +32,9 @@ const customerSchema = mongoose.Schema(
 		// 	startAt: { type: Date },
 		// 	endAt: { type: Date },
 		// },
-		isActive: {
-			type: Boolean,
-		},
+		// isActive: {
+		// 	type: Boolean,
+		// },
 		status: [
 			{
 				code: { type: String },
