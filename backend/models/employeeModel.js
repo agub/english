@@ -14,6 +14,17 @@ const employeeSchema = mongoose.Schema(
 		// 		unique: true,
 		// 	},
 		// ],
+		history: [
+			{
+				customerId: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'User',
+				},
+				date: {
+					type: String,
+				},
+			},
+		],
 		//______________________info______________________
 		info: {
 			discordId: {
@@ -47,3 +58,4 @@ const employeeSchema = mongoose.Schema(
 const Employee = mongoose.model('Employee', employeeSchema)
 
 export default Employee
+

@@ -77,6 +77,8 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 		const newCustomer = await Customer.create({
 			userId: user._id,
 			info: info,
+			isActive: false,
+			status: [{ code: statusType.PENDING, createdAt: new Date() }],
 		})
 
 		const newRoom = await Room.create({
@@ -505,7 +507,11 @@ const updateUser = asyncHandler(async (req, res) => {
 
 			// _________________new_____________________
 			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			customer.status = statusType.TRIAL
+			customer.status = [
+				...customer.status,
+				{ code: statusType.TRIAL, createdAt: new Date() },
+			]
+			customer.isActive = true
 			const updateCustomer = await customer.save()
 			//fixme depending on situation...
 			room.teacher = teacher
@@ -553,6 +559,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
 			//fixme depending on situation...
 			customer.status = statusType.CANCELLED
+			customer.isActive = false
 			const updateCustomer = await customer.save()
 			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

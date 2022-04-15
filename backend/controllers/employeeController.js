@@ -1,6 +1,7 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
-
+import schedule from 'node-schedule'
+import cron from 'node-cron'
 import Employees from '../models/employeeModel.js'
 
 // @desc     Fetch all employees
@@ -24,4 +25,16 @@ const getEmployeeById = asyncHandler(async (req, res) => {
 	}
 })
 
-export { getEmployees, getEmployeeById }
+// @desc     Fetch all customers
+// @route    GET/ api/customers/:id
+// @access   Private
+const addWorkHistory = asyncHandler(async (req, res) => {
+	cron.schedule('* * * * *', () => {
+		console.log('running a task every minute')
+	})
+
+	res.json('addWorkHistory')
+})
+
+export { getEmployees, getEmployeeById, addWorkHistory }
+

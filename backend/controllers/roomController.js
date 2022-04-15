@@ -1,6 +1,5 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
-
 import Room from '../models/roomModel.js'
 
 // @desc     Fetch all rooms
@@ -12,3 +11,4 @@ const getRooms = asyncHandler(async (req, res) => {
 })
 
 export { getRooms }
+

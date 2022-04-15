@@ -5,6 +5,7 @@ const router = express.Router()
 import {
 	getEmployees,
 	getEmployeeById,
+	addWorkHistory,
 } from '../controllers/employeeController.js'
 
 router.route('/').get(getEmployees)
@@ -12,3 +13,4 @@ router.route('/').get(getEmployees)
 router.route('/:id').get(getEmployeeById)
 
 export default router
+

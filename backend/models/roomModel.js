@@ -29,6 +29,7 @@ const roomSchema = mongoose.Schema(
 				rank: { type: Number },
 			},
 		],
+
 		// deleteme
 		isWaiting: { type: Boolean, default: true },
 	},
@@ -38,3 +39,4 @@ const roomSchema = mongoose.Schema(
 const Room = mongoose.model('Room', roomSchema)
 
 export default Room
+
