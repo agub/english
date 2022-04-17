@@ -23,6 +23,9 @@ const employeeSchema = mongoose.Schema(
 				date: {
 					type: String,
 				},
+				createdAt: {
+					type: Date,
+				},
 			},
 		],
 		//______________________info______________________
