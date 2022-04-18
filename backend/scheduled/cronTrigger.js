@@ -8,6 +8,8 @@ export const trigger = async (req, res) => {
 	const classLength = 75 //min
 	const trialPeriod = 2 //weeks
 	const trialEndPeriod = 24 * 7 - 1 //hrs
+	const unsubPeriod = 1 //month
+
 	let d = new Date()
 
 	function formatDate(date) {
@@ -44,24 +46,47 @@ export const trigger = async (req, res) => {
 	})
 	if (todayClasses.length !== 0) {
 		todayClasses.map(async (singleClass) => {
-			// const employee = await Employee.findOne({
-			// 	userId: singleClass.teacher,
-			// })
-			// employee.history = [
-			// 	...employee.history,
-			// 	{
-			// 		roomId: singleClass._id,
-			// 		date: getClassWeek(
-			// 			17, //today's date
-			// 			4, //today's week
-			// 			singleClass.schedule.time,
-			// 			0
-			// 		).toString(),
-			// 		createdAt: new Date(),
-			// 	},
-			// ]
-			// await employee.save()
-			console.log('employ history has saved')
+			//maybe if lastIndex's createdAt is has todays date RETURN
+
+			const employee = await Employee.findOne({
+				userId: singleClass.teacher,
+			})
+			const historyIndex = employee.history.length - 1
+			const lastRoomId = employee.history[historyIndex].roomId
+			console.log(lastRoomId)
+			console.log(singleClass._id)
+			const lastCreatedAt = moment(
+				employee.history[historyIndex].createdAt
+			)
+			console.log(lastCreatedAt)
+			// const fromDate = moment('03-19-2022', 'MM-DD-YYYY')
+			const toDate = moment(new Date())
+			console.log(toDate)
+			const statusUpdateLength = toDate.diff(lastCreatedAt, 'hours', true)
+			console.log(statusUpdateLength)
+			//passed 24hrs with same last id  RETURN
+			if (
+				(lastRoomId.toString() === singleClass._id.toString() &&
+					statusUpdateLength > 24) ||
+				lastRoomId.toString() !== singleClass._id.toString()
+			) {
+				employee.history = [
+					...employee.history,
+					{
+						roomId: singleClass._id,
+						date: getClassWeek(
+							17, //today's date
+							4, //today's week
+							singleClass.schedule.time,
+							0
+						).toString(),
+						createdAt: new Date(),
+					},
+				]
+				await employee.save()
+
+				console.log('employ history has saved')
+			}
 		})
 	}
 	//status code change
@@ -109,6 +134,30 @@ export const trigger = async (req, res) => {
 							...singleCustomer.status,
 							{
 								code: statusType.CANCELLED,
+								createdAt: new Date(),
+							},
+						]
+						await singleCustomer.save()
+					}
+				}
+				//UNSUB_PENDING => UNSUBBED
+				if (currentStatus === statusType.UNSUB_PENDING) {
+					const fromDate = moment(
+						singleCustomer.status[statusIndex].createdAt
+					)
+
+					// const fromDate = moment('03-19-2022', 'MM-DD-YYYY')
+					const toDate = moment(new Date())
+					const statusUpdateLength = toDate.diff(
+						fromDate,
+						'month',
+						true
+					)
+					if (statusUpdateLength >= unsubPeriod) {
+						singleCustomer.status = [
+							...singleCustomer.status,
+							{
+								code: statusType.UNSUBBED,
 								createdAt: new Date(),
 							},
 						]
