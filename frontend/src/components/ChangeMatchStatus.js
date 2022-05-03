@@ -20,6 +20,7 @@ const ChangeMatchStatus = ({
 	return (
 		<>
 			<BackButton onClick={component} />
+			<h1>need to add input for class time </h1>
 			<div className='mb-6 flex items-start flex-col'>
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
 					現ステイタス : {userState.hasMatched ? '済み' : '未定'}
@@ -73,3 +74,4 @@ const ChangeMatchStatus = ({
 }
 
 export default ChangeMatchStatus
+

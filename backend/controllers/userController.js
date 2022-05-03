@@ -461,12 +461,22 @@ const getUsers = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id).select('-password')
-	if (user) {
-		res.json(user)
-	} else {
-		res.status(404)
-		throw new Error('user not found')
+	const customer = await Customer.findOne({ userId: user._id })
+	const employee = await Employee.findOne({ userId: user._id })
+	if (user && customer) {
+		const room = await Room.findById(user.roomId)
+		res.json({ user, customer, room })
+		console.log({ user, customer, room })
+		return
 	}
+	if (user && employee) {
+		const room = await Room.find({ teacher: user._id })
+		res.json({ user, employee, room })
+		console.log({ user, employee, room })
+		return
+	}
+	res.status(404)
+	throw new Error('user not found')
 })
 
 // @desc    Get user by ID
@@ -499,7 +509,8 @@ const updateUser = asyncHandler(async (req, res) => {
 
 	console.log(req.body)
 	//Confirm match with teacher && adding user to students[]_______________
-	if (user && teacher && room) {
+	// if (user && room && teacher) {
+	if (user && room && existTeacher.userType === 'employee') {
 		if (room.teacher !== (teacher || null)) {
 			// if (existTeacher) {
 			// user.teacher = teacher || null
@@ -519,6 +530,10 @@ const updateUser = asyncHandler(async (req, res) => {
 				...customer.status,
 				{ code: statusType.TRIAL, createdAt: new Date() },
 			]
+
+			user.status = statusType.TRIAL
+			await user.save()
+
 			// customer.isActive = true
 			const updateCustomer = await customer.save()
 			//fixme depending on situation...
@@ -574,6 +589,8 @@ const updateUser = asyncHandler(async (req, res) => {
 				...customer.status,
 				{ code: statusType.CANCELLED, createdAt: new Date() },
 			]
+			user.status = statusType.CANCELLED
+			await user.save()
 			// customer.isActive = false
 			const updateCustomer = await customer.save()
 			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
