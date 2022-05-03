@@ -30,6 +30,9 @@ const ACTIVE = 'ACTIVE'
 const UNSUB_PENDING = 'UNSUB_PENDING'
 const UNSUBBED = 'UNSUBBED'
 
+const PENDING_INTERVIEW = 'PENDING_INTERVIEW'
+const INTERVIEWED = 'INTERVIEWED'
+
 export const statusType = {
 	PENDING,
 	TRIAL,
@@ -38,6 +41,8 @@ export const statusType = {
 	ACTIVE,
 	UNSUB_PENDING,
 	UNSUBBED,
+	PENDING_INTERVIEW,
+	INTERVIEWED,
 }
 
 // const WAITING = 'WAITING'

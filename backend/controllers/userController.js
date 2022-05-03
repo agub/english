@@ -69,7 +69,7 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			email,
 			name,
 			userType: 'customer',
-			status: statusType.PENDING,
+			status: statusType.PENDING_INTERVIEW,
 			//fix me
 			// info,
 			//fix me
@@ -78,7 +78,9 @@ const trialRegisterUser = asyncHandler(async (req, res) => {
 			userId: user._id,
 			info: info,
 			// isActive: false,
-			status: [{ code: statusType.PENDING, createdAt: new Date() }],
+			status: [
+				{ code: statusType.PENDING_INTERVIEW, createdAt: new Date() },
+			],
 		})
 
 		const newRoom = await Room.create({
@@ -307,6 +309,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 				//fixme
 				// isTeacher: user.isTeacher,
 				//fixme
+				status: user.status,
 				userType: user.userType,
 				teacher: user.teacher,
 				info: customer.info,

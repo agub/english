@@ -15,6 +15,7 @@ const userSchema = mongoose.Schema(
 			type: String,
 		},
 		userType: { type: String, required: true },
+		status: { type: String },
 		//________customer/employee/admin
 		name: {
 			firstName: {
@@ -143,3 +144,4 @@ userSchema.pre('save', async function (next) {
 const User = mongoose.model('User', userSchema)
 
 export default User
+
