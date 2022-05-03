@@ -18,7 +18,7 @@ import {
 	getWaitLists,
 } from '../controllers/userController.js'
 
-router.route('/trial').post(trialRegisterUser)
+router.route('/interview').post(trialRegisterUser)
 
 router.route('/teacher').post(teacherRegisterUser)
 router.route('/teacher/:id').get(protect, getTeacherById)
@@ -40,3 +40,4 @@ router.route('/contact').post(contactForm)
 router.route('/verify/:id/:token').post(verifyEmail)
 
 export default router
+

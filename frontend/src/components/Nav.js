@@ -59,10 +59,10 @@ function Nav() {
 												Login
 											</Link>
 											<Link
-												to='/trial'
+												to='/interview'
 												className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 											>
-												Trial
+												Interview
 											</Link>
 
 											<Link
@@ -196,10 +196,10 @@ function Nav() {
 										</Link>
 
 										<Link
-											to='/trial'
+											to='/interview'
 											className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 										>
-											Trial
+											Interview
 										</Link>
 										<Link
 											to='/register'
@@ -250,3 +250,4 @@ function Nav() {
 }
 
 export default Nav
+

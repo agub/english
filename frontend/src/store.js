@@ -8,7 +8,7 @@ import {
 import {
 	userLoginReducer,
 	userRegisterReducer,
-	userTrialReducer,
+	userInterviewReducer,
 	userRegisterTeacherReducer,
 	userDetailsReducer,
 	userTeacherDetailsReducer,
@@ -31,7 +31,7 @@ const reducer = combineReducers({
 	gameDetails: gameDetailsReducer,
 	userLogin: userLoginReducer,
 	userRegister: userRegisterReducer,
-	userTrial: userTrialReducer,
+	userInterview: userInterviewReducer,
 	userRegisterTeacher: userRegisterTeacherReducer,
 	userDetails: userDetailsReducer,
 	userTeacherDetails: userTeacherDetailsReducer,
@@ -63,3 +63,4 @@ const store = createStore(
 )
 
 export default store
+

@@ -6,9 +6,9 @@ import {
 	USER_REGISTER_REQUEST,
 	USER_REGISTER_SUCCESS,
 	USER_REGISTER_FAIL,
-	USER_TRIAL_REQUEST,
-	USER_TRIAL_SUCCESS,
-	USER_TRIAL_FAIL,
+	USER_INTERVIEW_REQUEST,
+	USER_INTERVIEW_SUCCESS,
+	USER_INTERVIEW_FAIL,
 	USER_DETAILS_REQUEST,
 	USER_DETAILS_SUCCESS,
 	USER_DETAILS_FAIL,
@@ -61,13 +61,13 @@ export const userLoginReducer = (state = {}, action) => {
 	}
 }
 
-export const userTrialReducer = (state = {}, action) => {
+export const userInterviewReducer = (state = {}, action) => {
 	switch (action.type) {
-		case USER_TRIAL_REQUEST:
+		case USER_INTERVIEW_REQUEST:
 			return { loading: true }
-		case USER_TRIAL_SUCCESS:
+		case USER_INTERVIEW_SUCCESS:
 			return { loading: false, success: true }
-		case USER_TRIAL_FAIL:
+		case USER_INTERVIEW_FAIL:
 			return { loading: false, error: action.payload }
 		default:
 			return state
@@ -216,3 +216,4 @@ export const userWaitListsReducer = (state = { students: [] }, action) => {
 			return state
 	}
 }
+

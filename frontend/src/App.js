@@ -6,7 +6,7 @@ import GameScreen from './screens/GameScreen'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
-import TrialRegisterScreen from './screens/TrialRegisterScreen'
+import InterviewRegisterScreen from './screens/InterviewRegisterScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
@@ -39,7 +39,10 @@ function App() {
 				<Route path='/games/:id' element={<GameScreen />} />
 				<Route path='/register' element={<RegisterScreen />} />
 				<Route path='/login' element={<LoginScreen />} />
-				<Route path='/trial' element={<TrialRegisterScreen />} />
+				<Route
+					path='/interview'
+					element={<InterviewRegisterScreen />}
+				/>
 				<Route path='/profile' element={<ProfileScreen />} exact />
 				<Route
 					path='profile/discordId'

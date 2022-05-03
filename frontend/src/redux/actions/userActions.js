@@ -27,9 +27,9 @@ import {
 	USER_TEACHER_DETAILS_FAIL,
 	USER_TEACHER_DETAILS_REQUEST,
 	USER_TEACHER_DETAILS_SUCCESS,
-	USER_TRIAL_FAIL,
-	USER_TRIAL_REQUEST,
-	USER_TRIAL_SUCCESS,
+	USER_INTERVIEW_FAIL,
+	USER_INTERVIEW_REQUEST,
+	USER_INTERVIEW_SUCCESS,
 	USER_UPDATE_FAIL,
 	USER_UPDATE_REQUEST,
 	USER_UPDATE_SUCCESS,
@@ -77,10 +77,10 @@ export const login = (email, password) => async (dispatch) => {
 	}
 }
 
-export const trial = (object) => async (dispatch) => {
+export const interview = (object) => async (dispatch) => {
 	try {
 		dispatch({
-			type: USER_TRIAL_REQUEST,
+			type: USER_INTERVIEW_REQUEST,
 		})
 		const config = {
 			headers: {
@@ -89,7 +89,7 @@ export const trial = (object) => async (dispatch) => {
 		}
 
 		const { data } = await axios.post(
-			'/api/users/trial',
+			'/api/users/interview',
 			{
 				...object,
 			},
@@ -97,14 +97,14 @@ export const trial = (object) => async (dispatch) => {
 		)
 		console.log(object)
 		dispatch({
-			type: USER_TRIAL_SUCCESS,
+			type: USER_INTERVIEW_SUCCESS,
 			payload: data,
 		})
 
 		// localStorage.setItem('userInfo', JSON.stringify(data))
 	} catch (error) {
 		dispatch({
-			type: USER_TRIAL_FAIL,
+			type: USER_INTERVIEW_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -439,3 +439,4 @@ export const listWaitLists = () => async (dispatch, getState) => {
 		})
 	}
 }
+

@@ -7,7 +7,7 @@ import InputField from '../components/common/InputField'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { listGames } from '../redux/actions/gameActions'
-import { trial } from '../redux/actions/userActions'
+import { interview } from '../redux/actions/userActions'
 import Message from '../components/common/Message'
 import weeks from '../data/weeks'
 import consoleData from '../data/consoleData'
@@ -15,7 +15,7 @@ import experienceData from '../data/experienceData'
 import { RiDeleteBack2Fill } from 'react-icons/ri'
 import { MdOutlineAddCircleOutline } from 'react-icons/md'
 
-const TrialRegisterScreen = () => {
+const InterviewRegisterScreen = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -25,8 +25,11 @@ const TrialRegisterScreen = () => {
 	const gamesList = useSelector((state) => state.gameList)
 	const { loading, games } = gamesList
 
-	const userTrial = useSelector((state) => state.userTrial)
-	const { loading: trialLoading, success, trialError } = userTrial
+	const {
+		loading: interviewLoading,
+		success,
+		error,
+	} = useSelector((state) => state.userInterview)
 
 	const [inputValue, setInputValue] = useState({
 		email: '',
@@ -109,7 +112,7 @@ const TrialRegisterScreen = () => {
 		if (inputValue.info.gameLists.length === 0) {
 			setErrorText('使用ゲームを正しく選択してください')
 		} else {
-			dispatch(trial(inputValue))
+			dispatch(interview(inputValue))
 		}
 	}
 
@@ -118,7 +121,7 @@ const TrialRegisterScreen = () => {
 	return (
 		<Container>
 			<FormContainer onSubmit={submitHandler}>
-				{trialError && <Message variant='danger'>{trialError}</Message>}
+				{error && <Message variant='danger'>{error}</Message>}
 				{errorText !== null && (
 					<Message variant='danger'>{errorText}</Message>
 				)}
@@ -702,4 +705,5 @@ const TrialRegisterScreen = () => {
 	)
 }
 
-export default TrialRegisterScreen
+export default InterviewRegisterScreen
+
