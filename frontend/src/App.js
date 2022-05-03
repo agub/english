@@ -22,6 +22,7 @@ import WaitListScreen from './screens/WaitListScreen'
 import WaitListStudent from './screens/WaitListStudent'
 import Calc from './screens/Calc'
 import Calc2 from './screens/Calc2'
+import Calc3 from './screens/Calc3'
 
 function App() {
 	return (
@@ -32,6 +33,7 @@ function App() {
 
 				<Route path='/calc' element={<Calc />} />
 				<Route path='/calc2' element={<Calc2 />} />
+				<Route path='/calc3' element={<Calc3 />} />
 
 				<Route path='/lists' element={<GameListsScreen />} />
 				<Route path='/games/:id' element={<GameScreen />} />
@@ -80,3 +82,4 @@ function App() {
 }
 
 export default App
+

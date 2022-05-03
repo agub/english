@@ -53,17 +53,11 @@ export const trigger = async (req, res) => {
 			})
 			const historyIndex = employee.history.length - 1
 			const lastRoomId = employee.history[historyIndex].roomId
-			console.log(lastRoomId)
-			console.log(singleClass._id)
 			const lastCreatedAt = moment(
 				employee.history[historyIndex].createdAt
 			)
-			console.log(lastCreatedAt)
-			// const fromDate = moment('03-19-2022', 'MM-DD-YYYY')
 			const toDate = moment(new Date())
-			console.log(toDate)
 			const statusUpdateLength = toDate.diff(lastCreatedAt, 'hours', true)
-			console.log(statusUpdateLength)
 			//passed 24hrs with same last id  RETURN
 			if (
 				(lastRoomId.toString() === singleClass._id.toString() &&

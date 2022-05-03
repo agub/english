@@ -118,6 +118,7 @@ const unsubscribeById = asyncHandler(async (req, res) => {
 		const unSub = await stripe.subscriptions.update(req.params.id, {
 			cancel_at_period_end: true,
 		})
+		//change status to UNSUB_PENDING
 		for (const item of order.orderItems) {
 			if (item.orderId === req.params.id) {
 				item.isCancelled = unSub.cancel_at_period_end ? true : false
@@ -154,3 +155,4 @@ export {
 	unsubscribeById,
 	getOrderById,
 }
+

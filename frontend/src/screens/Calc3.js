@@ -20,26 +20,26 @@ const Calc = () => {
 
 	let calcLossAmount = inputValue.unSub * perMonth
 
-	let trialPer10Min = inputValue.trialWage / 60
-	let trialMonthCost =
-		trialPer10Min * inputValue.trialTime * inputValue.trialCount
-
 	let revenueMutiNumber =
 		inputValue.numClass * inputValue.price * inputValue.numPerson
 	let profitTimesPeople =
-		profitPerMonth * inputValue.numClass * inputValue.numPerson
+		profitPerMonth *
+		(inputValue.numClass - inputValue.unSub) *
+		inputValue.numPerson
+	let monthlyNetProfit = profitTimesPeople - inputValue.unSub * perMonth
 
-	let monthlyNetProfit = profitTimesPeople - trialMonthCost - calcLossAmount
+	let calcLoss3m = calcLossAmount * 3
 
-	let totalRevenue = revenueMutiNumber * 12
+	let totalRevenue = revenueMutiNumber * 12 - calcLoss3m
 	let totalMargin = profitTimesPeople * 12
-	let totalNetProfit = monthlyNetProfit * 12
+	// let totalNetProfit = monthlyNetProfit * 12
+	let totalNetProfit = profitTimesPeople * 12 - calcLoss3m
 
 	let withNumperson = profitPerMonth * inputValue.numPerson
 
 	// let withNumpercent = deductPercent * inputValue.numPerson
 
-	let deductLossFromMargin = totalNetProfit - calcLossAmount
+	let deductLossFromMargin = totalNetProfit
 	let totalProfitRate = (deductLossFromMargin / totalRevenue) * 100
 	// let idealPercent = (totalNetProfit / totalMargin) * 100
 
@@ -121,55 +121,6 @@ const Calc = () => {
 					</div>
 					<br />
 				</div>
-
-				<div className='w-64'>
-					<p>トライヤル無料体験</p>
-					<br />
-					<label>先生の時給：</label>
-					<input
-						onChange={(e) => {
-							setInputValue((prev) => ({
-								...prev,
-								trialWage: e.target.value,
-							}))
-						}}
-						className='border w-20'
-					></input>
-					円
-					<br />
-					<label>授業時間: </label>
-					<input
-						onChange={(e) => {
-							setInputValue((prev) => ({
-								...prev,
-								trialTime: e.target.value,
-							}))
-						}}
-						className='border w-20'
-					></input>
-					分
-					<br />
-					<label>月のトライヤル回数: </label>
-					<input
-						onChange={(e) => {
-							setInputValue((prev) => ({
-								...prev,
-								trialCount: e.target.value,
-							}))
-						}}
-						className='border w-20'
-					></input>
-					回
-					<div>
-						<span>経費(無料体験): </span>
-						{new Intl.NumberFormat('ja-JP', {
-							style: 'currency',
-							currency: 'JPY',
-						}).format(trialMonthCost)}
-						{/* <span>¥{perMonth}</span> */}
-					</div>
-					<div></div>
-				</div>
 			</div>
 
 			<div className='p-9'>
@@ -185,7 +136,7 @@ const Calc = () => {
 				></input>
 				クラス
 				<br />
-				<label>トライヤル後離脱</label>
+				<label>3ヶ月後離脱: </label>
 				<input
 					onChange={(e) => {
 						setInputValue((prev) => ({
