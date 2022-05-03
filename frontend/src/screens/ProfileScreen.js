@@ -25,7 +25,8 @@ const ProfileScreen = () => {
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
 
-	console.log(user.userType === 'employee')
+	const userData = useSelector((state) => state.userDetails)
+	console.log(userData)
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -162,3 +163,4 @@ const ProfileScreen = () => {
 }
 
 export default ProfileScreen
+

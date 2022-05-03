@@ -56,7 +56,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/trial
 // @access  Public
 
-const trialRegisterUser = asyncHandler(async (req, res) => {
+const interviewRegisterUser = asyncHandler(async (req, res) => {
 	const { email, name, info } = req.body
 
 	const userExists = await User.findOne({ email })
@@ -465,13 +465,13 @@ const getUserById = asyncHandler(async (req, res) => {
 	const employee = await Employee.findOne({ userId: user._id })
 	if (user && customer) {
 		const room = await Room.findById(user.roomId)
-		res.json({ user, customer, room })
+		res.json({ userData: user, customer, room })
 		console.log({ user, customer, room })
 		return
 	}
 	if (user && employee) {
 		const room = await Room.find({ teacher: user._id })
-		res.json({ user, employee, room })
+		res.json({ userData: user, employee, room })
 		console.log({ user, employee, room })
 		return
 	}
@@ -664,7 +664,7 @@ export {
 	registerUser,
 	verifyEmail,
 	teacherRegisterUser,
-	trialRegisterUser,
+	interviewRegisterUser,
 	updateUserProfile,
 	getUsers,
 	getUserById,

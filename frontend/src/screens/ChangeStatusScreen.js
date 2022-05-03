@@ -2,20 +2,26 @@ import React, { useEffect, useState } from 'react'
 import BackButton from '../components/common/BackButton'
 import Button from '../components/common/Button'
 import InputField from '../components/common/InputField'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserDetails, userProfileUpdate } from '../redux/actions/userActions'
+import {
+	getUserDetails,
+	updateUser,
+	userProfileUpdate,
+} from '../redux/actions/userActions'
 import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
 
-const ChangePasswordScreen = () => {
+const ChangeStatusScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
+
+	const { id } = useParams()
 
 	const initialValue = {
 		password: '',
@@ -52,26 +58,19 @@ const ChangePasswordScreen = () => {
 	}, [navigate, userInfo, user, dispatch])
 
 	const submitHandler = (e) => {
-		dispatch({ type: USER_PROFILE_UPDATE_RESET })
 		e.preventDefault()
 		setErrorText(null)
-		console.log(user)
-		//Changing Password___________________________________
 		if (
-			inputValue.password &&
-			inputValue.newPassword &&
-			inputValue.confirmPassword
+			user.hasMatched !== inputValue.hasMatched &&
+			inputValue.teacher !== ''
 		) {
-			if (newPassword === confirmPassword) {
-				dispatch(
-					userProfileUpdate({ id: user._id, password, newPassword })
-				)
-				setErrorText(null)
-				setInputValue(initialValue)
-				dispatch(getUserDetails('profile'))
-			} else {
-				setErrorText('パスワードと確認パスワードが一致しません')
-			}
+			dispatch(
+				updateUser({
+					_id: id,
+					hasMatched: inputValue.hasMatched,
+					teacher: inputValue.teacher,
+				})
+			)
 		}
 	}
 	return (
@@ -95,52 +94,8 @@ const ChangePasswordScreen = () => {
 					</Link>
 					{user && (
 						<>
-							<h1 className='text-center'>パスワードを変更</h1>
-							<div className='mb-4'>
-								<InputField
-									type='password'
-									value={password}
-									placeholder='現在のパスワード'
-									label='現在のパスワード'
-									name='password'
-									onChange={(e) =>
-										setInputValue((prev) => ({
-											...prev,
-											password: e.target.value,
-										}))
-									}
-								/>
-							</div>
-							<div className='mb-4'>
-								<InputField
-									type='password'
-									value={newPassword}
-									placeholder='新しいパスワード'
-									label='新しいパスワード'
-									name='newPassword'
-									onChange={(e) =>
-										setInputValue((prev) => ({
-											...prev,
-											newPassword: e.target.value,
-										}))
-									}
-								/>
-							</div>
-							<div className='mb-4'>
-								<InputField
-									type='password'
-									value={confirmPassword}
-									placeholder='新しい確認パスワード'
-									label='新しい確認パスワード'
-									name='confirmPassword'
-									onChange={(e) =>
-										setInputValue((prev) => ({
-											...prev,
-											confirmPassword: e.target.value,
-										}))
-									}
-								/>
-							</div>
+							<h1>need to add input for class time fasdfads</h1>
+							<div className='mb-6 flex items-start flex-col'></div>
 							<div className='flex items-center justify-between'>
 								<Button
 									onClick={submitHandler}
@@ -161,5 +116,5 @@ const ChangePasswordScreen = () => {
 	)
 }
 
-export default ChangePasswordScreen
+export default ChangeStatusScreen
 

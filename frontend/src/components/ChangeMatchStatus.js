@@ -13,9 +13,9 @@ const ChangeMatchStatus = ({
 	submitHandler,
 	user,
 }) => {
-	const match = userState.hasMatched === true ? true : false
-	const unMatch = userState.hasMatched === true ? false : true
-	const notRequired = userState.hasMatched === true ? true : false
+	const match = userState.userData.isActive === true ? true : false
+	const unMatch = userState.userData.isActive === true ? false : true
+	const notRequired = userState.userData.isActive === true ? true : false
 
 	return (
 		<>
@@ -23,7 +23,8 @@ const ChangeMatchStatus = ({
 			<h1>need to add input for class time </h1>
 			<div className='mb-6 flex items-start flex-col'>
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
-					現ステイタス : {userState.hasMatched ? '済み' : '未定'}
+					現ステイタス :{' '}
+					{userState.userData.isActive ? '済み' : '未定'}
 				</label>
 				<div>
 					<input
@@ -50,7 +51,9 @@ const ChangeMatchStatus = ({
 				<InputField
 					type='text'
 					// value={teacherValue}
-					placeholder={userState.teacher ? userState.teacher : null}
+					placeholder={
+						userState.room.teacher ? userState.room.teacher : null
+					}
 					label='マッチした先生のID'
 					name='teacherId'
 					onChange={teacherSetter}

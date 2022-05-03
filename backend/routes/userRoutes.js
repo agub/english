@@ -7,7 +7,7 @@ import {
 	getUserProfile,
 	registerUser,
 	verifyEmail,
-	trialRegisterUser,
+	interviewRegisterUser,
 	teacherRegisterUser,
 	updateUserProfile,
 	getUsers,
@@ -18,7 +18,7 @@ import {
 	getWaitLists,
 } from '../controllers/userController.js'
 
-router.route('/interview').post(trialRegisterUser)
+router.route('/interview').post(interviewRegisterUser)
 
 router.route('/teacher').post(teacherRegisterUser)
 router.route('/teacher/:id').get(protect, getTeacherById)

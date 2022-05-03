@@ -23,6 +23,7 @@ import WaitListStudent from './screens/WaitListStudent'
 import Calc from './screens/Calc'
 import Calc2 from './screens/Calc2'
 import Calc3 from './screens/Calc3'
+import ChangeStatusScreen from './screens/ChangeStatusScreen'
 
 function App() {
 	return (
@@ -78,6 +79,10 @@ function App() {
 
 				<Route path='/admin/userList' element={<UserListScreen />} />
 				<Route path='/admin/:id/edit' element={<UserEditScreen />} />
+				<Route
+					path='/admin/:id/edit/status'
+					element={<ChangeStatusScreen />}
+				/>
 			</Routes>
 			<Footer />
 		</>

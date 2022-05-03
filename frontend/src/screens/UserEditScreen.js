@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
@@ -70,7 +70,7 @@ const UserEditScreen = () => {
 				if (IsObjectEmpty(user)) {
 					dispatch(getUserDetails(id))
 				} else {
-					setInputValue({ hasMatched: user.hasMatched })
+					setInputValue({ hasMatched: user.room.isActive })
 				}
 			}
 		}
@@ -97,20 +97,28 @@ const UserEditScreen = () => {
 									navigate('/admin/userlist')
 								}}
 							/>
-							{user && user.name && (
-								<p>
-									{user.name.lastName +
-										' ' +
-										user.name.firstName}
-									様の設定
-								</p>
+							{user && user.userData && user.userData.name && (
+								<>
+									<p>
+										{user.userData.name.lastName +
+											' ' +
+											user.userData.name.firstName}
+										様の設定
+									</p>
+									<Link to={`/admin/${id}/edit/status`}>
+										<HorizontalButton
+											text='マッチステイタス変更 :'
+											type='button'
+											// setState={() => setComponent('match')}
+											result={
+												user.room.isActive
+													? '済み'
+													: '未定'
+											}
+										/>
+									</Link>
+								</>
 							)}
-							<HorizontalButton
-								text='マッチステイタス変更 :'
-								type='button'
-								setState={() => setComponent('match')}
-								result={user.hasMatched ? '済み' : '未定'}
-							/>
 						</>
 					)
 				)}
@@ -147,3 +155,4 @@ const UserEditScreen = () => {
 }
 
 export default UserEditScreen
+
