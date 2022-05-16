@@ -8,6 +8,7 @@ import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
+import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
 import {
 	getUserDetails,
 	updateUser,
@@ -24,21 +25,20 @@ const ChangeStatusScreen = () => {
 	const { id } = useParams()
 
 	const initialValue = {
-		password: '',
-		confirmPassword: '',
-		newPassword: '',
+		isActive: null,
+		teacher: null,
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
 	const [errorText, setErrorText] = useState(null)
-	const { password, confirmPassword, newPassword } = inputValue
 
 	const userDetails = useSelector((state) => state.userDetails)
 	const { loading, user, error } = userDetails
 
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
-	const userUpdate = useSelector((state) => state.userProfileUpdate)
+	// const userUpdate = useSelector((state) => state.userProfileUpdate)
+	const userUpdate = useSelector((state) => state.userUpdate)
 	const {
 		success,
 		error: userUpdateError,
@@ -46,31 +46,55 @@ const ChangeStatusScreen = () => {
 	} = userUpdate
 
 	useEffect(() => {
+		console.log(inputValue)
 		if (!userInfo) {
 			navigate('/login')
-		} else {
-			if (IsObjectEmpty(user)) {
-				setErrorText(null)
-				dispatch(getUserDetails('profile'))
-			}
+			return
+		}
+		if (IsObjectEmpty(user)) {
+			setErrorText(null)
+			// dispatch(getUserDetails('profile'))
+			dispatch(getUserDetails(id))
+			return
+		}
+		if (user && inputValue.isActive === null) {
+			setInputValue((prev) => ({
+				...prev,
+				isActive: user.room.isActive,
+			}))
+			return
+		}
+		if (user && inputValue.teacher === null && user.room.teacher !== null) {
+			setInputValue((prev) => ({
+				...prev,
+				teacher: user.room.teacher,
+			}))
+			return
+		}
+		if (success) {
+			dispatch({ type: USER_UPDATE_RESET })
+			navigate('/admin/userlist')
+			return
 		}
 		// if (userUpdateLoading) dispatch(getUserDetails('profile'))
-	}, [navigate, userInfo, user, dispatch])
+	}, [navigate, id, userInfo, user, dispatch, inputValue, success])
 
 	const submitHandler = (e) => {
 		e.preventDefault()
 		setErrorText(null)
+
 		if (
-			user.hasMatched !== inputValue.hasMatched &&
-			inputValue.teacher !== ''
+			user.room.isActive !== inputValue.isActive &&
+			inputValue.teacher !== null
 		) {
 			dispatch(
 				updateUser({
 					_id: id,
-					hasMatched: inputValue.hasMatched,
+					// hasMatched: inputValue.hasMatched,
 					teacher: inputValue.teacher,
 				})
 			)
+			console.log(user)
 		}
 	}
 	return (
@@ -89,13 +113,72 @@ const ChangeStatusScreen = () => {
 						<Message variant='info'>変更いたしました</Message>
 					)}
 					{(loading || userUpdateLoading) && <Loader />}
-					<Link to={`/profile`}>
+					<Link to={`/admin/${id}/edit`}>
 						<BackButton />
 					</Link>
-					{user && (
+					{user && user.room && (
 						<>
 							<h1>need to add input for class time fasdfads</h1>
-							<div className='mb-6 flex items-start flex-col'></div>
+							<div className='mb-6 flex items-start flex-col'>
+								<label className='block text-gray-700 text-sm font-bold mb-2'>
+									現ステイタス :{' '}
+									{user.room.isActive ? 'マッチ済み' : '未定'}
+								</label>
+								<div>
+									<input
+										required
+										name='experience'
+										disabled={!user.room.isActive}
+										onChange={() =>
+											setInputValue((prev) => ({
+												...prev,
+												isActive: false,
+											}))
+										}
+										type='radio'
+									/>
+									<label>未定</label>
+								</div>
+								<div>
+									<input
+										required
+										name='experience'
+										disabled={user.room.isActive}
+										onChange={() =>
+											setInputValue((prev) => ({
+												...prev,
+												isActive: true,
+											}))
+										}
+										type='radio'
+									/>
+									<label>マッチ済み</label>
+								</div>
+							</div>
+							<div className='mb-4'>
+								<InputField
+									type='text'
+									// value={teacherValue}
+									placeholder={
+										user.room.teacher
+											? user.room.teacher
+											: null
+									}
+									label={
+										user.room.teacher
+											? '確認のために先生のIDを入力してください'
+											: 'マッチする先生のID'
+									}
+									name='teacherId'
+									onChange={(e) =>
+										setInputValue((prev) => ({
+											...prev,
+											teacher: e.target.value,
+										}))
+									}
+									// notRequired={user.room.isActive}
+								/>
+							</div>
 							<div className='flex items-center justify-between'>
 								<Button
 									onClick={submitHandler}
@@ -105,7 +188,7 @@ const ChangeStatusScreen = () => {
 									hoverColor='bg-blue-700'
 									size='sm'
 								>
-									変更を保存
+									設定を変更する
 								</Button>
 							</div>
 						</>

@@ -496,7 +496,7 @@ const getTeacherById = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/:id
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
-	const { hasMatched, teacher } = req.body
+	const { hasMatched, isActive, teacher } = req.body
 	const user = await User.findById(req.params.id)
 	const customer = await Customer.findOne({ userId: req.params.id })
 	// ___________________new___________________
@@ -507,31 +507,29 @@ const updateUser = asyncHandler(async (req, res) => {
 	//fixme *input is writeable
 	const existTeacher = await User.findById(teacher)
 
-	console.log(req.body)
-	//Confirm match with teacher && adding user to students[]_______________
-	// if (user && room && teacher) {
-	if (user && room && existTeacher.userType === 'employee') {
-		if (room.teacher !== (teacher || null)) {
-			// if (existTeacher) {
-			// user.teacher = teacher || null
-			// user.hasMatched = hasMatched
-			// const existStudent = existTeacher.students.some(
-			// 	(obj) => obj.toString() === user.teacher.toString()
-			// )
-			// if (!existStudent) {
-			// 	existTeacher.students = [...existTeacher.students, user._id]
-			// }
-			// await existTeacher.save()
-			// const updatedUser = await user.save()
+	console.log(room.teacher)
 
-			// _________________new_____________________
-			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			customer.status = [
-				...customer.status,
-				{ code: statusType.TRIAL, createdAt: new Date() },
-			]
+	if (user && room && existTeacher && existTeacher.userType === 'employee') {
+		//__________TO TRIAL____________
+		if (room.teacher === null) {
+			const hasTrialEnd = customer.status.some((list) => {
+				return list.code === statusType.TRIAL
+			})
 
-			user.status = statusType.TRIAL
+			if (hasTrialEnd) {
+				customer.status = [
+					...customer.status,
+					{ code: statusType.ACTIVE, createdAt: new Date() },
+				]
+				user.status = statusType.ACTIVE
+			} else {
+				customer.status = [
+					...customer.status,
+					{ code: statusType.TRIAL, createdAt: new Date() },
+				]
+				user.status = statusType.TRIAL
+			}
+
 			await user.save()
 
 			// customer.isActive = true
@@ -557,51 +555,25 @@ const updateUser = asyncHandler(async (req, res) => {
 				teacher: updateRoom.teacher,
 				info: customer.info,
 			})
-		} else {
-			res.status(404)
-			throw new Error('teacher is not found')
+			return
 		}
-	}
-	//Unmatch with teacher && excluding student from students[] _______________
-	if (user && room) {
-		if (room.teacher === teacher) {
-			// if (!existTeacher) {
-			// const formerTeacher = await User.findById(user.teacher)
-			// const existStudent = formerTeacher.students.some(
-			// 	(obj) => obj.toString() === user._id.toString()
-			// )
-			// if (existStudent) {
-			// 	formerTeacher.students = formerTeacher.students.filter(
-			// 		(obj) => obj.toString() !== user._id.toString()
-			// 	)
-			// }
-			// user.hasMatched = hasMatched
-			// user.teacher = null
-
-			// await formerTeacher.save()
-			// const updatedUser = await user.save()
-
-			// __________________new ____________________
-
+		//__________TO CANCEL____________
+		if (room.teacher.toString() === teacher) {
 			//fixme depending on situation...
-
 			customer.status = [
 				...customer.status,
 				{ code: statusType.CANCELLED, createdAt: new Date() },
 			]
 			user.status = statusType.CANCELLED
 			await user.save()
-			// customer.isActive = false
 			const updateCustomer = await customer.save()
-			//fixme depending on situation...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 			room.teacher = null
 			room.isActive = false
 			// room.schedule.week = 5
 			// room.schedule.time = 10
 			const updateRoom = await room.save()
 
-			console.log(updateRoom)
+			// console.log(updateRoom)
 			// ______________________________________
 			res.json({
 				_id: user._id,
@@ -611,18 +583,10 @@ const updateUser = asyncHandler(async (req, res) => {
 				teacher: updateRoom.teacher,
 				info: customer.info,
 			})
-			// res.json({
-			// 	_id: updatedUser._id,
-			// 	name: updatedUser.name,
-			// 	email: updatedUser.email,
-			// 	hasMatched: updatedUser.hasMatched,
-			// 	teacher: updatedUser.teacher,
-			// 	info: updatedUser.info,
-			// })
+			return
 		}
-	} else {
 		res.status(404)
-		throw new Error('user or teacher is not found')
+		throw new Error('teacher or user is not found')
 	}
 })
 

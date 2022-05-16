@@ -112,7 +112,7 @@ const UserEditScreen = () => {
 											// setState={() => setComponent('match')}
 											result={
 												user.room.isActive
-													? '済み'
+													? 'アクティブ'
 													: '未定'
 											}
 										/>
@@ -123,7 +123,7 @@ const UserEditScreen = () => {
 					)
 				)}
 
-				{user && component === 'match' && (
+				{/* {user && component === 'match' && (
 					<ChangeMatchStatus
 						userState={user}
 						component={() => setComponent('')}
@@ -148,7 +148,7 @@ const UserEditScreen = () => {
 							}))
 						}
 					/>
-				)}
+				)} */}
 			</FormContainer>
 		</Container>
 	)
