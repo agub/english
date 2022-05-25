@@ -12,6 +12,7 @@ import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
 import { getUserDetails, updateUser } from '../redux/actions/userActions'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
+import { statusType } from '../data/data'
 
 const ChangeMatchedStatusScreen = () => {
 	const navigate = useNavigate()
@@ -23,6 +24,7 @@ const ChangeMatchedStatusScreen = () => {
 		isActive: null,
 		teacher: null,
 		changeStatusTo: null,
+		currentStatus: null,
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
@@ -86,14 +88,15 @@ const ChangeMatchedStatusScreen = () => {
 			dispatch(
 				updateUser({
 					_id: id,
-					changeStatusTo: '',
-					currentStatus: '',
+					changeStatusTo: inputValue.changeStatusTo,
+					currentStatus: user.userData.status,
 					teacher: inputValue.teacher,
 				})
 			)
 			console.log(user)
 		}
 	}
+
 	return (
 		<>
 			<Container>
@@ -124,30 +127,51 @@ const ChangeMatchedStatusScreen = () => {
 								<div>
 									<input
 										required
-										name='experience'
+										disabled={!user.room.isActive}
+										name='statusTo'
+										onChange={() =>
+											setInputValue((prev) => ({
+												...prev,
+												isActive: false,
+												changeStatusTo:
+													statusType.CANCELLED,
+											}))
+										}
+										type='radio'
+									/>
+									<label>キャンセル</label>
+								</div>
+								<div>
+									<input
+										required
+										name='statusTo'
 										disabled={!user.room.isActive}
 										onChange={() =>
 											setInputValue((prev) => ({
 												...prev,
 												isActive: false,
 												changeStatusTo:
-													user.customer.status
-														.length >= 2,
+													statusType.PENDING,
 											}))
 										}
 										type='radio'
 									/>
-									<label>未定</label>
+									<label>新しい先生を希望</label>
 								</div>
 								<div>
 									<input
 										required
-										name='experience'
+										name='statusTo'
 										disabled={user.room.isActive}
 										onChange={() =>
 											setInputValue((prev) => ({
 												...prev,
 												isActive: true,
+												changeStatusTo:
+													user.customer.status
+														.length <= 3
+														? statusType.TRIAL
+														: statusType.ACTIVE,
 											}))
 										}
 										type='radio'
