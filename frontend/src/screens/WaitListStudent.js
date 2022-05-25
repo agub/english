@@ -7,7 +7,8 @@ import { listWaitLists } from '../redux/actions/userActions'
 import { USER_WAIT_LISTS_RESET } from '../redux/constants/userConstants'
 import BackButton from '../components/common/BackButton'
 import Button from '../components/common/Button'
-import weeks from '../data/weeks'
+// import weeks from '../data/weeks'
+import { weeks } from '../data/data'
 import { listGames } from '../redux/actions/gameActions'
 import Loader from '../components/common/Loader'
 
@@ -192,3 +193,4 @@ const WaitListScreen = () => {
 }
 
 export default WaitListScreen
+

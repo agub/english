@@ -466,13 +466,13 @@ const getUserById = asyncHandler(async (req, res) => {
 	if (user && customer) {
 		const room = await Room.findById(user.roomId)
 		res.json({ userData: user, customer, room })
-		console.log({ user, customer, room })
+		// console.log({ user, customer, room })
 		return
 	}
 	if (user && employee) {
 		const room = await Room.find({ teacher: user._id })
 		res.json({ userData: user, employee, room })
-		console.log({ user, employee, room })
+		// console.log({ user, employee, room })
 		return
 	}
 	res.status(404)
@@ -501,13 +501,10 @@ const updateUser = asyncHandler(async (req, res) => {
 	const customer = await Customer.findOne({ userId: req.params.id })
 	// ___________________new___________________
 	const room = await Room.findById(user.roomId)
-
-	// ______________________________________
-
 	//fixme *input is writeable
 	const existTeacher = await User.findById(teacher)
 
-	console.log(room.teacher)
+	console.log(req.body)
 
 	if (user && room && existTeacher && existTeacher.userType === 'employee') {
 		//__________TO TRIAL____________

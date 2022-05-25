@@ -9,16 +9,11 @@ import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
-import {
-	getUserDetails,
-	updateUser,
-	userProfileUpdate,
-} from '../redux/actions/userActions'
-import { USER_PROFILE_UPDATE_RESET } from '../redux/constants/userConstants'
+import { getUserDetails, updateUser } from '../redux/actions/userActions'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
 
-const ChangeStatusScreen = () => {
+const ChangeMatchedStatusScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
@@ -27,6 +22,7 @@ const ChangeStatusScreen = () => {
 	const initialValue = {
 		isActive: null,
 		teacher: null,
+		changeStatusTo: null,
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
@@ -90,7 +86,8 @@ const ChangeStatusScreen = () => {
 			dispatch(
 				updateUser({
 					_id: id,
-					// hasMatched: inputValue.hasMatched,
+					changeStatusTo: '',
+					currentStatus: '',
 					teacher: inputValue.teacher,
 				})
 			)
@@ -133,6 +130,9 @@ const ChangeStatusScreen = () => {
 											setInputValue((prev) => ({
 												...prev,
 												isActive: false,
+												changeStatusTo:
+													user.customer.status
+														.length >= 2,
 											}))
 										}
 										type='radio'
@@ -199,5 +199,5 @@ const ChangeStatusScreen = () => {
 	)
 }
 
-export default ChangeStatusScreen
+export default ChangeMatchedStatusScreen
 

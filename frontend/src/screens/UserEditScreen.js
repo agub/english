@@ -6,6 +6,7 @@ import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import HorizontalButton from '../components/common/HorizontalButton'
 import { getUserDetails } from '../redux/actions/userActions'
+import { statusType } from '../data/data'
 
 import Loader from '../components/common/Loader'
 import BackButton from '../components/common/BackButton'
@@ -55,18 +56,44 @@ const UserEditScreen = () => {
 										user.userData.name.firstName}
 									様の設定
 								</p>
-								<Link to={`/admin/${id}/edit/status`}>
-									<HorizontalButton
-										text='マッチステイタス変更 :'
-										type='button'
-										// setState={() => setComponent('match')}
-										result={
-											user.room.isActive
-												? 'アクティブ'
-												: '未定'
-										}
-									/>
-								</Link>
+								{user &&
+									user.userData.userType === 'customer' &&
+									user.userData.status !==
+										statusType.PENDING_INTERVIEW && (
+										<Link to={`/admin/${id}/edit/status`}>
+											<HorizontalButton
+												text='マッチステイタス変更 :'
+												type='button'
+												// setState={() => setComponent('match')}
+												result={
+													user.room.isActive
+														? 'アクティブ'
+														: '未定'
+												}
+											/>
+										</Link>
+									)}
+								{user &&
+									user.userData.userType === 'customer' &&
+									user.userData.status ===
+										(statusType.PENDING_INTERVIEW ||
+											statusType.INTERVIEWED ||
+											statusType.PENDING) && (
+										<Link
+											to={`/admin/${id}/edit/interviewStatus`}
+										>
+											<HorizontalButton
+												text='インタビュー後のステイタスの変更:'
+												type='button'
+												// setState={() => setComponent('match')}
+												result={
+													user.room.isActive
+														? 'アクティブ'
+														: '未定'
+												}
+											/>
+										</Link>
+									)}
 							</>
 						)}
 					</>

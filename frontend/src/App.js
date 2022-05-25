@@ -16,6 +16,8 @@ import PaymentHistoryScreen from './screens/PaymentHistoryScreen'
 import ChangeAddressScreen from './screens/ChangeAddressScreen'
 import ChangeDiscordIdScreen from './screens/ChangeDiscordIdScreen'
 import ChangePasswordScreen from './screens/ChangePasswordScreen'
+import ChangeMatchedStatusScreen from './screens/ChangeMatchedStatusScreen'
+import ChangeInterviewStatusScreen from './screens/ChangeInterviewStatusScreen'
 import ContactScreen from './screens/ContactScreen'
 import VerifyUserScreen from './screens/VerifyUserScreen'
 import WaitListScreen from './screens/WaitListScreen'
@@ -23,7 +25,6 @@ import WaitListStudent from './screens/WaitListStudent'
 import Calc from './screens/Calc'
 import Calc2 from './screens/Calc2'
 import Calc3 from './screens/Calc3'
-import ChangeStatusScreen from './screens/ChangeStatusScreen'
 
 function App() {
 	return (
@@ -81,7 +82,11 @@ function App() {
 				<Route path='/admin/:id/edit' element={<UserEditScreen />} />
 				<Route
 					path='/admin/:id/edit/status'
-					element={<ChangeStatusScreen />}
+					element={<ChangeMatchedStatusScreen />}
+				/>
+				<Route
+					path='/admin/:id/edit/interviewStatus'
+					element={<ChangeInterviewStatusScreen />}
 				/>
 			</Routes>
 			<Footer />

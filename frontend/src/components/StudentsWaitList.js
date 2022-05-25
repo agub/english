@@ -1,7 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
 import { FiChevronRight } from 'react-icons/fi'
-import weeks from '../data/weeks'
+
+import { weeks } from '../data/data'
 
 const StudentsWaitList = ({
 	setState,
@@ -78,3 +79,4 @@ const StudentsWaitList = ({
 }
 
 export default StudentsWaitList
+
