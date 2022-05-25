@@ -59,7 +59,8 @@ const UserEditScreen = () => {
 								{user &&
 									user.userData.userType === 'customer' &&
 									user.userData.status !==
-										statusType.PENDING_INTERVIEW && (
+										(statusType.PENDING_INTERVIEW ||
+											statusType.INTERVIEWED) && (
 										<Link to={`/admin/${id}/edit/status`}>
 											<HorizontalButton
 												text='マッチステイタス変更 :'
@@ -77,8 +78,7 @@ const UserEditScreen = () => {
 									user.userData.userType === 'customer' &&
 									user.userData.status ===
 										(statusType.PENDING_INTERVIEW ||
-											statusType.INTERVIEWED ||
-											statusType.PENDING) && (
+											statusType.INTERVIEWED) && (
 										<Link
 											to={`/admin/${id}/edit/interviewStatus`}
 										>

@@ -22,6 +22,7 @@ const ChangeInterviewStatusScreen = () => {
 
 	const initialValue = {
 		confirmStatus: null,
+		changeStatusTo: null,
 	}
 	const [inputValue, setInputValue] = useState(initialValue)
 	const [errorText, setErrorText] = useState(null)
@@ -76,13 +77,14 @@ const ChangeInterviewStatusScreen = () => {
 		setErrorText(null)
 
 		if (user.userData.status !== '') {
-			// dispatch(
-			// 	updateUser({
-			// 		_id: id,
-			// 		// hasMatched: inputValue.hasMatched,
-			// 		teacher: inputValue.teacher,
-			// 	})
-			// )
+			dispatch(
+				updateUser({
+					_id: id,
+					// hasMatched: inputValue.hasMatched,
+					teacher: inputValue.teacher,
+					changeStatusTo: inputValue.changeStatusTo,
+				})
+			)
 			console.log(user)
 		}
 	}
@@ -105,8 +107,38 @@ const ChangeInterviewStatusScreen = () => {
 					<Link to={`/admin/${id}/edit`}>
 						<BackButton />
 					</Link>
-					{user && user.room && (
+					{user && user.room && user.userData && (
 						<>
+							<h1>need to add input for class time fasdfads</h1>
+							<div className='mb-6 flex items-start flex-col'>
+								<label className='block text-gray-700 text-sm font-bold mb-2'>
+									現ステイタス :{' '}
+									{user.userData.status ===
+									statusType.PENDING_INTERVIEW
+										? 'インタビュー待ち'
+										: user.userData.status ===
+										  statusType.INTERVIEWED
+										? 'インタビュー済み'
+										: ''}
+								</label>
+								<div>
+									<input
+										required
+										// disabled={!user.room.isActive}
+										name='statusTo'
+										onChange={() =>
+											setInputValue((prev) => ({
+												...prev,
+												// isActive: false,
+												changeStatusTo:
+													statusType.INTERVIEWED,
+											}))
+										}
+										type='radio'
+									/>
+									<label>インタビュー済み</label>
+								</div>
+							</div>
 							<div className='flex items-center justify-between'>
 								<Button
 									onClick={submitHandler}

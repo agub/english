@@ -496,19 +496,24 @@ const getTeacherById = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/:id
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
-	const { hasMatched, isActive, teacher } = req.body
+	const { hasMatched, isActive, teacher, changeStatusTo, currentStatus } =
+		req.body
+
 	const user = await User.findById(req.params.id)
 	const customer = await Customer.findOne({ userId: req.params.id })
-	// ___________________new___________________
 	const room = await Room.findById(user.roomId)
 	//fixme *input is writeable
 	const existTeacher = await User.findById(teacher)
-
 	console.log(req.body)
 
 	if (user && room && existTeacher && existTeacher.userType === 'employee') {
-		//__________TO TRIAL____________
-		if (room.teacher === null) {
+		//__________TO TRIAL or ACTIVE____________
+		if (
+			(changeStatusTo === statusType.TRIAL ||
+				changeStatusTo === statusType.ACTIVE) &&
+			user.userType === 'customer' &&
+			room.teacher === null
+		) {
 			const hasTrialEnd = customer.status.some((list) => {
 				return list.code === statusType.TRIAL
 			})
@@ -529,19 +534,16 @@ const updateUser = asyncHandler(async (req, res) => {
 
 			await user.save()
 
-			// customer.isActive = true
 			const updateCustomer = await customer.save()
-			//fixme depending on situation...
 			room.teacher = teacher
 			room.isActive = true
+			//fixme
 			room.schedule.week = 5
 			room.schedule.time = 10
-			// teacher should be inside of room.candidate?
-			// !!!!!!!!!!!!Need add gameTitle!!!!
-			const updateRoom = await room.save()
+			//fixme
 
+			const updateRoom = await room.save()
 			console.log(updateRoom)
-			// ______________________________________
 			// sendMatched
 
 			res.json({
@@ -554,15 +556,31 @@ const updateUser = asyncHandler(async (req, res) => {
 			})
 			return
 		}
-		//__________TO CANCEL____________
-		if (room.teacher.toString() === teacher) {
+		//__________TO CANCEL or PENDING____________
+		if (
+			(changeStatusTo === statusType.CANCELLED ||
+				changeStatusTo === statusType.PENDING) &&
+			user.userType === 'customer' &&
+			room.teacher.toString() === teacher
+		) {
 			//fixme depending on situation...
-			customer.status = [
-				...customer.status,
-				{ code: statusType.CANCELLED, createdAt: new Date() },
-			]
-			user.status = statusType.CANCELLED
+
+			if (changeStatusTo === statusType.CANCELLED) {
+				customer.status = [
+					...customer.status,
+					{ code: statusType.CANCELLED, createdAt: new Date() },
+				]
+				user.status = statusType.CANCELLED
+			} else if (changeStatusTo === statusType.PENDING) {
+				customer.status = [
+					...customer.status,
+					{ code: statusType.PENDING, createdAt: new Date() },
+				]
+				user.status = statusType.PENDING
+			}
+
 			await user.save()
+
 			const updateCustomer = await customer.save()
 			room.teacher = null
 			room.isActive = false
