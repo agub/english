@@ -13,6 +13,7 @@ import {
 	getUsers,
 	getUserById,
 	updateUser,
+	updateInterview,
 	getTeacherById,
 	contactForm,
 	getWaitLists,
@@ -35,6 +36,8 @@ router
 	.route('/:id')
 	.get(protect, admin, getUserById)
 	.put(protect, admin, updateUser)
+
+router.route('/:id/interview').put(protect, admin, updateInterview)
 
 router.route('/contact').post(contactForm)
 router.route('/verify/:id/:token').post(verifyEmail)

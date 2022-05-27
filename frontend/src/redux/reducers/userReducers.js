@@ -25,6 +25,10 @@ import {
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
 	USER_UPDATE_RESET,
+	USER_INTERVIEW_UPDATE_REQUEST,
+	USER_INTERVIEW_UPDATE_SUCCESS,
+	USER_INTERVIEW_UPDATE_FAIL,
+	USER_INTERVIEW_UPDATE_RESET,
 	USER_REGISTER_TEACHER_REQUEST,
 	USER_REGISTER_TEACHER_SUCCESS,
 	USER_REGISTER_TEACHER_FAIL,
@@ -166,6 +170,21 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
 		case USER_UPDATE_FAIL:
 			return { loading: false, error: action.payload }
 		case USER_UPDATE_RESET:
+			return { user: [] }
+		default:
+			return state
+	}
+}
+
+export const userInterviewUpdateReducer = (state = { user: {} }, action) => {
+	switch (action.type) {
+		case USER_INTERVIEW_UPDATE_REQUEST:
+			return { loading: true }
+		case USER_INTERVIEW_UPDATE_SUCCESS:
+			return { loading: false, success: true }
+		case USER_INTERVIEW_UPDATE_FAIL:
+			return { loading: false, error: action.payload }
+		case USER_INTERVIEW_UPDATE_RESET:
 			return { user: [] }
 		default:
 			return state

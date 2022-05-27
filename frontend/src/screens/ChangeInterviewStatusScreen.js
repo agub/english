@@ -8,8 +8,11 @@ import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
-import { getUserDetails, updateUser } from '../redux/actions/userActions'
+import {
+	USER_INTERVIEW_UPDATE_RESET,
+	USER_UPDATE_RESET,
+} from '../redux/constants/userConstants'
+import { getUserDetails, updateInterview } from '../redux/actions/userActions'
 import { statusType } from '../data/data'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
@@ -21,7 +24,6 @@ const ChangeInterviewStatusScreen = () => {
 	const { id } = useParams()
 
 	const initialValue = {
-		confirmStatus: null,
 		changeStatusTo: null,
 	}
 	const [inputValue, setInputValue] = useState(initialValue)
@@ -33,12 +35,11 @@ const ChangeInterviewStatusScreen = () => {
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
 	// const userUpdate = useSelector((state) => state.userProfileUpdate)
-	const userUpdate = useSelector((state) => state.userUpdate)
 	const {
 		success,
 		error: userUpdateError,
 		loading: userUpdateLoading,
-	} = userUpdate
+	} = useSelector((state) => state.userInterviewUpdate)
 
 	useEffect(() => {
 		console.log(inputValue)
@@ -52,20 +53,8 @@ const ChangeInterviewStatusScreen = () => {
 			dispatch(getUserDetails(id))
 			return
 		}
-		if (
-			user &&
-			user.userDetails &&
-			inputValue.confirmStatus === null &&
-			user.userDetails.status === statusType.PENDING_INTERVIEW
-		) {
-			setInputValue((prev) => ({
-				...prev,
-				confirmStatus: '',
-			}))
-			return
-		}
 		if (success) {
-			dispatch({ type: USER_UPDATE_RESET })
+			dispatch({ type: USER_INTERVIEW_UPDATE_RESET })
 			navigate('/admin/userlist')
 			return
 		}
@@ -76,16 +65,13 @@ const ChangeInterviewStatusScreen = () => {
 		e.preventDefault()
 		setErrorText(null)
 
-		if (user.userData.status !== '') {
+		if (user.userData.status !== inputValue.changeStatusTo) {
 			dispatch(
-				updateUser({
+				updateInterview({
 					_id: id,
-					// hasMatched: inputValue.hasMatched,
-					teacher: inputValue.teacher,
 					changeStatusTo: inputValue.changeStatusTo,
 				})
 			)
-			console.log(user)
 		}
 	}
 	return (
@@ -124,7 +110,10 @@ const ChangeInterviewStatusScreen = () => {
 								<div>
 									<input
 										required
-										// disabled={!user.room.isActive}
+										disabled={
+											user.userData.status ===
+											statusType.INTERVIEWED
+										}
 										name='statusTo'
 										onChange={() =>
 											setInputValue((prev) => ({
@@ -137,6 +126,46 @@ const ChangeInterviewStatusScreen = () => {
 										type='radio'
 									/>
 									<label>インタビュー済み</label>
+								</div>
+								<div>
+									<input
+										required
+										disabled={
+											user.userData.status ===
+											statusType.PENDING_INTERVIEW
+										}
+										name='statusTo'
+										onChange={() =>
+											setInputValue((prev) => ({
+												...prev,
+												// isActive: false,
+												changeStatusTo:
+													statusType.PENDING,
+											}))
+										}
+										type='radio'
+									/>
+									<label>合格にする</label>
+								</div>
+								<div>
+									<input
+										required
+										disabled={
+											user.userData.status ===
+											statusType.PENDING_INTERVIEW
+										}
+										name='statusTo'
+										onChange={() =>
+											setInputValue((prev) => ({
+												...prev,
+												// isActive: false,
+												changeStatusTo:
+													statusType.CANCELLED,
+											}))
+										}
+										type='radio'
+									/>
+									<label>失格</label>
 								</div>
 							</div>
 							<div className='flex items-center justify-between'>

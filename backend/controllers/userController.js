@@ -506,12 +506,17 @@ const updateUser = asyncHandler(async (req, res) => {
 	const existTeacher = await User.findById(teacher)
 	console.log(req.body)
 
-	if (user && room && existTeacher && existTeacher.userType === 'employee') {
+	if (
+		user &&
+		room &&
+		existTeacher &&
+		user.userType === 'customer' &&
+		existTeacher.userType === 'employee'
+	) {
 		//__________TO TRIAL or ACTIVE____________
 		if (
 			(changeStatusTo === statusType.TRIAL ||
 				changeStatusTo === statusType.ACTIVE) &&
-			user.userType === 'customer' &&
 			room.teacher === null
 		) {
 			const hasTrialEnd = customer.status.some((list) => {
@@ -560,7 +565,6 @@ const updateUser = asyncHandler(async (req, res) => {
 		if (
 			(changeStatusTo === statusType.CANCELLED ||
 				changeStatusTo === statusType.PENDING) &&
-			user.userType === 'customer' &&
 			room.teacher.toString() === teacher
 		) {
 			//fixme depending on situation...
@@ -603,6 +607,81 @@ const updateUser = asyncHandler(async (req, res) => {
 		res.status(404)
 		throw new Error('teacher or user is not found')
 	}
+	// res.status(404)
+	// throw new Error('teacher or user is not found')
+})
+// @desc    Update user
+// @route   PUT /api/users/:id
+// @access  Private/Admin
+const updateInterview = asyncHandler(async (req, res) => {
+	const { changeStatusTo, currentStatus } = req.body
+
+	const user = await User.findById(req.params.id)
+	const customer = await Customer.findOne({ userId: req.params.id })
+	const room = await Room.findById(user.roomId)
+
+	console.log(req.body)
+	if (user && room && customer && user.userType === 'customer') {
+		//___To INTERVIEWED ______
+		if (changeStatusTo === statusType.INTERVIEWED) {
+			customer.status = [
+				...customer.status,
+				{ code: statusType.INTERVIEWED, createdAt: new Date() },
+			]
+			user.status = statusType.INTERVIEWED
+			await user.save()
+			const updateCustomer = await customer.save()
+			// sendMatched
+			res.json({
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				status: updateCustomer.status,
+			})
+			return
+		}
+		//___To INTERVIEWED ______
+		if (changeStatusTo === statusType.PENDING) {
+			customer.status = [
+				...customer.status,
+				{ code: statusType.PENDING, createdAt: new Date() },
+			]
+			user.status = statusType.PENDING
+			await user.save()
+			const updateCustomer = await customer.save()
+			// sendMatched
+			res.json({
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				status: updateCustomer.status,
+			})
+			return
+		}
+		//___To INTERVIEWED ______
+		if (changeStatusTo === statusType.CANCELLED) {
+			customer.status = [
+				...customer.status,
+				{ code: statusType.CANCELLED, createdAt: new Date() },
+			]
+			user.status = statusType.CANCELLED
+			await user.save()
+			const updateCustomer = await customer.save()
+			// sendMatched
+
+			res.json({
+				_id: user._id,
+				name: user.name,
+				email: user.email,
+				status: updateCustomer.status,
+			})
+			return
+		}
+		res.status(404)
+		throw new Error('could not update interview status')
+	}
+	res.status(404)
+	throw new Error('user is not found')
 })
 
 // @desc    Update user
@@ -648,6 +727,7 @@ export {
 	getUsers,
 	getUserById,
 	updateUser,
+	updateInterview,
 	getTeacherById,
 	contactForm,
 	getWaitLists,

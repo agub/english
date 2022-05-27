@@ -58,8 +58,9 @@ const UserEditScreen = () => {
 								</p>
 								{user &&
 									user.userData.userType === 'customer' &&
-									user.userData.status !==
-										(statusType.PENDING_INTERVIEW ||
+									(user.userData.status !==
+										statusType.PENDING_INTERVIEW ||
+										user.userData.status !==
 											statusType.INTERVIEWED) && (
 										<Link to={`/admin/${id}/edit/status`}>
 											<HorizontalButton
@@ -76,8 +77,9 @@ const UserEditScreen = () => {
 									)}
 								{user &&
 									user.userData.userType === 'customer' &&
-									user.userData.status ===
-										(statusType.PENDING_INTERVIEW ||
+									(user.userData.status ===
+										statusType.PENDING_INTERVIEW ||
+										user.userData.status ===
 											statusType.INTERVIEWED) && (
 										<Link
 											to={`/admin/${id}/edit/interviewStatus`}
