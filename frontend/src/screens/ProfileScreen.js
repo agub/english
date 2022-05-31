@@ -20,10 +20,9 @@ const ProfileScreen = () => {
 
 	const { loading, user, error } = useSelector((state) => state.userDetails)
 
-	const userTeacherDetails = useSelector((state) => state.userTeacherDetails)
-	const { teacher } = userTeacherDetails
-	const userLogin = useSelector((state) => state.userLogin)
-	const { userInfo } = userLogin
+	const { teacher } = useSelector((state) => state.userTeacherDetails)
+
+	const { userInfo } = useSelector((state) => state.userLogin)
 
 	const userData = useSelector((state) => state.userDetails)
 	console.log(userData)
@@ -34,7 +33,7 @@ const ProfileScreen = () => {
 		} else {
 			if (IsObjectEmpty(user)) {
 				dispatch(getUserDetails('profile'))
-				setTimeout(() => setStartAnimate(true), 400)
+				// setTimeout(() => setStartAnimate(true), 400)
 				if (user.teacher) dispatch(getTeacherDetails(user.teacher))
 			} else {
 				setTimeout(() => setStartAnimate(true), 400)
@@ -98,11 +97,7 @@ const ProfileScreen = () => {
 											: '先生'
 									}
 								/>
-								{/* <HorizontalButton
-								text='ご使用ゲーム:'
-								type='box'
-								result={user.info.gameTitle}
-							/> */}
+
 								<p className='mt-4'>一般</p>
 								<Link to={`/profile/address`}>
 									<HorizontalButton

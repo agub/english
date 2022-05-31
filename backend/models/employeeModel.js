@@ -7,13 +7,6 @@ const employeeSchema = mongoose.Schema(
 			ref: 'User',
 			unique: true,
 		},
-		// students: [
-		// 	{
-		// 		type: mongoose.Schema.Types.ObjectId,
-		// 		ref: 'User',
-		// 		unique: true,
-		// 	},
-		// ],
 		history: [
 			{
 				roomId: {

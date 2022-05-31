@@ -4,7 +4,7 @@ import Button from '../components/common/Button'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import InputField from '../components/common/InputField'
-
+import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { listGames } from '../redux/actions/gameActions'
 import { interview } from '../redux/actions/userActions'
@@ -126,6 +126,7 @@ const InterviewRegisterScreen = () => {
 					<Message variant='danger'>{errorText}</Message>
 				)}
 				{success && <Message variant='info'>無料体験応募完了</Message>}
+				{(loading || interviewLoading) && <Loader />}
 				<div className='mb-4'>
 					<InputField
 						type='email'
@@ -611,6 +612,7 @@ const InterviewRegisterScreen = () => {
 								placeholder='XX'
 								className='shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 							/>
+
 							<div>
 								{inputValue.info.preferTime[1].time < 12
 									? 'am'

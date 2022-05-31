@@ -300,7 +300,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 	if (user) {
 		// if (!user.isTeacher) {
-		if (user.userType === 'customer') {
+		if (user.userType === 'customer' && customer) {
+			const room = await Room.findById(user.roomId)
 			//userType
 			res.json({
 				_id: user._id,
@@ -312,11 +313,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
 				//fixme
 				status: user.status,
 				userType: user.userType,
-				teacher: user.teacher,
+				teacher: room.teacher,
 				info: customer.info,
-				homeAddress: user.homeAddress,
+				homeAddress: customer.homeAddress,
 				token: generateToken(user._id),
 			})
+			return
 		}
 		if (user.userType === 'employee') {
 			res.json({
@@ -333,6 +335,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 				homeAddress: user.homeAddress,
 				token: generateToken(user._id),
 			})
+			return
 		}
 	} else {
 		res.status(404)
