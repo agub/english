@@ -8,12 +8,9 @@ import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	USER_INTERVIEW_UPDATE_RESET,
-	USER_UPDATE_RESET,
-} from '../redux/constants/userConstants'
+import { USER_INTERVIEW_UPDATE_RESET } from '../redux/constants/userConstants'
 import { getUserDetails, updateInterview } from '../redux/actions/userActions'
-import { statusType } from '../data/data'
+import { statusType } from '../utils/data'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
 

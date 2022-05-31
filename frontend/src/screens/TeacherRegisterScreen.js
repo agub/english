@@ -10,9 +10,7 @@ import { teacherRegister } from '../redux/actions/userActions'
 import { listGames } from '../redux/actions/gameActions'
 import { RiDeleteBack2Fill } from 'react-icons/ri'
 import { MdOutlineAddCircleOutline } from 'react-icons/md'
-
-// import weeks from '../data/weeks'
-import { weeks } from '../data/data'
+import { weeks } from '../utils/data'
 
 const TeacherRegisterScreen = () => {
 	const dispatch = useDispatch()

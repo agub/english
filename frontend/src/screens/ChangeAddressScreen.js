@@ -16,7 +16,7 @@ import {
 import { usePostalJp } from 'use-postal-jp'
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
 
-import { PREF_OPTIONS } from '../data/Prefectures'
+import { PREF_OPTIONS } from '../utils/Prefectures'
 import Loader from '../components/common/Loader'
 
 const ChangeAddressScreen = () => {

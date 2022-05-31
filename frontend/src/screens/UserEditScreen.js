@@ -6,7 +6,7 @@ import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import HorizontalButton from '../components/common/HorizontalButton'
 import { getUserDetails } from '../redux/actions/userActions'
-import { statusType } from '../data/data'
+import { statusType } from '../utils/data'
 
 import Loader from '../components/common/Loader'
 import BackButton from '../components/common/BackButton'
@@ -50,6 +50,7 @@ const UserEditScreen = () => {
 						/>
 						{user && user.userData && user.userData.name && (
 							<>
+								<p>ID: {user.userData._id}</p>
 								<p>
 									{user.userData.name.lastName +
 										' ' +

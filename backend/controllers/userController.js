@@ -77,6 +77,7 @@ const interviewRegisterUser = asyncHandler(async (req, res) => {
 		const newCustomer = await Customer.create({
 			userId: user._id,
 			info: info,
+			homeAddress: null,
 			// isActive: false,
 			status: [
 				{ code: statusType.PENDING_INTERVIEW, createdAt: new Date() },
@@ -465,7 +466,8 @@ const getUserById = asyncHandler(async (req, res) => {
 	const employee = await Employee.findOne({ userId: user._id })
 	if (user && customer) {
 		const room = await Room.findById(user.roomId)
-		res.json({ userData: user, customer, room })
+
+		res.json({ userData: user, customer: customer, room: room })
 		// console.log({ user, customer, room })
 		return
 	}
@@ -504,8 +506,6 @@ const updateUser = asyncHandler(async (req, res) => {
 	const room = await Room.findById(user.roomId)
 	//fixme *input is writeable
 	const existTeacher = await User.findById(teacher)
-	console.log(req.body)
-
 	if (
 		user &&
 		room &&
@@ -536,7 +536,6 @@ const updateUser = asyncHandler(async (req, res) => {
 				]
 				user.status = statusType.TRIAL
 			}
-
 			await user.save()
 
 			const updateCustomer = await customer.save()
@@ -546,11 +545,9 @@ const updateUser = asyncHandler(async (req, res) => {
 			room.schedule.week = 5
 			room.schedule.time = 10
 			//fixme
-
 			const updateRoom = await room.save()
 			console.log(updateRoom)
 			// sendMatched
-
 			res.json({
 				_id: user._id,
 				name: user.name,
@@ -568,7 +565,6 @@ const updateUser = asyncHandler(async (req, res) => {
 			room.teacher.toString() === teacher
 		) {
 			//fixme depending on situation...
-
 			if (changeStatusTo === statusType.CANCELLED) {
 				customer.status = [
 					...customer.status,
@@ -582,7 +578,6 @@ const updateUser = asyncHandler(async (req, res) => {
 				]
 				user.status = statusType.PENDING
 			}
-
 			await user.save()
 
 			const updateCustomer = await customer.save()
@@ -592,8 +587,6 @@ const updateUser = asyncHandler(async (req, res) => {
 			// room.schedule.time = 10
 			const updateRoom = await room.save()
 
-			// console.log(updateRoom)
-			// ______________________________________
 			res.json({
 				_id: user._id,
 				name: user.name,
@@ -605,10 +598,10 @@ const updateUser = asyncHandler(async (req, res) => {
 			return
 		}
 		res.status(404)
-		throw new Error('teacher or user is not found')
+		throw new Error('error during update process')
 	}
-	// res.status(404)
-	// throw new Error('teacher or user is not found')
+	res.status(404)
+	throw new Error('teacher or user is not found')
 })
 // @desc    Update user
 // @route   PUT /api/users/:id
@@ -668,7 +661,6 @@ const updateInterview = asyncHandler(async (req, res) => {
 			await user.save()
 			const updateCustomer = await customer.save()
 			// sendMatched
-
 			res.json({
 				_id: user._id,
 				name: user.name,

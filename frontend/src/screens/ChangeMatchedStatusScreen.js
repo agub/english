@@ -12,7 +12,7 @@ import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
 import { getUserDetails, updateUser } from '../redux/actions/userActions'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
-import { statusType } from '../data/data'
+import { statusType } from '../utils/data'
 
 const ChangeMatchedStatusScreen = () => {
 	const navigate = useNavigate()
