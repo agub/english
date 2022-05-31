@@ -10,6 +10,7 @@ import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
 import { getUserDetails, updateUser } from '../redux/actions/userActions'
+import { weeks } from '../utils/data'
 
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
 import { statusType } from '../utils/data'
@@ -25,6 +26,9 @@ const ChangeMatchedStatusScreen = () => {
 		teacher: null,
 		changeStatusTo: null,
 		currentStatus: null,
+		time: null,
+		week: null,
+		hour: null,
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
@@ -91,6 +95,9 @@ const ChangeMatchedStatusScreen = () => {
 					changeStatusTo: inputValue.changeStatusTo,
 					currentStatus: user.userData.status,
 					teacher: inputValue.teacher,
+					week: inputValue.week,
+					time: inputValue.time,
+					hour: inputValue.hour,
 				})
 			)
 			console.log(user)
@@ -176,7 +183,7 @@ const ChangeMatchedStatusScreen = () => {
 										}
 										type='radio'
 									/>
-									<label>マッチ済み</label>
+									<label>マッチ完了にする</label>
 								</div>
 							</div>
 							<div className='mb-4'>
@@ -203,6 +210,95 @@ const ChangeMatchedStatusScreen = () => {
 									// notRequired={user.room.isActive}
 								/>
 							</div>
+							{user &&
+								(user.userData.status === statusType.PENDING ||
+									user.userData.status ===
+										statusType.CANCELLED ||
+									user.userData.status ===
+										statusType.UNSUBBED) && (
+									<div className='mb-6 flex items-start flex-col'>
+										<label className='block text-gray-700 text-sm font-bold mb-2'>
+											授業の曜日と時間
+										</label>
+										<div className='flex flex-row'>
+											<select
+												name='week'
+												className='shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+												onChange={(e) =>
+													setInputValue((prev) => ({
+														...prev,
+														week: parseInt(
+															e.target.value
+														),
+													}))
+												}
+											>
+												<option hidden>
+													選択してください
+												</option>
+												{weeks.map((day, key) => (
+													<option
+														key={key}
+														value={day.value}
+													>
+														{day.title}
+													</option>
+												))}
+											</select>
+											{/* ______________________________ */}
+											<div>
+												<input
+													required
+													// value={preferTime[0].time}
+													name='time'
+													type='number'
+													max='24'
+													className='shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+													// onChange={preferHandleChange}
+													onChange={(e) => {
+														setInputValue(
+															(prev) => ({
+																...prev,
+																time: parseInt(
+																	e.target
+																		.value
+																),
+															})
+														)
+													}}
+													placeholder='XX'
+												/>
+												:
+												<input
+													required
+													// value={preferTime[0].time}
+													name='hour'
+													type='number'
+													max='59'
+													className='shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+													// onChange={preferHandleChange}
+													onChange={(e) => {
+														setInputValue(
+															(prev) => ({
+																...prev,
+																hour: parseInt(
+																	e.target
+																		.value
+																),
+															})
+														)
+													}}
+													placeholder='XX'
+												/>
+												{inputValue.time < 12
+													? 'am'
+													: 'pm'}
+												&nbsp; ~
+											</div>
+										</div>
+										*24時間表記でお願いします。
+									</div>
+								)}
 							<div className='flex items-center justify-between'>
 								<Button
 									onClick={submitHandler}

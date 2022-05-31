@@ -15,6 +15,7 @@ const roomSchema = mongoose.Schema(
 		schedule: {
 			week: { type: Number },
 			time: { type: Number },
+			hour: { type: Number },
 		},
 		isActive: {
 			type: Boolean,
@@ -34,7 +35,6 @@ const roomSchema = mongoose.Schema(
 		],
 
 		// deleteme
-		isWaiting: { type: Boolean, default: true },
 	},
 	{ timestamps: true }
 )

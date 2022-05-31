@@ -93,6 +93,7 @@ const interviewRegisterUser = asyncHandler(async (req, res) => {
 			schedule: {
 				week: null,
 				time: null,
+				hour: null,
 			},
 		})
 		user.roomId = newRoom._id
@@ -501,26 +502,37 @@ const getTeacherById = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/:id
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
-	const { hasMatched, isActive, teacher, changeStatusTo, currentStatus } =
-		req.body
+	const {
+		hasMatched,
+		isActive,
+		teacher,
+		changeStatusTo,
+		week,
+		time,
+		hour,
+		currentStatus,
+	} = req.body
 
 	const user = await User.findById(req.params.id)
 	const customer = await Customer.findOne({ userId: req.params.id })
 	const room = await Room.findById(user.roomId)
 	//fixme *input is writeable
 	const existTeacher = await User.findById(teacher)
-	if (
-		user &&
-		room &&
-		existTeacher &&
-		user.userType === 'customer' &&
-		existTeacher.userType === 'employee'
-	) {
+	if (!user || !room || !existTeacher) {
+		res.status(404)
+		throw new Error('teacher is not found')
+	}
+	console.log(req.body)
+
+	if (user.userType === 'customer' && existTeacher.userType === 'employee') {
 		//__________TO TRIAL or ACTIVE____________
 		if (
 			(changeStatusTo === statusType.TRIAL ||
 				changeStatusTo === statusType.ACTIVE) &&
-			room.teacher === null
+			room.teacher === null &&
+			time &&
+			week &&
+			hour
 		) {
 			const hasTrialEnd = customer.status.some((list) => {
 				return list.code === statusType.TRIAL
@@ -545,8 +557,9 @@ const updateUser = asyncHandler(async (req, res) => {
 			room.teacher = teacher
 			room.isActive = true
 			//fixme
-			room.schedule.week = 5
-			room.schedule.time = 10
+			room.schedule.week = week
+			room.schedule.time = time
+			room.schedule.hour = hour
 			//fixme
 			const updateRoom = await room.save()
 			console.log(updateRoom)
@@ -604,7 +617,7 @@ const updateUser = asyncHandler(async (req, res) => {
 		throw new Error('error during update process')
 	}
 	res.status(404)
-	throw new Error('teacher or user is not found')
+	throw new Error('teacher is not found')
 })
 // @desc    Update user
 // @route   PUT /api/users/:id

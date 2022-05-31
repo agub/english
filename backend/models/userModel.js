@@ -83,18 +83,15 @@ const userSchema = mongoose.Schema(
 		},
 
 		//______________________Moved to customer or employee Model______________________
-		// isSubscribe: {
+
+		// hasMatched: {
 		// 	type: Boolean,
 		// 	default: false,
 		// },
-		hasMatched: {
-			type: Boolean,
-			default: false,
-		},
-		hadTrial: {
-			type: Boolean,
-			default: false,
-		},
+		// hadTrial: {
+		// 	type: Boolean,
+		// 	default: false,
+		// },
 		//______________________Moved to room model______________________
 		teacher: {
 			type: mongoose.Schema.Types.ObjectId,

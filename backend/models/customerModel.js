@@ -15,15 +15,15 @@ const customerSchema = mongoose.Schema(
 			building: { type: String },
 		},
 		//delete me
-		hasMatched: {
-			type: Boolean,
-			default: false,
-		},
+		// hasMatched: {
+		// 	type: Boolean,
+		// 	default: false,
+		// },
+		// hadTrial: {
+		// 	type: Boolean,
+		// 	default: false,
+		// },
 		//delete me
-		hadTrial: {
-			type: Boolean,
-			default: false,
-		},
 
 		// status: {
 		// 	code: { type: String },

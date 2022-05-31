@@ -152,7 +152,7 @@ const TeacherRegisterScreen = () => {
 						onChange={(e) =>
 							setInputValue((prev) => ({
 								...prev,
-								email: e.target.value,
+								email: e.target.value.toLowerCase(),
 							}))
 						}
 					/>
