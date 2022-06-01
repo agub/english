@@ -2,7 +2,9 @@ import asyncHandler from 'express-async-handler'
 import Stripe from 'stripe'
 import User from '../models/userModel.js'
 import Order from '../models/orderModel.js'
+import Customer from '../models/customerModel.js'
 import dotenv from 'dotenv'
+import { statusType } from '../utils/data.js'
 
 dotenv.config()
 
@@ -72,7 +74,7 @@ const orderDataSet = asyncHandler(async (req, res) => {
 			user: id,
 			orderItems: [{ ...orderItem, isPaid: true }],
 		})
-		res.status(201).json({
+		return res.status(201).json({
 			user: newOrder.id,
 			orderItems: newOrder.orderItems,
 		})
@@ -82,7 +84,7 @@ const orderDataSet = asyncHandler(async (req, res) => {
 			{ ...orderItem, isPaid: true },
 		]
 		const updateOrder = await hasOrder.save()
-		res.status(201).json({
+		return res.status(201).json({
 			user: updateOrder.id,
 			orderItems: updateOrder.orderItems,
 		})
@@ -111,27 +113,36 @@ const listMyOrders = asyncHandler(async (req, res) => {
 // @access   Private
 const unsubscribeById = asyncHandler(async (req, res) => {
 	const order = await Order.findOne({ user: req.user._id })
-	// const { orderId } = req.params.orderId
-	console.log(req.params.id)
+	const customer = await Customer.findOne({ userId: req.user._id })
+	const user = await User.findById(req.user._id)
 
-	if (order) {
-		const unSub = await stripe.subscriptions.update(req.params.id, {
-			cancel_at_period_end: true,
-		})
-		//change status to UNSUB_PENDING
-		for (const item of order.orderItems) {
-			if (item.orderId === req.params.id) {
-				item.isCancelled = unSub.cancel_at_period_end ? true : false
-				// item.isCancelled = false
-				break
-			}
-		}
-		await order.save()
-		res.json(order)
-	} else {
+	if (!order || !customer || !user) {
 		res.status(400)
-		throw new Error('orderItem is missing or data is enable to update')
+		throw new Error('orderItem or customer or user is missing')
 	}
+	const unSub = await stripe.subscriptions.update(req.params.id, {
+		cancel_at_period_end: true,
+	})
+	if (!unSub) {
+		res.status(400)
+		throw new Error('orderId does not match')
+	}
+
+	customer.status = [
+		...customer.status,
+		{ code: statusType.UNSUB_PENDING, createdAt: new Date() },
+	]
+	await customer.save()
+	user.status = statusType.UNSUB_PENDING
+	await user.save()
+	for (const item of order.orderItems) {
+		if (item.orderId === req.params.id) {
+			item.isCancelled = unSub.cancel_at_period_end ? true : false
+			break
+		}
+	}
+	await order.save()
+	res.json(order)
 })
 
 // @desc     fetch subscription detail

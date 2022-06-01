@@ -12,6 +12,7 @@ import InputField from './common/InputField'
 import { useDispatch, useSelector } from 'react-redux'
 import { orderSetData, orderSubscription } from '../redux/actions/orderActions'
 import CardInput from '../components/CardInput'
+import { ORDER_SUBSCRIPTION_RESET } from '../redux/constants/orderConstants'
 const CheckoutForm = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
@@ -23,7 +24,7 @@ const CheckoutForm = () => {
 	const [fullName, setFullName] = useState('')
 
 	const orderStripe = useSelector((state) => state.orderStripe)
-	const { data } = orderStripe
+	const { data, success } = orderStripe
 
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
@@ -65,7 +66,12 @@ const CheckoutForm = () => {
 		if (!userInfo) {
 			navigate('/login')
 		}
-	}, [navigate, userInfo])
+		if (success) {
+			dispatch({ type: ORDER_SUBSCRIPTION_RESET })
+			navigate('/profile')
+			return
+		}
+	}, [dispatch, navigate, userInfo, success])
 
 	useEffect(() => {
 		if (data && data.client_secret && data.status) {
@@ -134,3 +140,4 @@ const CheckoutForm = () => {
 }
 
 export default CheckoutForm
+

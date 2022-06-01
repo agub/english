@@ -153,6 +153,8 @@ export const orderUnsub = (orderId) => async (dispatch, getState) => {
 		}
 
 		const { data } = await axios.put(`/api/orders/${orderId}`, {}, config)
+
+		//change status
 		dispatch({
 			type: ORDER_UNSUBSCRIBE_SUCCESS,
 			payload: data,
@@ -168,3 +170,4 @@ export const orderUnsub = (orderId) => async (dispatch, getState) => {
 		})
 	}
 }
+
