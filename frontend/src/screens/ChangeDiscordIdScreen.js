@@ -21,7 +21,6 @@ const ChangeDiscordIdScreen = () => {
 	}
 
 	const [inputValue, setInputValue] = useState(initialValue)
-	const { discordId } = inputValue
 
 	const userDetails = useSelector((state) => state.userDetails)
 	const { loading, user, error } = userDetails
@@ -45,14 +44,19 @@ const ChangeDiscordIdScreen = () => {
 				console.log('user found')
 			}
 		}
-	}, [navigate, userInfo, user, dispatch, userUpdateLoading])
+	}, [navigate, userInfo, user, dispatch])
 
 	const submitHandler = (e) => {
 		dispatch({ type: USER_PROFILE_UPDATE_RESET })
 		e.preventDefault()
 		//Changing discordId___________________________________
 		if (inputValue.discordId) {
-			dispatch(userProfileUpdate({ id: user._id, discordId }))
+			dispatch(
+				userProfileUpdate({
+					id: user._id,
+					discordId: inputValue.discordId,
+				})
+			)
 			dispatch(getUserDetails('profile'))
 			setInputValue(initialValue)
 		}
@@ -62,7 +66,12 @@ const ChangeDiscordIdScreen = () => {
 		<>
 			<Container>
 				<FormContainer onSubmit={submitHandler}>
-					<Link to={`/profile`}>
+					<Link
+						to={`/profile`}
+						onClick={() =>
+							dispatch({ type: USER_PROFILE_UPDATE_RESET })
+						}
+					>
 						<BackButton />
 					</Link>
 					{(error || userUpdateError) && (
@@ -70,37 +79,42 @@ const ChangeDiscordIdScreen = () => {
 							{error || userUpdateError}
 						</Message>
 					)}
+					{(loading || userUpdateLoading) && <Loader />}
 					{success && (
 						<Message variant='info'>変更いたしました</Message>
 					)}
-					<h1 className='text-center'>Discordの名前変更</h1>
-					<div className='mb-4'>
-						<InputField
-							type='text'
-							value={discordId}
-							placeholder={user.info.discordId}
-							label='新しいDiscordのアカウント名'
-							name='discordId'
-							onChange={(e) =>
-								setInputValue((prev) => ({
-									...prev,
-									discordId: e.target.value,
-								}))
-							}
-						/>
-					</div>
-					<div className='flex items-center justify-between'>
-						<Button
-							onClick={submitHandler}
-							type='submit'
-							bgColor='bg-blue-500'
-							textColor='text-white'
-							hoverColor='bg-blue-700'
-							size='sm'
-						>
-							変更を保存
-						</Button>
-					</div>
+					{user && (
+						<>
+							<h1 className='text-center'>Discordの名前変更</h1>
+							<div className='mb-4'>
+								<InputField
+									type='text'
+									value={inputValue.discordId}
+									label='新しいDiscordのアカウント名'
+									name='discordId'
+									onChange={(e) =>
+										setInputValue((prev) => ({
+											...prev,
+											discordId: e.target.value,
+										}))
+									}
+								/>
+							</div>
+							<div className='flex items-center justify-between'>
+								<Button
+									onClick={submitHandler}
+									type='submit'
+									bgColor='bg-blue-500'
+									textColor='text-white'
+									hoverColor='bg-blue-700'
+									size='sm'
+									disabled={loading || userUpdateLoading}
+								>
+									変更を保存
+								</Button>
+							</div>
+						</>
+					)}
 				</FormContainer>
 			</Container>
 		</>
@@ -108,3 +122,4 @@ const ChangeDiscordIdScreen = () => {
 }
 
 export default ChangeDiscordIdScreen
+

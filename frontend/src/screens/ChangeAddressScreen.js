@@ -100,7 +100,12 @@ const ChangeAddressScreen = () => {
 						</Message>
 					)}
 					{(loading || userUpdateLoading) && <Loader />}
-					<Link to={`/profile`}>
+					<Link
+						to={`/profile`}
+						onClick={() =>
+							dispatch({ type: USER_PROFILE_UPDATE_RESET })
+						}
+					>
 						<BackButton />
 					</Link>
 					{success && (

@@ -47,11 +47,11 @@ function App() {
 				/>
 				<Route path='/profile' element={<ProfileScreen />} exact />
 				<Route
-					path='profile/discordId'
+					path='/profile/discordId'
 					element={<ChangeDiscordIdScreen />}
 				/>
 				<Route
-					path='profile/address'
+					path='/profile/address'
 					element={<ChangeAddressScreen />}
 				/>
 				<Route
@@ -62,7 +62,7 @@ function App() {
 					path='/profile/password'
 					element={<ChangePasswordScreen />}
 				/>
-				<Route path='/payment' element={<PaymentScreen />} />
+				<Route path='/profile/payment' element={<PaymentScreen />} />
 				<Route path='/contact' element={<ContactScreen />} />
 				<Route
 					path='/teacher/register'

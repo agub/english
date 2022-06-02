@@ -90,7 +90,12 @@ const ChangePasswordScreen = () => {
 						<Message variant='info'>変更いたしました</Message>
 					)}
 					{(loading || userUpdateLoading) && <Loader />}
-					<Link to={`/profile`}>
+					<Link
+						to={`/profile`}
+						onClick={() =>
+							dispatch({ type: USER_PROFILE_UPDATE_RESET })
+						}
+					>
 						<BackButton />
 					</Link>
 					{user && (
@@ -149,6 +154,7 @@ const ChangePasswordScreen = () => {
 									textColor='text-white'
 									hoverColor='bg-blue-700'
 									size='sm'
+									disabled={loading || userUpdateLoading}
 								>
 									変更を保存
 								</Button>

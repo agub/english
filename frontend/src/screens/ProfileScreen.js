@@ -31,7 +31,7 @@ const ProfileScreen = () => {
 		if (!userInfo) {
 			navigate('/login')
 		} else {
-			if (IsObjectEmpty(user)) {
+			if (IsObjectEmpty(user) && user) {
 				dispatch(getUserDetails('profile'))
 				// setTimeout(() => setStartAnimate(true), 400)
 				if (user.teacher) dispatch(getTeacherDetails(user.teacher))
@@ -110,13 +110,7 @@ const ProfileScreen = () => {
 										}
 									/>
 								</Link>
-								<Link to={`/profile/payment/history`}>
-									<HorizontalButton
-										text='お支払いプラン'
-										type='button'
-										result='定額'
-									/>
-								</Link>
+
 								{user.userType === 'customer' && (
 									<HorizontalButton
 										text='先生'
@@ -131,10 +125,17 @@ const ProfileScreen = () => {
 								)}
 								<p className='mt-4'>設定</p>
 
-								<Link to={`/payment`}>
+								<Link to={`/profile/payment`}>
 									<HorizontalButton
 										text='月額支払い設定'
 										type='button'
+									/>
+								</Link>
+								<Link to={`/profile/payment/history`}>
+									<HorizontalButton
+										text='お支払いプラン'
+										type='button'
+										result='定額'
 									/>
 								</Link>
 								<Link to={'/profile/password'}>

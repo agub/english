@@ -51,6 +51,7 @@ const UserEditScreen = () => {
 						{user && user.userData && user.userData.name && (
 							<>
 								<p>ID: {user.userData._id}</p>
+								<p>STATUS: {user.userData.status}</p>
 								<p>
 									{user.userData.name.lastName +
 										' ' +
@@ -59,15 +60,18 @@ const UserEditScreen = () => {
 								</p>
 								{user &&
 									user.userData.userType === 'customer' &&
-									(user.userData.status !==
-										statusType.PENDING_INTERVIEW ||
-										user.userData.status !==
-											statusType.INTERVIEWED) && (
+									(user.userData.status ===
+										statusType.PENDING ||
+										user.userData.status ===
+											statusType.TRIAL ||
+										user.userData.status ===
+											statusType.ACTIVE) && (
 										<Link to={`/admin/${id}/edit/status`}>
 											<HorizontalButton
 												text='マッチステイタス変更 :'
 												type='button'
 												// setState={() => setComponent('match')}
+
 												result={
 													user.room.isActive
 														? 'アクティブ'
