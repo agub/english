@@ -32,55 +32,55 @@ const userSchema = mongoose.Schema(
 			},
 		},
 		//______________________Moved to customer or employee Model______________________
-		info: {
-			phoneNumber: {
-				type: String,
-			},
-			age: {
-				type: Number,
-			},
-			consoleType: {
-				type: String,
-			},
-			gameTitle: {
-				type: String,
-			},
-			gameLists: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Game',
-					// type: String,
-				},
-			],
-			contactBy: {
-				type: String,
-			},
-			experience: {
-				type: Number,
-			},
-			preferTime: [
-				{
-					week: { type: String },
-					time: { type: Number },
-					rank: { type: Number },
-				},
-			],
-			rentMixer: {
-				type: String,
-			},
-			discordId: {
-				type: String,
-			},
-			gender: {
-				type: String,
-			},
-		},
-		homeAddress: {
-			postalCode: { type: String || Number },
-			prefecture: { type: String },
-			address: { type: String },
-			building: { type: String },
-		},
+		// info: {
+		// 	phoneNumber: {
+		// 		type: String,
+		// 	},
+		// 	age: {
+		// 		type: Number,
+		// 	},
+		// 	consoleType: {
+		// 		type: String,
+		// 	},
+		// 	gameTitle: {
+		// 		type: String,
+		// 	},
+		// 	gameLists: [
+		// 		{
+		// 			type: mongoose.Schema.Types.ObjectId,
+		// 			ref: 'Game',
+		// 			// type: String,
+		// 		},
+		// 	],
+		// 	contactBy: {
+		// 		type: String,
+		// 	},
+		// 	experience: {
+		// 		type: Number,
+		// 	},
+		// 	preferTime: [
+		// 		{
+		// 			week: { type: String },
+		// 			time: { type: Number },
+		// 			rank: { type: Number },
+		// 		},
+		// 	],
+		// 	rentMixer: {
+		// 		type: String,
+		// 	},
+		// 	discordId: {
+		// 		type: String,
+		// 	},
+		// 	gender: {
+		// 		type: String,
+		// 	},
+		// },
+		// homeAddress: {
+		// 	postalCode: { type: String || Number },
+		// 	prefecture: { type: String },
+		// 	address: { type: String },
+		// 	building: { type: String },
+		// },
 
 		//______________________Moved to customer or employee Model______________________
 
@@ -93,25 +93,25 @@ const userSchema = mongoose.Schema(
 		// 	default: false,
 		// },
 		//______________________Moved to room model______________________
-		teacher: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User',
-			unique: true,
-		},
-		students: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'User',
-				unique: true,
-			},
-		],
+		// teacher: {
+		// 	type: mongoose.Schema.Types.ObjectId,
+		// 	ref: 'User',
+		// 	unique: true,
+		// },
+		// students: [
+		// 	{
+		// 		type: mongoose.Schema.Types.ObjectId,
+		// 		ref: 'User',
+		// 		unique: true,
+		// 	},
+		// ],
 		//______________________Moved to room model______________________
 
 		//______________________admin, customer, employee______________________
-		isTeacher: {
-			type: Boolean,
-			default: false,
-		},
+		// isTeacher: {
+		// 	type: Boolean,
+		// 	default: false,
+		// },
 		isAdmin: {
 			type: Boolean,
 			default: false,

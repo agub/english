@@ -14,24 +14,6 @@ const customerSchema = mongoose.Schema(
 			address: { type: String },
 			building: { type: String },
 		},
-		//delete me
-		// hasMatched: {
-		// 	type: Boolean,
-		// 	default: false,
-		// },
-		// hadTrial: {
-		// 	type: Boolean,
-		// 	default: false,
-		// },
-		//delete me
-
-		// status: {
-		// 	code: { type: String },
-		// 	endTrialAt: { type: Date },
-		// 	changedAt: { type: Date },
-		// 	startAt: { type: Date },
-		// 	endAt: { type: Date },
-		// },
 		// isActive: {
 		// 	type: Boolean,
 		// },

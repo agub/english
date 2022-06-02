@@ -6,6 +6,7 @@ const employeeSchema = mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
 			unique: true,
+			required: true,
 		},
 		history: [
 			{
@@ -19,6 +20,18 @@ const employeeSchema = mongoose.Schema(
 				createdAt: {
 					type: Date,
 				},
+			},
+		],
+		homeAddress: {
+			postalCode: { type: String || Number },
+			prefecture: { type: String },
+			address: { type: String },
+			building: { type: String },
+		},
+		status: [
+			{
+				code: { type: String },
+				createdAt: { type: Date },
 			},
 		],
 		//______________________info______________________

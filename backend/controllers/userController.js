@@ -39,6 +39,12 @@ const authUser = asyncHandler(async (req, res) => {
 		// 	)
 		// }
 		// sendSampleEmail()
+		if (user.verify) {
+			res.status
+			throw new Error(
+				'メールアドレスにお送りした確認メールのリンクをクリックして認証してください'
+			)
+		}
 		res.json({
 			_id: user._id,
 			name: user.name,
@@ -247,22 +253,24 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 		res.status(400)
 		throw new Error('このメールアドレスは登録済みです')
 	}
-	try {
-		const emailVerificationToken = crypto.randomBytes(10).toString('hex')
-		const user = await User.create({
-			email,
-			password,
-			name,
-			userType: 'employee',
-			verify: emailVerificationToken,
-			isTeacher: true,
-		})
-
+	const emailVerificationToken = crypto.randomBytes(10).toString('hex')
+	const user = await User.create({
+		email,
+		password,
+		name,
+		userType: 'employee',
+		verify: emailVerificationToken,
+		// status: statusType.PENDING,
+		isTeacher: true,
+	})
+	if (user) {
 		const newEmployee = await Employee.create({
 			userId: user._id,
+			// students: null,
 			info,
+			status: [{ code: statusType.PENDING, createdAt: new Date() }],
 		})
-
+		console.log(newEmployee)
 		await sendEmail(
 			registerVerifyMail({
 				email: user.email,
@@ -271,20 +279,65 @@ const teacherRegisterUser = asyncHandler(async (req, res) => {
 				verify: user.verify,
 			})
 		)
-		if (user) {
-			res.status(201).json({
-				_id: user._id,
-				name: user.name,
-				email: user.email,
-				info: newEmployee.info,
-				userType: user.userType,
-				token: generateToken(user._id),
-			})
+
+		if (!newEmployee) {
+			res.status(400)
+			throw new Error('先生が登録できません')
 		}
-	} catch (error) {
+		res.status(201).json({
+			_id: user._id,
+			// name: user.name,
+			email: user.email,
+			info: newEmployee.info,
+			userType: user.userType,
+			token: generateToken(user._id),
+		})
+	} else {
 		res.status(400)
-		throw new Error('アカウント作成エラー')
+		throw new Error('ユーザーが登録できません')
 	}
+
+	// try {
+	// 	const emailVerificationToken = crypto.randomBytes(10).toString('hex')
+	// 	const user = await User.create({
+	// 		email,
+	// 		password,
+	// 		name,
+	// 		userType: 'employee',
+	// 		verify: emailVerificationToken,
+	// 		status: statusType.PENDING,
+	// 		isTeacher: true,
+	// 	})
+	// 	console.log(user._id)
+	// 	console.log(info)
+	// 	const newEmployee = await Employee.create({
+	// 		userId: user._id.toString(),
+	// 		info,
+	// 		// status: [{ code: statusType.PENDING, createdAt: new Date() }],
+	// 	})
+	// 	// console.log(newEmployee)
+	// 	// await sendEmail(
+	// 	// 	registerVerifyMail({
+	// 	// 		email: user.email,
+	// 	// 		fullName: user.name.lastName + ' ' + user.name.firstName,
+	// 	// 		id: user._id,
+	// 	// 		verify: user.verify,
+	// 	// 	})
+	// 	// )
+	// 	if (user) {
+	// 		res.status(201).json({
+	// 			_id: user._id,
+	// 			// name: user.name,
+	// 			email: user.email,
+	// 			// info: newEmployee.info,
+	// 			userType: user.userType,
+	// 			token: generateToken(user._id),
+	// 		})
+	// 	}
+	// } catch (error) {
+	// 	res.status(400)
+	// 	throw new Error('アカウント作成エラー')
+	// }
 })
 
 // @desc    Get user profile
@@ -331,9 +384,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
 				// isTeacher: user.isTeacher,
 				//fixme
 				userType: user.userType,
-				teacher: user.teacher,
+				teacher: null,
 				info: employee.info,
-				homeAddress: user.homeAddress,
+				homeAddress: employee.homeAddress,
 				token: generateToken(user._id),
 			})
 			return

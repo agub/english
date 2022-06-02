@@ -81,7 +81,6 @@ const UserEditScreen = () => {
 										</Link>
 									)}
 								{user &&
-									user.userData.userType === 'customer' &&
 									(user.userData.status ===
 										statusType.PENDING_INTERVIEW ||
 										user.userData.status ===
