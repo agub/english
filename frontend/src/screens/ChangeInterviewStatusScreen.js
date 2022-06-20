@@ -92,7 +92,6 @@ const ChangeInterviewStatusScreen = () => {
 					</Link>
 					{user && user.room && user.userData && (
 						<>
-							<h1>need to add input for class time fasdfads</h1>
 							<div className='mb-6 flex items-start flex-col'>
 								<label className='block text-gray-700 text-sm font-bold mb-2'>
 									現ステイタス :{' '}

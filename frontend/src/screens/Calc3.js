@@ -11,6 +11,7 @@ const Calc = () => {
 		numPerson: '',
 		numClass: '',
 		unSub: '',
+		affiliateNum: '',
 	})
 
 	let per10Min = inputValue.wage / 60
@@ -33,7 +34,8 @@ const Calc = () => {
 	let totalRevenue = revenueMutiNumber * 12 - calcLoss3m
 	let totalMargin = profitTimesPeople * 12
 	// let totalNetProfit = monthlyNetProfit * 12
-	let totalNetProfit = profitTimesPeople * 12 - calcLoss3m
+	let totalNetProfit =
+		profitTimesPeople * 12 - calcLoss3m - inputValue.affiliateNum * 10000
 
 	let withNumperson = profitPerMonth * inputValue.numPerson
 
@@ -142,6 +144,18 @@ const Calc = () => {
 						setInputValue((prev) => ({
 							...prev,
 							unSub: e.target.value,
+						}))
+					}}
+					className='border w-20'
+				></input>
+				人
+				<br />
+				<label>アフィリエイトからのエントリー: </label>
+				<input
+					onChange={(e) => {
+						setInputValue((prev) => ({
+							...prev,
+							affiliateNum: e.target.value,
 						}))
 					}}
 					className='border w-20'
