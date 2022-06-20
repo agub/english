@@ -55,104 +55,90 @@ const ProfileScreen = () => {
 				{error && <Message variant='danger'>{error}</Message>}
 				<h1>プロファイル</h1>
 				{(loading || !startAnimate) && <Loader />}
-				{!loading &&
-					user &&
-					user.info &&
-					user.name &&
-					user.homeAddress && (
-						<>
-							<div className={animationClass}>
-								{user.userType === 'customer' && <Calender />}
-								<p className='mt-4'>ユーザー情報</p>
-								<HorizontalButton
-									text='お名前:'
-									type='box'
-									result={
-										user.name.lastName +
-										' ' +
-										user.name.firstName
-									}
-								/>
-								<HorizontalButton
-									text='メールアドレス:'
-									type='box'
-									result={user.email}
-								/>
-								<HorizontalButton
-									text='Discordアカウント:'
-									type='box'
-									result={user.info.discordId}
-								/>
-								<HorizontalButton
-									text='受講日:'
-									type='box'
-									result='データーモデルに追加'
-								/>
-								<HorizontalButton
-									text='アカウント:'
-									type='box'
-									result={
-										user.userType === 'customer'
-											? '生徒'
-											: '先生'
-									}
-								/>
+				{/* {!loading && (
+					<> */}
+				<div className={animationClass}>
+					{user?.userType === 'customer' && <Calender />}
+					<p className='mt-4'>ユーザー情報</p>
+					<HorizontalButton
+						text='お名前:'
+						type='box'
+						result={
+							user.name?.lastName + ' ' + user.name?.firstName
+						}
+					/>
+					<HorizontalButton
+						text='メールアドレス:'
+						type='box'
+						result={user?.email}
+					/>
+					<HorizontalButton
+						text='Discordアカウント:'
+						type='box'
+						result={user.info?.discordId}
+					/>
+					<HorizontalButton
+						text='受講日:'
+						type='box'
+						result='データーモデルに追加'
+					/>
+					<HorizontalButton
+						text='アカウント:'
+						type='box'
+						result={user?.userType === 'customer' ? '生徒' : '先生'}
+					/>
 
-								<p className='mt-4'>一般</p>
-								<Link to={`/profile/address`}>
-									<HorizontalButton
-										text='住所登録'
-										type='button'
-										result={
-											IsObjectEmpty(user.homeAddress)
-												? '未登録'
-												: '登録済み'
-										}
-									/>
-								</Link>
+					<p className='mt-4'>一般</p>
+					<Link to={`/profile/address`}>
+						<HorizontalButton
+							text='住所登録'
+							type='button'
+							result={
+								IsObjectEmpty(user?.homeAddress)
+									? '未登録'
+									: '登録済み'
+							}
+						/>
+					</Link>
 
-								{user.userType === 'customer' && (
-									<HorizontalButton
-										text='先生'
-										type='button'
-										result={
-											user.teacher
-												? teacher.name.kanaFirstName +
-												  '先生'
-												: '未定'
-										}
-									/>
-								)}
-								<p className='mt-4'>設定</p>
-
-								<Link to={`/profile/payment`}>
-									<HorizontalButton
-										text='月額支払い設定'
-										type='button'
-									/>
-								</Link>
-								<Link to={`/profile/payment/history`}>
-									<HorizontalButton
-										text='お支払いプラン'
-										type='button'
-										result='定額'
-									/>
-								</Link>
-								<Link to={'/profile/password'}>
-									<HorizontalButton
-										text='パスワードの変更'
-										type='button'
-									/>
-								</Link>
-								<Link to={'/profile/discordId'}>
-									<HorizontalButton
-										text='Discordの名前変更'
-										type='button'
-									/>
-								</Link>
-							</div>
-						</>
+					{user?.userType === 'customer' && (
+						<HorizontalButton
+							text='先生'
+							type='button'
+							result={
+								user?.teacher
+									? teacher.name?.kanaFirstName + '先生'
+									: '未定'
+							}
+						/>
 					)}
+					<p className='mt-4'>設定</p>
+
+					<Link to={`/profile/payment`}>
+						<HorizontalButton text='月額支払い設定' type='button' />
+					</Link>
+					<Link to={`/profile/payment/history`}>
+						<HorizontalButton
+							text='お支払いプラン'
+							type='button'
+							result='定額'
+						/>
+					</Link>
+					<Link to={'/profile/password'}>
+						<HorizontalButton
+							text='パスワードの変更'
+							type='button'
+						/>
+					</Link>
+					<Link to={'/profile/discordId'}>
+						<HorizontalButton
+							text='Discordの名前変更'
+							type='button'
+						/>
+					</Link>
+				</div>
+				{/* </>
+				)} */}
 			</FormContainer>
 		</Container>
 	)

@@ -48,7 +48,7 @@ const UserEditScreen = () => {
 								navigate('/admin/userlist')
 							}}
 						/>
-						{user && user.userData && user.userData.name && (
+						{user?.userData && user.userData?.name && (
 							<>
 								<p>ID: {user.userData._id}</p>
 								<p>STATUS: {user.userData.status}</p>

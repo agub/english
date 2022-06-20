@@ -83,38 +83,38 @@ const ChangeDiscordIdScreen = () => {
 					{success && (
 						<Message variant='info'>変更いたしました</Message>
 					)}
-					{user && (
-						<>
-							<h1 className='text-center'>Discordの名前変更</h1>
-							<div className='mb-4'>
-								<InputField
-									type='text'
-									value={inputValue.discordId}
-									label='新しいDiscordのアカウント名'
-									name='discordId'
-									onChange={(e) =>
-										setInputValue((prev) => ({
-											...prev,
-											discordId: e.target.value,
-										}))
-									}
-								/>
-							</div>
-							<div className='flex items-center justify-between'>
-								<Button
-									onClick={submitHandler}
-									type='submit'
-									bgColor='bg-blue-500'
-									textColor='text-white'
-									hoverColor='bg-blue-700'
-									size='sm'
-									disabled={loading || userUpdateLoading}
-								>
-									変更を保存
-								</Button>
-							</div>
-						</>
-					)}
+					{/* {user && (
+						<> */}
+					<h1 className='text-center'>Discordの名前変更</h1>
+					<div className='mb-4'>
+						<InputField
+							type='text'
+							value={inputValue.discordId}
+							label='新しいDiscordのアカウント名'
+							name='discordId'
+							onChange={(e) =>
+								setInputValue((prev) => ({
+									...prev,
+									discordId: e.target.value,
+								}))
+							}
+						/>
+					</div>
+					<div className='flex items-center justify-between'>
+						<Button
+							onClick={submitHandler}
+							type='submit'
+							bgColor='bg-blue-500'
+							textColor='text-white'
+							hoverColor='bg-blue-700'
+							size='sm'
+							disabled={loading || userUpdateLoading}
+						>
+							変更を保存
+						</Button>
+					</div>
+					{/* </>
+					)} */}
 				</FormContainer>
 			</Container>
 		</>
