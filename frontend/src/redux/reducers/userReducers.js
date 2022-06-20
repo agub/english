@@ -25,6 +25,10 @@ import {
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
 	USER_UPDATE_RESET,
+	USER_DELETE_REQUEST,
+	USER_DELETE_SUCCESS,
+	USER_DELETE_FAIL,
+	USER_DELETE_RESET,
 	USER_INTERVIEW_UPDATE_REQUEST,
 	USER_INTERVIEW_UPDATE_SUCCESS,
 	USER_INTERVIEW_UPDATE_FAIL,
@@ -171,6 +175,21 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
 			return { loading: false, error: action.payload }
 		case USER_UPDATE_RESET:
 			return { user: [] }
+		default:
+			return state
+	}
+}
+
+export const userDeleteReducer = (state = {}, action) => {
+	switch (action.type) {
+		case USER_DELETE_REQUEST:
+			return { loading: true }
+		case USER_DELETE_SUCCESS:
+			return { loading: false, success: true }
+		case USER_DELETE_FAIL:
+			return { loading: false, error: action.payload }
+		case USER_DELETE_RESET:
+			return {}
 		default:
 			return state
 	}

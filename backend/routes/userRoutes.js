@@ -14,6 +14,7 @@ import {
 	getUserById,
 	updateUser,
 	updateInterview,
+	deleteUser,
 	getTeacherById,
 	contactForm,
 	getWaitLists,
@@ -36,6 +37,8 @@ router
 	.route('/:id')
 	.get(protect, admin, getUserById)
 	.put(protect, admin, updateUser)
+
+router.route('/:id/delete').put(protect, admin, deleteUser)
 
 router.route('/:id/interview').put(protect, admin, updateInterview)
 

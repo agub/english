@@ -5,9 +5,9 @@ import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import HorizontalButton from '../components/common/HorizontalButton'
-import { getUserDetails } from '../redux/actions/userActions'
+import { deleteUser, getUserDetails } from '../redux/actions/userActions'
 import { statusType } from '../utils/data'
-
+import Button from '../components/common/Button'
 import Loader from '../components/common/Loader'
 import BackButton from '../components/common/BackButton'
 import IsObjectEmpty from '../components/common/IsObjectEmpty'
@@ -32,6 +32,11 @@ const UserEditScreen = () => {
 			}
 		}
 	}, [user, dispatch, id, navigate, userInfo])
+
+	const deleteButton = (e) => {
+		e.preventDefault()
+		dispatch(deleteUser(user.userData))
+	}
 
 	return (
 		<Container>
@@ -100,6 +105,12 @@ const UserEditScreen = () => {
 											/>
 										</Link>
 									)}
+								<button
+									className='bg-red-500 text-white'
+									onClick={deleteButton}
+								>
+									DELETE
+								</button>
 							</>
 						)}
 					</>

@@ -45,6 +45,7 @@ const authUser = asyncHandler(async (req, res) => {
 		// 	code: 'JUNE22',
 		// 	students: null,
 		// })
+
 		if (user.verify) {
 			res.status
 			throw new Error(
@@ -684,8 +685,41 @@ const updateUser = asyncHandler(async (req, res) => {
 	res.status(404)
 	throw new Error('teacher is not found')
 })
+
 // @desc    Update user
-// @route   PUT /api/users/:id
+// @route   PUT /api/users/:id/delete
+// @access  Private/Admin
+const deleteUser = asyncHandler(async (req, res) => {
+	const { _id, roomId, userType } = req.body
+	if (!_id || !userType) {
+		res.status(404)
+		throw new Error('can not find id or userType')
+	}
+	if (userType === 'customer') {
+		await Room.deleteOne({
+			_id: roomId,
+		})
+		await Customer.deleteOne({
+			userId: _id,
+		})
+		await User.deleteOne({
+			_id,
+		})
+	}
+	if (userType === 'employee') {
+		await Employee.deleteOne({
+			userId: _id,
+		})
+		await User.deleteOne({
+			_id,
+		})
+	}
+
+	res.json('success')
+})
+
+// @desc    Update interviewed user
+// @route   PUT /api/users/:id/interview
 // @access  Private/Admin
 const updateInterview = asyncHandler(async (req, res) => {
 	const { changeStatusTo, currentStatus } = req.body
@@ -800,6 +834,7 @@ export {
 	getUsers,
 	getUserById,
 	updateUser,
+	deleteUser,
 	updateInterview,
 	getTeacherById,
 	contactForm,

@@ -24,9 +24,10 @@ const Button = ({
 			)}
 			type={type}
 		>
-			<h3 className={`text-center text-md ${textColor}`}>{children}</h3>
+			<h3 className={`text-center  text-md ${textColor}`}>{children}</h3>
 		</button>
 	)
 }
 
 export default Button
+
