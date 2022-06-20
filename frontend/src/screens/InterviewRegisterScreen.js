@@ -54,6 +54,7 @@ const InterviewRegisterScreen = () => {
 			],
 			discordId: null,
 		},
+		code: '',
 	})
 
 	const [errorText, setErrorText] = useState(null)
@@ -690,7 +691,24 @@ const InterviewRegisterScreen = () => {
 						</div>
 					</div>
 				)}
-
+				<div className='mb-6'>
+					<InputField
+						value={inputValue.code || ''}
+						name='promoCode'
+						type='string'
+						placeholder='プロモーションコード'
+						label='プロモーションコード'
+						onChange={(e) => {
+							setInputValue((prev) => ({
+								...prev,
+								code: e.target.value,
+							}))
+						}}
+						notRequired
+						pattern='^[0-9A-Za-z]+$'
+					/>
+					*お持ちではない場合は空欄にしてください
+				</div>
 				<div className='flex items-center justify-center'>
 					<Button
 						type='submit'

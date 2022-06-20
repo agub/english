@@ -14,6 +14,7 @@ import {
 	seekTeacherMail,
 } from '../utils/mails.js'
 import { statusType } from '../utils/data.js'
+import Promotion from '../models/promotionModel.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -39,6 +40,11 @@ const authUser = asyncHandler(async (req, res) => {
 		// 	)
 		// }
 		// sendSampleEmail()
+		// const promotion = await Promotion.create({
+		// 	email: 'shintrfc@gmail.com',
+		// 	code: 'JUNE22',
+		// 	students: null,
+		// })
 		if (user.verify) {
 			res.status
 			throw new Error(
@@ -63,12 +69,18 @@ const authUser = asyncHandler(async (req, res) => {
 // @access  Public
 
 const interviewRegisterUser = asyncHandler(async (req, res) => {
-	const { email, name, info } = req.body
-
+	const { email, name, info, code } = req.body
 	const userExists = await User.findOne({ email })
 	if (userExists) {
 		res.status(400)
 		throw new Error('User already exist')
+	}
+	if (code !== '') {
+		const promoExists = await Promotion.findOne({ code })
+		if (!promoExists) {
+			res.status(400)
+			throw new Error('プロモーションコードが間違ってます')
+		}
 	}
 	try {
 		const user = await User.create({
