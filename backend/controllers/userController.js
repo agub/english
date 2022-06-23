@@ -15,6 +15,7 @@ import {
 } from '../utils/mails.js'
 import { statusType } from '../utils/data.js'
 import Promotion from '../models/promotionModel.js'
+import Evaluation from '../models/evaluationModel.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -188,6 +189,10 @@ const registerUser = asyncHandler(async (req, res) => {
 			if (customer && user.userType === 'customer') {
 				customer.info.discordId = discordId
 				await customer.save()
+				await Evaluation.create({
+					userId: user._id,
+					evaluation: null,
+				})
 			}
 
 			// user.info.discordId = discordId
@@ -705,6 +710,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 		await User.deleteOne({
 			_id,
 		})
+		await Evaluation.deleteOne({ userId: _id })
 	}
 	if (userType === 'employee') {
 		await Employee.deleteOne({
