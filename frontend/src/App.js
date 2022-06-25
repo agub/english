@@ -13,6 +13,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import TeacherRegisterScreen from './screens/TeacherRegisterScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PaymentHistoryScreen from './screens/PaymentHistoryScreen'
+import EvaluationListsScreen from './screens/EvaluationListsScreen'
 import ChangeAddressScreen from './screens/ChangeAddressScreen'
 import ChangeDiscordIdScreen from './screens/ChangeDiscordIdScreen'
 import ChangePasswordScreen from './screens/ChangePasswordScreen'
@@ -63,6 +64,10 @@ function App() {
 					element={<ChangePasswordScreen />}
 				/>
 				<Route path='/profile/payment' element={<PaymentScreen />} />
+				<Route
+					path='/profile/evaluationLists'
+					element={<EvaluationListsScreen />}
+				/>
 				<Route path='/contact' element={<ContactScreen />} />
 				<Route
 					path='/teacher/register'

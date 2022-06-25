@@ -7,40 +7,38 @@ import BackButton from '../components/common/BackButton'
 import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { orderListMySub, orderUnsub } from '../redux/actions/orderActions'
+import { listMyEvaluations } from '../redux/actions/evaluationActions'
 
-const PaymentHistoryScreen = () => {
+const EvaluationListsScreen = () => {
 	const dispatch = useDispatch()
 
-	const orderListMySubscription = useSelector(
-		(state) => state.orderListMySubscription
-	)
 	const { userInfo } = useSelector((state) => state.userLogin)
 
-	const { orderItems, loading: orderListLoading } = orderListMySubscription
-	const orderUnsubscribe = useSelector((state) => state.orderUnsubscribe)
-	const { success, error, loading } = orderUnsubscribe
+	const { evaluations } = useSelector((state) => state.evaluationMyLists)
 
-	const submitHandler = (e) => {
-		e.preventDefault()
-		console.log(e.currentTarget.id)
-		dispatch(orderUnsub(e.currentTarget.id))
-	}
+	// const submitHandler = (e) => {
+	// 	e.preventDefault()
+	// 	console.log(e.currentTarget.id)
+	// 	dispatch(orderUnsub(e.currentTarget.id))
+	// }
 
 	useEffect(() => {
-		dispatch(orderListMySub(userInfo._id))
-		console.log(userInfo._id)
-	}, [userInfo, dispatch, success])
+		dispatch(listMyEvaluations(userInfo._id))
+		console.log(evaluations)
+
+		// console.log(userInfo._id)
+	}, [dispatch, userInfo])
 
 	return (
 		<Container>
-			<FormContainer onSubmit={submitHandler}>
+			<FormContainer>
 				<Link to={`/profile`}>
 					<BackButton />
 				</Link>
-				{error && <Message variant='danger'>{error}</Message>}
-				{(loading || orderListLoading) && <Loader />}
-				<h1 className='text-center'>支払い履歴</h1>
-				{orderItems?.map((item) => (
+				{/* {error && <Message variant='danger'>{error}</Message>} */}
+				{/* {(loading || orderListLoading) && <Loader />} */}
+				<h1 className='text-center'>評価</h1>
+				{/* {evaluations?.map((item) => (
 					<div className='border-b bottom-1 p-2' key={item._id}>
 						<p>ID: {item.orderId}</p>
 						<p>月額: ¥{item.price}</p>
@@ -52,18 +50,17 @@ const PaymentHistoryScreen = () => {
 							<button
 								className='border'
 								id={item.orderId}
-								onClick={submitHandler}
+								// onClick={submitHandler}
 							>
 								キャンセルする
 							</button>
 						)}
-						{/* <p>ステータス: {item.isPaid ? '支払い済み' : '未払'}</p> */}
 					</div>
-				))}
+				))} */}
 			</FormContainer>
 		</Container>
 	)
 }
 
-export default PaymentHistoryScreen
+export default EvaluationListsScreen
 

@@ -101,7 +101,9 @@ const listMyOrders = asyncHandler(async (req, res) => {
 	const order = await Order.findOne({ user: req.user._id })
 
 	if (order) {
-		res.status(201).json(order.orderItems)
+		res.status(200).json(order.orderItems)
+	} else if (order === null) {
+		res.status(200).json(order)
 	} else {
 		res.status(400)
 		throw new Error('orderItem is missing or data is enable to update')

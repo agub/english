@@ -28,6 +28,8 @@ import {
 	orderUnsubscribeReducer,
 } from './redux/reducers/orderReducers'
 
+import { evaluationMyListsReducer } from './redux/reducers/evaluationReducers'
+
 const reducer = combineReducers({
 	gameList: gameListReducer,
 	gameDetails: gameDetailsReducer,
@@ -49,6 +51,7 @@ const reducer = combineReducers({
 	orderDataSet: orderDataSetReducer,
 	orderListMySubscription: orderListMySubscriptionReducer,
 	orderUnsubscribe: orderUnsubscribeReducer,
+	evaluationMyLists: evaluationMyListsReducer,
 })
 const userInfoFromStorage = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
