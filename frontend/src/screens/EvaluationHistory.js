@@ -26,7 +26,6 @@ const EvaluationHistory = () => {
 
 	useEffect(() => {
 		dispatch(listMyEvaluations(userInfo._id))
-		console.log(evaluations)
 
 		// console.log(userInfo._id)
 	}, [dispatch, userInfo])
@@ -34,7 +33,7 @@ const EvaluationHistory = () => {
 	return (
 		<Container>
 			<FormContainer>
-				<Link to={`/profile`}>
+				<Link to={`/teacher/student/${id}`}>
 					<BackButton />
 				</Link>
 				{/* {error && <Message variant='danger'>{error}</Message>} */}

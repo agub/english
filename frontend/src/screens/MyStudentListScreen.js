@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import BackButton from '../components/common/BackButton'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Loader from '../components/common/Loader'
@@ -19,6 +20,9 @@ const MyStudentListScreen = () => {
 	return (
 		<Container>
 			<FormContainer>
+				<Link to={`/profile`}>
+					<BackButton />
+				</Link>
 				<h1>生徒一覧</h1>
 				{loading ? (
 					<Loader />
@@ -26,7 +30,7 @@ const MyStudentListScreen = () => {
 					students &&
 					students?.map((student, index) => (
 						<Link
-							to={`/teacher/waitList/${student.userId}`}
+							to={`/teacher/student/${student.userId}`}
 							key={student.userId}
 						>
 							<MyStudentList

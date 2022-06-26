@@ -112,6 +112,11 @@ const ProfileScreen = () => {
 							}
 						/>
 					)}
+					{user?.userType === 'employee' && (
+						<Link to={`/teacher/students`}>
+							<HorizontalButton text='生徒一覧' type='button' />
+						</Link>
+					)}
 					<p className='mt-4'>設定</p>
 
 					<Link to={`/profile/payment`}>

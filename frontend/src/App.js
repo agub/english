@@ -29,6 +29,7 @@ import Calc3 from './screens/Calc3'
 import EvaluateScreen from './screens/EvaluateScreen'
 import MyStudentListScreen from './screens/MyStudentListScreen'
 import EvaluationHistory from './screens/EvaluationHistory'
+import MyStudentScreen from './screens/MyStudentScreen'
 
 function App() {
 	return (
@@ -67,22 +68,26 @@ function App() {
 					element={<ChangePasswordScreen />}
 				/>
 				<Route path='/profile/payment' element={<PaymentScreen />} />
-				<Route
-					path='/profile/evaluationLists'
-					element={<EvaluationHistory />}
-				/>
 				<Route path='/contact' element={<ContactScreen />} />
+
 				<Route
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}
 				/>
-				<Route path='/teacher/evaluate' element={<EvaluateScreen />} />
-
 				<Route path='/teacher/waitList' element={<WaitListScreen />} />
 				<Route
 					path='/teacher/students'
 					element={<MyStudentListScreen />}
 				/>
+				<Route
+					path='/teacher/student/:id'
+					element={<MyStudentScreen />}
+				/>
+				<Route
+					path='/teacher/student/:id/evaluation'
+					element={<EvaluationHistory />}
+				/>
+				<Route path='/teacher/evaluate' element={<EvaluateScreen />} />
 				<Route
 					path='/teacher/waitList/:id'
 					element={<WaitListStudent />}
