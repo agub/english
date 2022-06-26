@@ -9,9 +9,6 @@ const evaluationSchema = mongoose.Schema(
 		},
 		evaluations: [
 			{
-				overall: {
-					type: Number,
-				},
 				conversation: {
 					type: Number,
 				},
@@ -25,6 +22,9 @@ const evaluationSchema = mongoose.Schema(
 					type: Number,
 				},
 				speaking: {
+					type: Number,
+				},
+				overall: {
 					type: Number,
 				},
 				comment: {

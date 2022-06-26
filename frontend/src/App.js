@@ -26,6 +26,7 @@ import WaitListStudent from './screens/WaitListStudent'
 import Calc from './screens/Calc'
 import Calc2 from './screens/Calc2'
 import Calc3 from './screens/Calc3'
+import EvaluateScreen from './screens/EvaluateScreen'
 
 function App() {
 	return (
@@ -73,6 +74,8 @@ function App() {
 					path='/teacher/register'
 					element={<TeacherRegisterScreen />}
 				/>
+				<Route path='/teacher/evaluate' element={<EvaluateScreen />} />
+
 				<Route path='/teacher/waitList' element={<WaitListScreen />} />
 				<Route
 					path='/teacher/waitList/:id'

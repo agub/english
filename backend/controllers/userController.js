@@ -1,5 +1,5 @@
-import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
+import asyncHandler from 'express-async-handler'
 import crypto from 'crypto'
 import User from '../models/userModel.js'
 import Room from '../models/roomModel.js'
@@ -818,15 +818,21 @@ const contactForm = asyncHandler(async (req, res) => {
 // @route   GET /api/users/students
 // @access  Private
 const getWaitLists = asyncHandler(async (req, res) => {
-	// should be on room controller??
-
-	const waitingLists = await Customer.find({
-		status: statusType.PENDING,
+	const allCustomers = await Customer.find({
+		'status.code': statusType.PENDING,
+		// userType: 'customer',
 	})
-	// const users = await User.find({})
-	console.log(waitingLists)
+	let array = []
+	const getData = (originalArray) => {
+		for (const data of originalArray) {
+			const statusIndex = data.status.length - 1
+			if (data.status[statusIndex].code === statusType.PENDING)
+				return (array = [...array, data])
+		}
+	}
+	getData(allCustomers)
 	// const user = await User.findOne({ email: 'shintrfc@gmail.com' })
-	res.send(waitingLists)
+	res.status(200).send(array)
 })
 
 export {

@@ -21,7 +21,8 @@ const WaitListScreen = () => {
 		if (games.length === 0) {
 			dispatch(listGames())
 		}
-	}, [dispatch, games.length])
+		// console.log(students)
+	}, [dispatch])
 	return (
 		<Container>
 			<FormContainer>
@@ -31,14 +32,14 @@ const WaitListScreen = () => {
 					students &&
 					students.map((student, index) => (
 						<Link
-							to={`/teacher/waitList/${student._id}`}
-							key={student._id}
+							to={`/teacher/waitList/${student.userId}`}
+							key={student.userId}
 						>
 							<StudentsWaitList
 								type='button'
 								index={index + 1}
 								games={games}
-								consoleType={student.info.consoleType}
+								// consoleType={student.info.consoleType}
 								student={student.info}
 							/>
 						</Link>
@@ -50,3 +51,4 @@ const WaitListScreen = () => {
 }
 
 export default WaitListScreen
+

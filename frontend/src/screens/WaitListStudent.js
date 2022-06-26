@@ -15,7 +15,6 @@ const WaitListScreen = () => {
 	const [rank, setRank] = useState('')
 	const [selectGame, setSelectGame] = useState('')
 
-	console.log(rank, selectGame)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const { id } = useParams()
@@ -42,7 +41,7 @@ const WaitListScreen = () => {
 		)
 
 	const filteredStudent =
-		students && students.filter((student) => student._id === id)[0]
+		students && students.filter((student) => student.userId === id)[0]
 
 	const submitHandler = (e) => {
 		e.preventDefault()
@@ -124,31 +123,7 @@ const WaitListScreen = () => {
 										</div>
 									))}
 							</div>
-							{/* <div className='mb-6 flex items-start flex-col'>
-								<label className='block text-gray-700 text-sm font-bold mb-2'>
-									希望時間
-								</label>
-								{filteredStudent &&
-									games &&
-									filteredStudent.info.gameLists &&
-									getGameObject(
-										filteredStudent.info.gameLists,
-										games
-									).map((student, index) => (
-										<div key={index}>
-											<input
-												required
-												name='preferWeek'
-												value={student}
-												type='radio'
-												// onChange={(e) =>
-												// 	setRank(e.target.value)
-												// }
-											/>
-											<label></label>
-										</div>
-									))}
-							</div> */}
+
 							<label className='block text-gray-700 text-sm font-bold mb-2'>
 								使用ゲーム
 							</label>
