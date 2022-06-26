@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Message from '../components/common/Message'
 import HorizontalButton from '../components/common/HorizontalButton'
 import BackButton from '../components/common/BackButton'
-
 import Loader from '../components/common/Loader'
-
-import classnames from 'classnames'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { listMyStudentLists } from '../redux/actions/emplopyeeActions'
+import { listMyStudentLists } from '../redux/actions/employeeActions'
 
 const MyStudentScreen = () => {
 	const navigate = useNavigate()

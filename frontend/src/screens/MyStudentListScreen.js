@@ -1,21 +1,27 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackButton from '../components/common/BackButton'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Loader from '../components/common/Loader'
 import MyStudentList from '../components/MyStudentList'
-import { listMyStudentLists } from '../redux/actions/emplopyeeActions'
+import { listMyStudentLists } from '../redux/actions/employeeActions'
 
 const MyStudentListScreen = () => {
+	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const { students, loading } = useSelector(
 		(state) => state.employeeMyStudentLists
 	)
+	const { userInfo } = useSelector((state) => state.userLogin)
+
 	useEffect(() => {
+		if (!userInfo) {
+			navigate('/login')
+		}
 		dispatch(listMyStudentLists())
-	}, [dispatch])
+	}, [dispatch, userInfo])
 
 	return (
 		<Container>
