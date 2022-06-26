@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
@@ -9,8 +10,9 @@ import Loader from '../components/common/Loader'
 import { orderListMySub, orderUnsub } from '../redux/actions/orderActions'
 import { listMyEvaluations } from '../redux/actions/evaluationActions'
 
-const EvaluationListsScreen = () => {
+const EvaluationHistory = () => {
 	const dispatch = useDispatch()
+	const { id } = useParams()
 
 	const { userInfo } = useSelector((state) => state.userLogin)
 
@@ -62,5 +64,5 @@ const EvaluationListsScreen = () => {
 	)
 }
 
-export default EvaluationListsScreen
+export default EvaluationHistory
 

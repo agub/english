@@ -6,6 +6,7 @@ import { statusType } from '../utils/data.js'
 import Employees from '../models/employeeModel.js'
 import Room from '../models/roomModel.js'
 import Customer from '../models/customerModel.js'
+import User from '../models/userModel.js'
 
 // @desc     Fetch all employees
 // @route    GET/ api/employees
@@ -67,13 +68,26 @@ const getMyStudentLists = asyncHandler(async (req, res) => {
 		res.status(401)
 		throw new Error('Not authorized')
 	}
-	const myStudents = await Room.find({ teacher: req.user._id })
-	if (!myStudents && myStudents === []) {
+	const myClassRooms = await Room.find({ teacher: req.user._id })
+	if (!myClassRooms && myClassRooms === []) {
 		res.status(400)
 		throw new Error('userId is not in use')
 	}
-	res.status(200).send(myStudents)
-	return
+
+	let myStudents = []
+	for (const singleClass of myClassRooms) {
+		for (const data of singleClass.students) {
+			const studentInfo = await Customer.findOne({ userId: data })
+			const userInfo = await User.findOne({ _id: data })
+			myStudents.push({
+				schedule: singleClass.schedule,
+				userId: studentInfo.userId,
+				info: studentInfo.info,
+				name: userInfo.name,
+			})
+		}
+	}
+	res.status(200).json(myStudents)
 })
 
 export {

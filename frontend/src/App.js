@@ -13,7 +13,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import TeacherRegisterScreen from './screens/TeacherRegisterScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PaymentHistoryScreen from './screens/PaymentHistoryScreen'
-import EvaluationListsScreen from './screens/EvaluationListsScreen'
+
 import ChangeAddressScreen from './screens/ChangeAddressScreen'
 import ChangeDiscordIdScreen from './screens/ChangeDiscordIdScreen'
 import ChangePasswordScreen from './screens/ChangePasswordScreen'
@@ -28,6 +28,7 @@ import Calc2 from './screens/Calc2'
 import Calc3 from './screens/Calc3'
 import EvaluateScreen from './screens/EvaluateScreen'
 import MyStudentListScreen from './screens/MyStudentListScreen'
+import EvaluationHistory from './screens/EvaluationHistory'
 
 function App() {
 	return (
@@ -68,7 +69,7 @@ function App() {
 				<Route path='/profile/payment' element={<PaymentScreen />} />
 				<Route
 					path='/profile/evaluationLists'
-					element={<EvaluationListsScreen />}
+					element={<EvaluationHistory />}
 				/>
 				<Route path='/contact' element={<ContactScreen />} />
 				<Route
