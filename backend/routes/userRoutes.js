@@ -18,6 +18,7 @@ import {
 	getTeacherById,
 	contactForm,
 	getWaitLists,
+	getMyStudentLists,
 } from '../controllers/userController.js'
 
 router.route('/interview').post(interviewRegisterUser)
@@ -33,6 +34,7 @@ router
 	.put(protect, updateUserProfile)
 
 router.route('/waitLists').get(protect, getWaitLists)
+router.route('/studentLists').get(protect, getMyStudentLists)
 router
 	.route('/:id')
 	.get(protect, admin, getUserById)

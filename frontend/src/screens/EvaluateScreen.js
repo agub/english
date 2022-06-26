@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
 import Button from '../components/common/Button'
 import Container from '../components/common/Container'
@@ -9,18 +10,19 @@ import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/common/Message'
 
-const EvaluateScreen = ({ userId }) => {
+const EvaluateScreen = () => {
+	const { id } = useParams()
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
 	const numArray = [1, 2, 3, 4, 5]
 
 	useEffect(() => {
-		if (!userId) {
-			navigate('/login')
-			return
-		} else {
-		}
+		// if (!userId) {
+		// 	navigate('/login')
+		// 	return
+		// } else {
+		// }
 	}, [dispatch, navigate])
 
 	const { loading, success, error } = useSelector(

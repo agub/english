@@ -16,6 +16,7 @@ import {
 import { statusType } from '../utils/data.js'
 import Promotion from '../models/promotionModel.js'
 import Evaluation from '../models/evaluationModel.js'
+import e from 'express'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -814,25 +815,43 @@ const contactForm = asyncHandler(async (req, res) => {
 	}
 })
 
-// @desc    Get all users
+// @desc    Get all pending users
 // @route   GET /api/users/students
-// @access  Private
+// @access  Private/teacher
 const getWaitLists = asyncHandler(async (req, res) => {
 	const allCustomers = await Customer.find({
 		'status.code': statusType.PENDING,
 		// userType: 'customer',
 	})
-	let array = []
+	let pendingCustomers = []
 	const getData = (originalArray) => {
 		for (const data of originalArray) {
 			const statusIndex = data.status.length - 1
 			if (data.status[statusIndex].code === statusType.PENDING)
-				return (array = [...array, data])
+				pendingCustomers.push(data)
 		}
 	}
 	getData(allCustomers)
 	// const user = await User.findOne({ email: 'shintrfc@gmail.com' })
-	res.status(200).send(array)
+	res.status(200).send(pendingCustomers)
+})
+
+// @desc    Get all my students
+// @route   GET /api/users/studentLists
+// @access  Private/teacher
+const getMyStudentLists = asyncHandler(async (req, res) => {
+	if (req.user.userType === 'customer') {
+		res.status(401)
+		throw new Error('Not authorized')
+	}
+	const myStudents = await Room.find({ teacher: req.user._id })
+
+	if (!myStudents && myStudents === []) {
+		res.status(400)
+		throw new Error('userId is not in use')
+	}
+	res.status(200).send(myStudents)
+	return
 })
 
 export {
@@ -851,5 +870,6 @@ export {
 	getTeacherById,
 	contactForm,
 	getWaitLists,
+	getMyStudentLists,
 }
 
