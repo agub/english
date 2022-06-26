@@ -15,9 +15,6 @@ const evaluationSchema = mongoose.Schema(
 				effort: {
 					type: Number,
 				},
-				improvement: {
-					type: Number,
-				},
 				concentration: {
 					type: Number,
 				},

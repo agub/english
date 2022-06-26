@@ -1,9 +1,12 @@
 import express from 'express'
 import { protect, admin } from '../middleware/authMiddleware.js'
 const router = express.Router()
-import { getEvaluate } from '../controllers/evaluationController.js'
+import {
+	getEvaluate,
+	evaluateStudent,
+} from '../controllers/evaluationController.js'
 
-router.route('/:id').get(protect, getEvaluate)
+router.route('/:id').get(protect, getEvaluate).post(protect, evaluateStudent)
 
 export default router
 

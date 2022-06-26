@@ -9,6 +9,7 @@ import InputField from '../components/common/InputField'
 import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/common/Message'
+import moment from 'moment'
 
 const EvaluateScreen = () => {
 	const { id } = useParams()
@@ -21,7 +22,7 @@ const EvaluateScreen = () => {
 		// if (!userId) {
 		// 	navigate('/login')
 		// 	return
-		// } else {
+		// }
 		// }
 	}, [dispatch, navigate])
 
