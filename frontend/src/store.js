@@ -19,7 +19,7 @@ import {
 	userInterviewUpdateReducer,
 	userContactReducer,
 	userVerifyReducer,
-	userWaitListsReducer,
+	// userWaitListsReducer,
 } from './redux/reducers/userReducers'
 import {
 	orderStripeReducer,
@@ -27,6 +27,8 @@ import {
 	orderListMySubscriptionReducer,
 	orderUnsubscribeReducer,
 } from './redux/reducers/orderReducers'
+
+import { employeeWaitListsReducer } from './redux/reducers/employeeReducers'
 
 import { evaluationMyListsReducer } from './redux/reducers/evaluationReducers'
 
@@ -46,7 +48,8 @@ const reducer = combineReducers({
 	userDelete: userDeleteReducer,
 	userInterviewUpdate: userInterviewUpdateReducer,
 	userVerify: userVerifyReducer,
-	userWaitLists: userWaitListsReducer,
+	// userWaitLists: userWaitListsReducer,
+	employeeWaitLists: employeeWaitListsReducer,
 	orderStripe: orderStripeReducer,
 	orderDataSet: orderDataSetReducer,
 	orderListMySubscription: orderListMySubscriptionReducer,

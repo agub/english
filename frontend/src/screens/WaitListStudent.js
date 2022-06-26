@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
-import { listWaitLists } from '../redux/actions/userActions'
-import { USER_WAIT_LISTS_RESET } from '../redux/constants/userConstants'
+import { listWaitLists } from '../redux/actions/emplopyeeActions'
+import { EMPLOYEE_WAIT_LISTS_RESET } from '../redux/constants/employeeConstant'
 import BackButton from '../components/common/BackButton'
 import Button from '../components/common/Button'
 import { weeks } from '../utils/data'
@@ -19,7 +19,7 @@ const WaitListScreen = () => {
 	const dispatch = useDispatch()
 	const { id } = useParams()
 	const { students, success, loading } = useSelector(
-		(state) => state.userWaitLists
+		(state) => state.employeeWaitLists
 	)
 
 	const { loading: gameLoading, games } = useSelector(
@@ -63,11 +63,11 @@ const WaitListScreen = () => {
 				<BackButton
 					onClick={(e) => {
 						e.preventDefault()
-						dispatch({ type: USER_WAIT_LISTS_RESET })
+						dispatch({ type: EMPLOYEE_WAIT_LISTS_RESET })
 						navigate('/teacher/waitList')
 					}}
 				/>
-				{loading ? (
+				{loading || gameLoading ? (
 					<Loader />
 				) : (
 					games &&

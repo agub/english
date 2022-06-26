@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import { listGames } from '../redux/actions/gameActions'
-import { listWaitLists } from '../redux/actions/userActions'
+import { listWaitLists } from '../redux/actions/emplopyeeActions'
 import StudentsWaitList from '../components/StudentsWaitList'
 import Loader from '../components/common/Loader'
 
 const WaitListScreen = () => {
 	const dispatch = useDispatch()
-	const { students, loading } = useSelector((state) => state.userWaitLists)
+	const { students, loading } = useSelector(
+		(state) => state.employeeWaitLists
+	)
 
 	const { loading: gameLoading, games } = useSelector(
 		(state) => state.gameList
