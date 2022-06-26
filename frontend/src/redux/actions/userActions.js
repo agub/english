@@ -497,7 +497,7 @@ export const listWaitLists = () => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		}
-		const { data } = await axios.get('/api/users/waitLists', config)
+		const { data } = await axios.get('/api/employees/waitLists', config)
 		dispatch({ type: USER_WAIT_LISTS_SUCCESS, payload: data })
 	} catch (error) {
 		dispatch({

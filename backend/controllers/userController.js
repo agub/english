@@ -815,45 +815,6 @@ const contactForm = asyncHandler(async (req, res) => {
 	}
 })
 
-// @desc    Get all pending users
-// @route   GET /api/users/students
-// @access  Private/teacher
-const getWaitLists = asyncHandler(async (req, res) => {
-	const allCustomers = await Customer.find({
-		'status.code': statusType.PENDING,
-		// userType: 'customer',
-	})
-	let pendingCustomers = []
-	const getData = (originalArray) => {
-		for (const data of originalArray) {
-			const statusIndex = data.status.length - 1
-			if (data.status[statusIndex].code === statusType.PENDING)
-				pendingCustomers.push(data)
-		}
-	}
-	getData(allCustomers)
-	// const user = await User.findOne({ email: 'shintrfc@gmail.com' })
-	res.status(200).send(pendingCustomers)
-})
-
-// @desc    Get all my students
-// @route   GET /api/users/studentLists
-// @access  Private/teacher
-const getMyStudentLists = asyncHandler(async (req, res) => {
-	if (req.user.userType === 'customer') {
-		res.status(401)
-		throw new Error('Not authorized')
-	}
-	const myStudents = await Room.find({ teacher: req.user._id })
-
-	if (!myStudents && myStudents === []) {
-		res.status(400)
-		throw new Error('userId is not in use')
-	}
-	res.status(200).send(myStudents)
-	return
-})
-
 export {
 	authUser,
 	getUserProfile,
@@ -869,7 +830,5 @@ export {
 	updateInterview,
 	getTeacherById,
 	contactForm,
-	getWaitLists,
-	getMyStudentLists,
 }
 

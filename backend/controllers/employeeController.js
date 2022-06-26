@@ -2,7 +2,10 @@ import express from 'express'
 import asyncHandler from 'express-async-handler'
 import schedule from 'node-schedule'
 import cron from 'node-cron'
+import { statusType } from '../utils/data.js'
 import Employees from '../models/employeeModel.js'
+import Room from '../models/roomModel.js'
+import Customer from '../models/customerModel.js'
 
 // @desc     Fetch all employees
 // @route    GET/ api/employees
@@ -36,5 +39,48 @@ const addWorkHistory = asyncHandler(async (req, res) => {
 	res.json('addWorkHistory')
 })
 
-export { getEmployees, getEmployeeById, addWorkHistory }
+// @desc    Get all pending users
+// @route   GET /api/employee/waitLists
+// @access  Private/teacher
+const getWaitLists = asyncHandler(async (req, res) => {
+	const allCustomers = await Customer.find({
+		'status.code': statusType.PENDING,
+		// userType: 'customer',
+	})
+	let pendingCustomers = []
+	const getData = (originalArray) => {
+		for (const data of originalArray) {
+			const statusIndex = data.status.length - 1
+			if (data.status[statusIndex].code === statusType.PENDING)
+				pendingCustomers.push(data)
+		}
+	}
+	getData(allCustomers)
+	res.status(200).send(pendingCustomers)
+})
+
+// @desc    Get all my students
+// @route   GET /api/employee/studentLists
+// @access  Private/teacher
+const getMyStudentLists = asyncHandler(async (req, res) => {
+	if (req.user.userType === 'customer') {
+		res.status(401)
+		throw new Error('Not authorized')
+	}
+	const myStudents = await Room.find({ teacher: req.user._id })
+	if (!myStudents && myStudents === []) {
+		res.status(400)
+		throw new Error('userId is not in use')
+	}
+	res.status(200).send(myStudents)
+	return
+})
+
+export {
+	getEmployees,
+	getEmployeeById,
+	addWorkHistory,
+	getWaitLists,
+	getMyStudentLists,
+}
 
