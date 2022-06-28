@@ -56,9 +56,15 @@ const MyStudentScreen = () => {
 							/>
 							<p className='mt-4'>設定</p>
 
-							<Link to={`/teacher/student/${id}/evaluation`}>
+							<Link to={`/teacher/student/${id}/evaluations`}>
 								<HorizontalButton
 									text='過去の評価履歴'
+									type='button'
+								/>
+							</Link>
+							<Link to={`/teacher/student/${id}/evaluate`}>
+								<HorizontalButton
+									text='xxの評価をつける'
 									type='button'
 								/>
 							</Link>

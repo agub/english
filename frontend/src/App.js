@@ -27,9 +27,10 @@ import Calc from './screens/Calc'
 import Calc2 from './screens/Calc2'
 import Calc3 from './screens/Calc3'
 import EvaluateScreen from './screens/EvaluateScreen'
-import MyStudentListScreen from './screens/MyStudentListScreen'
-import EvaluationHistory from './screens/EvaluationHistory'
+import EvaluationHistoryListsScreen from './screens/EvaluationHistoryListsScreen'
+import EvaluationHistoryScreen from './screens/EvaluationHistoryScreen'
 import MyStudentScreen from './screens/MyStudentScreen'
+import MyStudentListScreen from './screens/MyStudentListScreen'
 
 function App() {
 	return (
@@ -84,10 +85,19 @@ function App() {
 					element={<MyStudentScreen />}
 				/>
 				<Route
-					path='/teacher/student/:id/evaluation'
-					element={<EvaluationHistory />}
+					path='/teacher/student/:id/evaluate'
+					element={<EvaluateScreen />}
 				/>
-				<Route path='/teacher/evaluate' element={<EvaluateScreen />} />
+				<Route
+					path='/teacher/student/:id/evaluations'
+					element={<EvaluationHistoryListsScreen />}
+				/>
+				<Route
+					path='/teacher/student/:id/evaluation/:_id'
+					element={<EvaluationHistoryScreen />}
+				/>
+
+				{/* <Route path='/teacher/evaluate' element={<EvaluateScreen />} /> */}
 				<Route
 					path='/teacher/waitList/:id'
 					element={<WaitListStudent />}

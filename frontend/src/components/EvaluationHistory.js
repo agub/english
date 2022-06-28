@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import moment from 'moment'
 import { FiChevronRight } from 'react-icons/fi'
-const Evaluation = ({ evaluation, type }) => {
+const EvaluationHistory = ({ evaluation, type }) => {
 	return (
 		<div
 			className={classNames(`border-b bottom-1 p-2  rounded`, {
@@ -17,5 +17,5 @@ const Evaluation = ({ evaluation, type }) => {
 		</div>
 	)
 }
-export default Evaluation
+export default EvaluationHistory
 

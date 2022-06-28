@@ -7,23 +7,18 @@ import FormContainer from '../components/common/FormContainer'
 import BackButton from '../components/common/BackButton'
 import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
-import { orderListMySub, orderUnsub } from '../redux/actions/orderActions'
 import { listMyEvaluations } from '../redux/actions/evaluationActions'
-import Evaluation from '../components/Evaluation'
+import EvaluationHistory from '../components/EvaluationHistory'
 
-const EvaluationHistory = () => {
+const EvaluationHistoryListsScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
-	const { id } = useParams()
 
+	const { id } = useParams()
 	const { userInfo } = useSelector((state) => state.userLogin)
-	const { evaluation } = useSelector((state) => state.evaluationMyLists)
-	console.log(evaluation.evaluations)
-	// const submitHandler = (e) => {
-	// 	e.preventDefault()
-	// 	console.log(e.currentTarget.id)
-	// 	dispatch(orderUnsub(e.currentTarget.id))
-	// }
+	const { evaluation, loading, error } = useSelector(
+		(state) => state.evaluationMyLists
+	)
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -38,21 +33,28 @@ const EvaluationHistory = () => {
 				<Link to={`/teacher/student/${id}`}>
 					<BackButton />
 				</Link>
-				{/* {error && <Message variant='danger'>{error}</Message>} */}
-				{/* {(loading || orderListLoading) && <Loader />} */}
+				{error && <Message variant='danger'>{error}</Message>}
+				{loading && <Loader />}
 				<h1 className='text-center'>評価の履歴</h1>
-				{/* <Evaluation /> */}
-				<p>
+				<div>
 					{evaluation &&
 						evaluation.evaluations &&
 						evaluation.evaluations.map((object) => (
-							<Evaluation evaluation={object} type='button' />
+							<Link
+								key={object._id}
+								to={`/teacher/student/${id}/evaluation/${object._id}`}
+							>
+								<EvaluationHistory
+									evaluation={object}
+									type='button'
+								/>
+							</Link>
 						))}
-				</p>
+				</div>
 			</FormContainer>
 		</Container>
 	)
 }
 
-export default EvaluationHistory
+export default EvaluationHistoryListsScreen
 

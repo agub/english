@@ -10,11 +10,26 @@ import Loader from '../components/common/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/common/Message'
 import moment from 'moment'
+import { listMyEvaluations } from '../redux/actions/evaluationActions'
 
 const EvaluateScreen = () => {
 	const { id } = useParams()
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
+
+	const { userInfo } = useSelector((state) => state.userLogin)
+	const { evaluation, loading, error } = useSelector(
+		(state) => state.evaluationMyLists
+	)
+
+	const filter =
+		evaluation &&
+		evaluation.evaluations &&
+		evaluation.evaluations.some(
+			(obj) =>
+				moment(obj.createdAt).format('YYYYMM') ===
+				moment().format('YYYYMM')
+		)
 
 	const numArray = [1, 2, 3, 4, 5]
 
@@ -24,11 +39,8 @@ const EvaluateScreen = () => {
 		// 	return
 		// }
 		// }
+		dispatch(listMyEvaluations(id))
 	}, [dispatch, navigate])
-
-	const { loading, success, error } = useSelector(
-		(state) => state.userInterview
-	)
 
 	const [inputValue, setInputValue] = useState({
 		conversation: '',
