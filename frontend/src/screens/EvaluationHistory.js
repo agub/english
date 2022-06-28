@@ -9,6 +9,7 @@ import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { orderListMySub, orderUnsub } from '../redux/actions/orderActions'
 import { listMyEvaluations } from '../redux/actions/evaluationActions'
+import Evaluation from '../components/Evaluation'
 
 const EvaluationHistory = () => {
 	const navigate = useNavigate()
@@ -16,9 +17,8 @@ const EvaluationHistory = () => {
 	const { id } = useParams()
 
 	const { userInfo } = useSelector((state) => state.userLogin)
-
-	const { evaluations } = useSelector((state) => state.evaluationMyLists)
-
+	const { evaluation } = useSelector((state) => state.evaluationMyLists)
+	console.log(evaluation.evaluations)
 	// const submitHandler = (e) => {
 	// 	e.preventDefault()
 	// 	console.log(e.currentTarget.id)
@@ -29,8 +29,8 @@ const EvaluationHistory = () => {
 		if (!userInfo) {
 			navigate('/login')
 		}
-		dispatch(listMyEvaluations(userInfo._id))
-	}, [dispatch, userInfo])
+		dispatch(listMyEvaluations(id))
+	}, [dispatch, navigate, userInfo, id])
 
 	return (
 		<Container>
@@ -40,7 +40,15 @@ const EvaluationHistory = () => {
 				</Link>
 				{/* {error && <Message variant='danger'>{error}</Message>} */}
 				{/* {(loading || orderListLoading) && <Loader />} */}
-				<h1 className='text-center'>評価</h1>
+				<h1 className='text-center'>評価の履歴</h1>
+				{/* <Evaluation /> */}
+				<p>
+					{evaluation &&
+						evaluation.evaluations &&
+						evaluation.evaluations.map((object) => (
+							<Evaluation evaluation={object} type='button' />
+						))}
+				</p>
 			</FormContainer>
 		</Container>
 	)

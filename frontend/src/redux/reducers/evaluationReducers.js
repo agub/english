@@ -6,14 +6,14 @@ import {
 } from '../constants/evaluationConstants.js'
 
 export const evaluationMyListsReducer = (
-	state = { evaluations: [] },
+	state = { evaluation: {} },
 	action
 ) => {
 	switch (action.type) {
 		case EVALUATION_MY_LISTS_REQUEST:
-			return { loading: true, evaluations: [] }
+			return { loading: true, evaluation: {} }
 		case EVALUATION_MY_LISTS_SUCCESS:
-			return { loading: false, evaluations: action.payload }
+			return { loading: false, evaluation: action.payload }
 		case EVALUATION_MY_LISTS_FAIL:
 			return { loading: false, error: action.payload }
 		default:

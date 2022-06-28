@@ -74,14 +74,14 @@ const HomeScreen = () => {
 		<>
 			<HomeTop />
 			<Container>
-				<h1 className='text-center'>Something Important</h1>
+				{/* <h1 className='text-center'>Something Important</h1>
 				<PriceHomeComponent />
 				<Loader />
 				<Message variant='info'>ログインいたしました。</Message>
 				<h1>人気のゲーム</h1>
 				<SwipeContainer showGames />
 				<div>Review</div>
-				<div>Q & A</div>
+				<div>Q & A</div> */}
 			</Container>
 			<Contact />
 		</>
