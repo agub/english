@@ -38,4 +38,14 @@ const admin = (req, res, next) => {
 	}
 }
 
-export { protect, admin }
+const employeeAccess = (req, res, next) => {
+	if (req.user && req.user.userType === 'employee') {
+		next()
+	} else {
+		res.status(401)
+		throw new Error('Not authorized, user has to be employee to access')
+	}
+}
+
+export { protect, admin, employeeAccess }
+

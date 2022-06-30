@@ -15,6 +15,10 @@ const getEvaluate = asyncHandler(async (req, res) => {
 		throw new Error('Not authorized')
 	}
 	const evaluateLists = await Evaluation.findOne({ userId: req.params.id })
+	if (evaluateLists === null || evaluateLists.length === 0) {
+		res.status(400)
+		throw new Error('評価がありません')
+	}
 	res.status(201).json(evaluateLists)
 })
 

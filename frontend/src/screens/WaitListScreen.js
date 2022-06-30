@@ -7,10 +7,12 @@ import { listGames } from '../redux/actions/gameActions'
 import { listWaitLists } from '../redux/actions/employeeActions'
 import StudentsWaitList from '../components/StudentsWaitList'
 import Loader from '../components/common/Loader'
+import Message from '../components/common/Message'
+import BackButton from '../components/common/BackButton'
 
 const WaitListScreen = () => {
 	const dispatch = useDispatch()
-	const { students, loading } = useSelector(
+	const { students, loading, error } = useSelector(
 		(state) => state.employeeWaitLists
 	)
 
@@ -28,6 +30,11 @@ const WaitListScreen = () => {
 	return (
 		<Container>
 			<FormContainer>
+				<Link to={`/profile`}>
+					<BackButton />
+				</Link>
+				{error && <Message variant='danger'>{error}</Message>}
+
 				{loading || gameLoading ? (
 					<Loader />
 				) : (

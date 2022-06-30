@@ -31,6 +31,7 @@ const roomSchema = mongoose.Schema(
 					ref: 'User',
 				},
 				rank: { type: Number },
+				comment: { type: String },
 			},
 		],
 

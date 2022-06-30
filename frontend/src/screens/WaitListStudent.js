@@ -10,10 +10,12 @@ import Button from '../components/common/Button'
 import { weeks } from '../utils/data'
 import { listGames } from '../redux/actions/gameActions'
 import Loader from '../components/common/Loader'
+import InputField from '../components/common/InputField'
 
 const WaitListScreen = () => {
 	const [rank, setRank] = useState('')
 	const [selectGame, setSelectGame] = useState('')
+	const [comment, setComment] = useState('')
 
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
@@ -123,31 +125,47 @@ const WaitListScreen = () => {
 										</div>
 									))}
 							</div>
-
-							<label className='block text-gray-700 text-sm font-bold mb-2'>
-								使用ゲーム
-							</label>
-							<select
-								id='data'
-								name='gameTitle'
-								required
-								value={selectGame}
-								onChange={(e) => setSelectGame(e.target.value)}
-								className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-							>
-								<option hidden>選択してください</option>
-								{filteredStudent &&
-									games &&
-									filteredStudent.info.gameLists &&
-									getGameObject(
-										filteredStudent.info.gameLists,
-										games
-									).map((item, key) => (
-										<option key={key} value={item._id}>
-											{item.title}
-										</option>
-									))}
-							</select>
+							<div className='mb-6'>
+								<label className='block text-gray-700 text-sm font-bold mb-2'>
+									使用ゲーム
+								</label>
+								<select
+									id='data'
+									name='gameTitle'
+									required
+									value={selectGame}
+									onChange={(e) =>
+										setSelectGame(e.target.value)
+									}
+									className='shadow border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+								>
+									<option hidden>選択してください</option>
+									{filteredStudent &&
+										games &&
+										filteredStudent.info.gameLists &&
+										getGameObject(
+											filteredStudent.info.gameLists,
+											games
+										).map((item, key) => (
+											<option key={key} value={item._id}>
+												{item.title}
+											</option>
+										))}
+								</select>
+							</div>
+							<div className='mb-6'>
+								<InputField
+									value={comment}
+									type='textarea'
+									placeholder='詳細'
+									label='希望時間の詳細'
+									onChange={(e) =>
+										setComment((prev) => ({
+											comment: e.target.value,
+										}))
+									}
+								/>
+							</div>
 							<Button
 								onClick={submitHandler}
 								type='submit'

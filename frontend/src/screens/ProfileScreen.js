@@ -116,22 +116,39 @@ const ProfileScreen = () => {
 						</Link>
 					)}
 					{user?.userType === 'employee' && (
-						<Link to={`/teacher/students`}>
-							<HorizontalButton text='生徒一覧' type='button' />
-						</Link>
+						<>
+							<Link to={`/teacher/students`}>
+								<HorizontalButton
+									text='生徒一覧'
+									type='button'
+								/>
+							</Link>
+							<Link to={'/teacher/waitList'}>
+								<HorizontalButton
+									text='新しい生徒を探す'
+									type='button'
+								/>
+							</Link>
+						</>
 					)}
 					<p className='mt-4'>設定</p>
-
-					<Link to={`/profile/payment`}>
-						<HorizontalButton text='月額支払い設定' type='button' />
-					</Link>
-					<Link to={`/profile/payment/history`}>
-						<HorizontalButton
-							text='お支払いプラン'
-							type='button'
-							result='定額'
-						/>
-					</Link>
+					{user?.userType === 'customer' && (
+						<>
+							<Link to={`/profile/payment`}>
+								<HorizontalButton
+									text='月額支払い設定'
+									type='button'
+								/>
+							</Link>
+							<Link to={`/profile/payment/history`}>
+								<HorizontalButton
+									text='お支払いプラン'
+									type='button'
+									result='定額'
+								/>
+							</Link>
+						</>
+					)}
 					<Link to={'/profile/password'}>
 						<HorizontalButton
 							text='パスワードの変更'

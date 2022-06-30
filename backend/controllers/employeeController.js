@@ -16,8 +16,8 @@ const getEmployees = asyncHandler(async (req, res) => {
 	res.json(employees)
 })
 
-// @desc     Fetch all customers
-// @route    GET/ api/customers/:id
+// @desc     Fetch a employee
+// @route    GET/ api/employees/:id
 // @access   Private
 const getEmployeeById = asyncHandler(async (req, res) => {
 	const employee = await Employees.findOne({ userId: req.params.id })
@@ -30,7 +30,7 @@ const getEmployeeById = asyncHandler(async (req, res) => {
 })
 
 // @desc     Fetch all customers
-// @route    GET/ api/customers/:id
+// @route    GET/ api/employees/:id
 // @access   Private
 const addWorkHistory = asyncHandler(async (req, res) => {
 	cron.schedule('* * * * *', () => {
@@ -57,6 +57,10 @@ const getWaitLists = asyncHandler(async (req, res) => {
 		}
 	}
 	getData(allCustomers)
+	if (pendingCustomers.length === 0) {
+		res.status(400)
+		throw new Error('先生を募集している生徒が見当たりません')
+	}
 	res.status(200).send(pendingCustomers)
 })
 
@@ -90,11 +94,50 @@ const getMyStudentLists = asyncHandler(async (req, res) => {
 	res.status(200).json(myStudents)
 })
 
+// @desc    apply as a candidate
+// @route   GET /api/employee/apply/:id
+// @access  Private/teacher
+const postCandidate = asyncHandler(async (req, res) => {
+	const userId = 'fasdfaaafaf'
+	const object = {
+		teacherId: '',
+		rank: 1,
+		comment: '',
+	}
+
+	// if (req.user.userType === 'customer') {
+	// 	res.status(401)
+	// 	throw new Error('Not authorized')
+	// }
+	// const myClassRooms = await Room.find({ teacher: req.user._id })
+	// if (!myClassRooms && myClassRooms === []) {
+	// 	res.status(400)
+	// 	throw new Error('userId is not in use')
+	// }
+
+	// let myStudents = []
+	// for (const singleClass of myClassRooms) {
+	// 	for (const data of singleClass.students) {
+	// 		const studentInfo = await Customer.findOne({ userId: data })
+	// 		const userInfo = await User.findOne({ _id: data })
+	// 		myStudents.push({
+	// 			schedule: singleClass.schedule,
+	// 			userId: studentInfo.userId,
+	// 			info: studentInfo.info,
+	// 			name: userInfo.name,
+	// 		})
+	// 	}
+	// }
+	console.log('fired')
+	res.status(200).json(object)
+})
+
 export {
 	getEmployees,
 	getEmployeeById,
 	addWorkHistory,
 	getWaitLists,
 	getMyStudentLists,
+	postCandidate,
 }
 
