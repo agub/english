@@ -102,15 +102,18 @@ const ProfileScreen = () => {
 					</Link>
 
 					{user?.userType === 'customer' && (
-						<HorizontalButton
-							text='先生'
-							type='button'
-							result={
-								user?.teacher
-									? teacher.name?.kanaFirstName + '先生'
-									: '未定'
-							}
-						/>
+						// <HorizontalButton
+						// 	text='先生'
+						// 	type='button'
+						// 	result={
+						// 		user?.teacher
+						// 			? teacher.name?.kanaFirstName + '先生'
+						// 			: '未定'
+						// 	}
+						// />
+						<Link to={`/profile/evaluations/${userInfo._id}`}>
+							<HorizontalButton text='評価' type='button' />
+						</Link>
 					)}
 					{user?.userType === 'employee' && (
 						<Link to={`/teacher/students`}>

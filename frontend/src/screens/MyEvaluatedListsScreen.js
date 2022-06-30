@@ -8,22 +8,17 @@ import BackButton from '../components/common/BackButton'
 import Message from '../components/common/Message'
 import Loader from '../components/common/Loader'
 import { listMyEvaluations } from '../redux/actions/evaluationActions'
-import moment from 'moment'
+import EvaluationHistory from '../components/EvaluationHistory'
 
-const EvaluationHistoryScreen = () => {
+const MyEvaluatedListsScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
-	const { id, _id } = useParams()
+	const { id } = useParams()
 	const { userInfo } = useSelector((state) => state.userLogin)
 	const { evaluation, loading, error } = useSelector(
 		(state) => state.evaluationMyLists
 	)
-
-	const filteredEvaluation =
-		evaluation &&
-		evaluation.evaluations &&
-		evaluation.evaluations.filter((obj) => obj._id === _id)[0]
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -35,48 +30,31 @@ const EvaluationHistoryScreen = () => {
 	return (
 		<Container>
 			<FormContainer>
-				<Link to={`/teacher/student/${id}/evaluations`}>
+				<Link to={`/profile`}>
 					<BackButton />
 				</Link>
 				{error && <Message variant='danger'>{error}</Message>}
 				{loading && <Loader />}
-				<h1 className='text-center'>
-					{filteredEvaluation &&
-						moment(filteredEvaluation.createdAt).format('YYYY年M')}
-					月の評価
-				</h1>
-				{filteredEvaluation && (
-					<>
-						<div>
-							会話力:
-							{filteredEvaluation.conversation}
-						</div>
-						<div>
-							努力値:
-							{filteredEvaluation.effort}
-						</div>
-						<div>
-							集中力:
-							{filteredEvaluation.concentration}
-						</div>
-						<div>
-							発言力:
-							{filteredEvaluation.speaking}
-						</div>
-						<div>
-							xx月の総合評価:
-							{filteredEvaluation.overall}
-						</div>
-						<div>
-							コメント:
-							{filteredEvaluation.comment}
-						</div>
-					</>
-				)}
+				<h1 className='text-center'>評価の履歴</h1>
+				<div>
+					{evaluation &&
+						evaluation.evaluations &&
+						evaluation.evaluations.map((object) => (
+							<Link
+								key={object._id}
+								to={`/profile/evaluations/${id}/${object._id}`}
+							>
+								<EvaluationHistory
+									evaluation={object}
+									type='button'
+								/>
+							</Link>
+						))}
+				</div>
 			</FormContainer>
 		</Container>
 	)
 }
 
-export default EvaluationHistoryScreen
+export default MyEvaluatedListsScreen
 

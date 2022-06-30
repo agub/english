@@ -5,13 +5,14 @@ import BackButton from '../components/common/BackButton'
 import Container from '../components/common/Container'
 import FormContainer from '../components/common/FormContainer'
 import Loader from '../components/common/Loader'
+import Message from '../components/common/Message'
 import MyStudentList from '../components/MyStudentList'
 import { listMyStudentLists } from '../redux/actions/employeeActions'
 
 const MyStudentListScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
-	const { students, loading } = useSelector(
+	const { students, loading, error } = useSelector(
 		(state) => state.employeeMyStudentLists
 	)
 	const { userInfo } = useSelector((state) => state.userLogin)
@@ -30,6 +31,7 @@ const MyStudentListScreen = () => {
 					<BackButton />
 				</Link>
 				<h1>生徒一覧</h1>
+				{error && <Message variant='danger'>{error}</Message>}
 				{loading ? (
 					<Loader />
 				) : (

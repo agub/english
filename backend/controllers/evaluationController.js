@@ -7,7 +7,10 @@ import Evaluation from '../models/evaluationModel.js'
 // @route    GET/ api/evaluate
 // @access   Private
 const getEvaluate = asyncHandler(async (req, res) => {
-	if (req.user.userType === 'customer' && req.params.id !== req.user._id) {
+	if (
+		req.user.userType === 'customer' &&
+		req.params.id !== req.user._id.toString()
+	) {
 		res.status(401)
 		throw new Error('Not authorized')
 	}

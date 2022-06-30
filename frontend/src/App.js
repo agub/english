@@ -31,6 +31,9 @@ import EvaluationHistoryListsScreen from './screens/EvaluationHistoryListsScreen
 import EvaluationHistoryScreen from './screens/EvaluationHistoryScreen'
 import MyStudentScreen from './screens/MyStudentScreen'
 import MyStudentListScreen from './screens/MyStudentListScreen'
+import MyEvaluationListsScreen from './screens/MyEvaluatedListsScreen'
+import MyEvaluatedListsScreen from './screens/MyEvaluatedListsScreen'
+import MyEvaluatedScreen from './screens/MyEvaluatedScreen'
 
 function App() {
 	return (
@@ -69,6 +72,15 @@ function App() {
 					element={<ChangePasswordScreen />}
 				/>
 				<Route path='/profile/payment' element={<PaymentScreen />} />
+				<Route
+					path='/profile/evaluations/:id'
+					element={<MyEvaluatedListsScreen />}
+				/>
+				<Route
+					path='/profile/evaluations/:id/:_id'
+					element={<MyEvaluatedScreen />}
+				/>
+
 				<Route path='/contact' element={<ContactScreen />} />
 
 				<Route

@@ -16,7 +16,6 @@ import {
 import { statusType } from '../utils/data.js'
 import Promotion from '../models/promotionModel.js'
 import Evaluation from '../models/evaluationModel.js'
-import e from 'express'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login

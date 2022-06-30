@@ -10,7 +10,7 @@ import Loader from '../components/common/Loader'
 import { listMyEvaluations } from '../redux/actions/evaluationActions'
 import moment from 'moment'
 
-const EvaluationHistoryScreen = () => {
+const MyEvaluatedScreen = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
@@ -35,7 +35,7 @@ const EvaluationHistoryScreen = () => {
 	return (
 		<Container>
 			<FormContainer>
-				<Link to={`/teacher/student/${id}/evaluations`}>
+				<Link to={`/profile/evaluations/${id}`}>
 					<BackButton />
 				</Link>
 				{error && <Message variant='danger'>{error}</Message>}
@@ -78,5 +78,5 @@ const EvaluationHistoryScreen = () => {
 	)
 }
 
-export default EvaluationHistoryScreen
+export default MyEvaluatedScreen
 
