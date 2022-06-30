@@ -11,7 +11,7 @@ const EvaluationHistory = ({ evaluation, type }) => {
 			// className='border-b bottom-1 p-2 cursor-pointer hover:bg-gray-100 rounded'
 		>
 			<div className='flex justify-between items-center'>
-				<div>{moment(evaluation.createdAt).format('YYYY, MMMM')}</div>
+				<div>{moment(evaluation.createdAt).format('YYYY, M月')}</div>
 				<FiChevronRight />
 			</div>
 		</div>

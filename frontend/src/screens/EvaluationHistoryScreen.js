@@ -43,7 +43,7 @@ const EvaluationHistoryScreen = () => {
 				{loading && <Loader />}
 				<h1 className='text-center'>
 					{filteredEvaluation &&
-						moment(filteredEvaluation.createdAt).format('YYYY年MM')}
+						moment(filteredEvaluation.createdAt).format('YYYY年M')}
 					月の評価
 				</h1>
 				{filteredEvaluation && (

@@ -33,7 +33,10 @@ import {
 	employeeMyStudentListsReducer,
 } from './redux/reducers/employeeReducers'
 
-import { evaluationMyListsReducer } from './redux/reducers/evaluationReducers'
+import {
+	evaluationMyListsReducer,
+	evaluationStudentReducer,
+} from './redux/reducers/evaluationReducers'
 
 const reducer = combineReducers({
 	gameList: gameListReducer,
@@ -59,6 +62,7 @@ const reducer = combineReducers({
 	orderListMySubscription: orderListMySubscriptionReducer,
 	orderUnsubscribe: orderUnsubscribeReducer,
 	evaluationMyLists: evaluationMyListsReducer,
+	evaluationStudent: evaluationStudentReducer,
 })
 const userInfoFromStorage = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))

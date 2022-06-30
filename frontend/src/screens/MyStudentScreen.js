@@ -6,10 +6,11 @@ import Message from '../components/common/Message'
 import HorizontalButton from '../components/common/HorizontalButton'
 import BackButton from '../components/common/BackButton'
 import Loader from '../components/common/Loader'
-
+import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { listMyStudentLists } from '../redux/actions/employeeActions'
+import { EVALUATION_STUDENT_RESET } from '../redux/constants/evaluationConstants'
 
 const MyStudentScreen = () => {
 	const navigate = useNavigate()
@@ -29,7 +30,10 @@ const MyStudentScreen = () => {
 			return
 		}
 		dispatch(listMyStudentLists())
+		dispatch({ type: EVALUATION_STUDENT_RESET })
 	}, [navigate, userInfo, dispatch])
+
+	// console.log(moment().format('MMMM'))
 
 	return (
 		<Container>
@@ -64,7 +68,9 @@ const MyStudentScreen = () => {
 							</Link>
 							<Link to={`/teacher/student/${id}/evaluate`}>
 								<HorizontalButton
-									text='xxの評価をつける'
+									text={`${moment().format(
+										'M'
+									)}月の評価をつける`}
 									type='button'
 								/>
 							</Link>

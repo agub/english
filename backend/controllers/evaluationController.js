@@ -24,33 +24,26 @@ const evaluateStudent = asyncHandler(async (req, res) => {
 		res.status(401)
 		throw new Error('unauthorized')
 	}
+	const newObject = { ...req.body, createdAt: new Date() }
 
-	const object = {
-		conversation: 2,
-		effort: 4,
-		concentration: 5,
-		speaking: 5,
-		overall: 5,
-		comment: 'some comment',
-		createdAt: new Date(),
-	}
 	const evaluation = await Evaluation.findOne({ userId: req.params.id })
 
-	const startOfMonth = moment().clone().startOf('month')
-	const endOfMonth = moment().clone().endOf('month')
+	if (evaluation.evaluations.length !== 0) {
+		const startOfMonth = moment().clone().startOf('month')
+		const endOfMonth = moment().clone().endOf('month')
 
-	const index = evaluation.evaluations.length - 1
-	const lastCreatedAt = moment(evaluation.evaluations[index].createdAt)
-
-	if (
-		lastCreatedAt.isBefore(endOfMonth) &&
-		lastCreatedAt.isAfter(startOfMonth)
-	) {
-		res.status(400)
-		throw new Error('既に今月は評価済みです')
+		const index = evaluation.evaluations.length - 1
+		const lastCreatedAt = moment(evaluation.evaluations[index].createdAt)
+		if (
+			lastCreatedAt.isBefore(endOfMonth) &&
+			lastCreatedAt.isAfter(startOfMonth)
+		) {
+			res.status(400)
+			throw new Error('既に今月は評価済みです')
+		}
 	}
 
-	evaluation.evaluations = [...evaluation.evaluations, object]
+	evaluation.evaluations = [...evaluation.evaluations, newObject]
 	await evaluation.save()
 
 	res.status(201).json(evaluation.evaluations)
