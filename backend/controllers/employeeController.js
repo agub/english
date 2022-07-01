@@ -68,10 +68,6 @@ const getWaitLists = asyncHandler(async (req, res) => {
 // @route   GET /api/employee/studentLists
 // @access  Private/teacher
 const getMyStudentLists = asyncHandler(async (req, res) => {
-	if (req.user.userType === 'customer') {
-		res.status(401)
-		throw new Error('Not authorized')
-	}
 	const myClassRooms = await Room.find({ teacher: req.user._id })
 	if (!myClassRooms && myClassRooms === []) {
 		res.status(400)
@@ -98,38 +94,40 @@ const getMyStudentLists = asyncHandler(async (req, res) => {
 // @route   GET /api/employee/apply/:id
 // @access  Private/teacher
 const postCandidate = asyncHandler(async (req, res) => {
-	const userId = 'fasdfaaafaf'
+	console.log(req.params.id)
+	const customerId = 'fasdfaaafaf'
+	const myId = '629925022e88a7f040640504'
 	const object = {
-		teacherId: '',
+		teacherId: '629925022e88a7f040640505',
 		rank: 1,
-		comment: '',
+		comment: 'this is different',
 	}
 
-	// if (req.user.userType === 'customer') {
-	// 	res.status(401)
-	// 	throw new Error('Not authorized')
-	// }
-	// const myClassRooms = await Room.find({ teacher: req.user._id })
-	// if (!myClassRooms && myClassRooms === []) {
-	// 	res.status(400)
-	// 	throw new Error('userId is not in use')
-	// }
+	const room = await Room.findOne({ _id: req.params.id })
+	if (!room) {
+		res.status(400)
+		throw new Error('roomが見つかりません')
+	}
 
-	// let myStudents = []
-	// for (const singleClass of myClassRooms) {
-	// 	for (const data of singleClass.students) {
-	// 		const studentInfo = await Customer.findOne({ userId: data })
-	// 		const userInfo = await User.findOne({ _id: data })
-	// 		myStudents.push({
-	// 			schedule: singleClass.schedule,
-	// 			userId: studentInfo.userId,
-	// 			info: studentInfo.info,
-	// 			name: userInfo.name,
-	// 		})
-	// 	}
-	// }
-	console.log('fired')
-	res.status(200).json(object)
+	const existOnRoom = room.candidate.some(
+		(obj) => obj.teacherId.toString() === myId
+	)
+
+	if (existOnRoom) {
+		const index = room.candidate.findIndex(
+			(x) => x.teacherId.toString() === myId
+		)
+		room.candidate[index] = object
+		await room.save()
+	} else if (room.candidate.length === 0) {
+		room.candidate = [object]
+		await room.save()
+	} else {
+		room.candidate = [...room.candidate, object]
+		await room.save()
+	}
+
+	res.status(200).json(room)
 })
 
 export {

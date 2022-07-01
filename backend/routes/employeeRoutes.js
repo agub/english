@@ -13,7 +13,7 @@ import {
 
 router.route('/').get(getEmployees)
 router.route('/waitLists').get(protect, getWaitLists)
-router.route('/studentLists').get(protect, getMyStudentLists)
+router.route('/studentLists').get(protect, employeeAccess, getMyStudentLists)
 router.route('/:id').get(getEmployeeById)
 router.route('/apply/:id').post(protect, employeeAccess, postCandidate)
 

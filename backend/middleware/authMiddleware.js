@@ -34,12 +34,12 @@ const admin = (req, res, next) => {
 		next()
 	} else {
 		res.status(401)
-		throw new Error('Not authorized')
+		throw new Error('Not authorized, has to be admin')
 	}
 }
 
 const employeeAccess = (req, res, next) => {
-	if (req.user && req.user.userType === 'employee') {
+	if (req.user && (req.user.userType === 'employee' || req.user.isAdmin)) {
 		next()
 	} else {
 		res.status(401)
