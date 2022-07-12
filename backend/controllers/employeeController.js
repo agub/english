@@ -118,15 +118,13 @@ const postCandidate = asyncHandler(async (req, res) => {
 			(x) => x.teacherId.toString() === myId
 		)
 		room.candidate[index] = object
-		await room.save()
 	} else if (room.candidate.length === 0) {
 		room.candidate = [object]
-		await room.save()
 	} else {
 		room.candidate = [...room.candidate, object]
-		await room.save()
 	}
 
+	await room.save()
 	res.status(200).json(room)
 })
 
