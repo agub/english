@@ -16,6 +16,11 @@
 @tailwind utilities;
 
 
+
+/* body {
+  font-family: 'Open Sans', sans-serif;
+} */
+
 .swiper-container {
   width: 480px;
 }
